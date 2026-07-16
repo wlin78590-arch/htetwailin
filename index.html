@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Special One</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #fff0f5; overflow: hidden; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: sans-serif; }
+        
+        .message { text-align: center; animation: fadeIn 3s ease-in-out; color: #d63384; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .flower { position: absolute; top: -50px; font-size: 24px; animation: fall linear infinite; }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="message">
+        <h1>ချစ်ရတဲ့ Baby အတွက်</h1>
+        <p>ဒီနေ့လေးက မင်းကြောင့်ပိုပြီး လှပနေတယ်...</p>
+    </div>
+
+    <script>
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.innerHTML = '🌸';
+            flower.className = 'flower';
+            flower.style.left = Math.random() * 100 + 'vw';
+            flower.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(flower);
+            setTimeout(() => { flower.remove(); }, 5000);
+        }
+        setInterval(createFlower, 300);
+    </script>
+</body>
+</html>
