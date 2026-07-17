@@ -3,14 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTET LINK APP · modern dashboard</title>
-  <!-- Tailwind via CDN + base styles -->
+  <title>HTET LINK APP · Read Only</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome Icons 6 (free) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Framer Motion via ESM (simple) – we use a lightweight approach with CSS transitions + a tiny motion library -->
   <style>
-    /* glassmorphism + premium feel + dark/light mode */
     * { transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease; }
     body {
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -34,32 +30,12 @@
     }
     .card-hover {
       transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      cursor: pointer;
     }
     .card-hover:hover {
       transform: translateY(-4px);
       box-shadow: 0 20px 40px -12px rgba(0, 40, 120, 0.25);
       border-color: rgba(79, 131, 255, 0.3);
-    }
-    .btn-gradient {
-      background: linear-gradient(145deg, #4f7cff, #3b5fd9);
-      border: none;
-      color: white;
-      transition: all 0.15s ease;
-    }
-    .btn-gradient:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 20px rgba(59, 95, 217, 0.35);
-    }
-    .btn-outline-light {
-      background: rgba(255,255,255,0.3);
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255,255,255,0.4);
-      color: #1a2639;
-    }
-    .dark .btn-outline-light {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.15);
-      color: #eef2ff;
     }
     .dark body { background: #0b1120; }
     .dark .glass { background: rgba(25, 35, 70, 0.6); border-color: rgba(255,255,255,0.06); }
@@ -89,12 +65,7 @@
       color: #2b4eb0;
     }
     .dark .icon-bg { background: rgba(79, 124, 255, 0.15); color: #8aadff; }
-    .modal-overlay {
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(4px);
-    }
-    .dark .modal-overlay { background: rgba(0, 0, 0, 0.6); }
-    input, select, textarea {
+    input, select {
       background: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -103,12 +74,12 @@
       width: 100%;
       transition: 0.15s;
     }
-    .dark input, .dark select, .dark textarea {
+    .dark input, .dark select {
       background: rgba(20, 30, 65, 0.5);
       border-color: rgba(255,255,255,0.06);
       color: #eef2ff;
     }
-    input:focus, select:focus, textarea:focus {
+    input:focus, select:focus {
       outline: 2px solid #4f7cff;
       border-color: transparent;
       box-shadow: 0 0 0 4px rgba(79, 124, 255, 0.15);
@@ -116,29 +87,84 @@
     .scrollbar-hide::-webkit-scrollbar { width: 4px; }
     .scrollbar-hide::-webkit-scrollbar-track { background: transparent; }
     .scrollbar-hide::-webkit-scrollbar-thumb { background: #b0c8ff; border-radius: 12px; }
+    
+    .lock-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      font-size: 0.6rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .dark .lock-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+    
+    .password-modal {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    
+    #loadingState {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+    .spinner {
+      border: 4px solid rgba(79, 124, 255, 0.1);
+      border-top: 4px solid #4f7cff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .readonly-badge {
+      background: rgba(79, 124, 255, 0.08);
+      color: #4f7cff;
+      font-size: 0.6rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 30px;
+      border: 1px solid rgba(79, 124, 255, 0.15);
+    }
+    .dark .readonly-badge {
+      background: rgba(79, 124, 255, 0.12);
+      color: #8aadff;
+      border-color: rgba(79, 124, 255, 0.2);
+    }
   </style>
 </head>
 <body class="antialiased p-4 md:p-6 transition-colors" id="app">
   <div id="root" class="max-w-7xl mx-auto">
-    <!-- header + dark toggle -->
+    <!-- header -->
     <div class="flex flex-wrap items-center justify-between mb-6 gap-3">
       <div class="flex items-center gap-3">
         <div class="text-3xl bg-gradient-to-br from-[#4f7cff] to-[#7a5cff] bg-clip-text text-transparent font-bold tracking-tight">
-          <i class="fas fa-link text-blue-500 mr-2"></i>My Link Hub
+          <i class="fas fa-link text-blue-500 mr-2"></i>HTET LINK APP
         </div>
-        <span class="text-sm text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-white/5 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">v1.0</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-white/5 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">📖 Read Only</span>
       </div>
       <div class="flex items-center gap-3">
         <button onclick="toggleDark()" class="glass px-4 py-2 rounded-2xl text-sm flex items-center gap-2 hover:scale-105 transition">
           <i class="fas fa-moon dark:hidden"></i><i class="fas fa-sun hidden dark:inline"></i> <span class="hidden sm:inline">Theme</span>
         </button>
-        <button onclick="openModal()" class="btn-gradient px-5 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-lg shadow-blue-500/20">
-          <i class="fas fa-plus"></i> <span class="hidden sm:inline">Add Link</span>
+        <span class="readonly-badge"><i class="fas fa-lock mr-1"></i> Read Only</span>
+        <button onclick="resetToDefault()" class="glass px-4 py-2 rounded-2xl text-sm flex items-center gap-2 hover:scale-105 transition text-red-500">
+          <i class="fas fa-redo"></i> <span class="hidden sm:inline">Reset</span>
         </button>
       </div>
     </div>
 
-    <!-- stats dashboard -->
+    <!-- stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       <div class="glass rounded-3xl p-5 card-hover dark:glass-dark">
         <div class="text-sm text-gray-500 dark:text-gray-300 flex items-center gap-2"><i class="fas fa-link text-blue-400"></i> Total</div>
@@ -176,71 +202,234 @@
     </div>
 
     <!-- link cards grid -->
-    <div id="linkGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-      <!-- dynamic cards injected -->
+    <div id="loadingState">
+      <div class="spinner"></div>
+    </div>
+    <div id="linkGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 hidden">
+      <!-- dynamic cards -->
     </div>
     <div id="emptyState" class="glass rounded-3xl p-12 text-center mt-6 hidden dark:glass-dark">
       <i class="fas fa-link text-4xl text-blue-300/50 mb-3"></i>
-      <p class="text-gray-500 dark:text-gray-300">No links yet. Start by adding your first link!</p>
+      <p class="text-gray-500 dark:text-gray-300">No links available.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center text-xs text-gray-400 dark:text-gray-600 mt-8 pb-4">
+      <i class="fas fa-shield-alt text-blue-400 mr-1"></i>
+      This is a read-only link hub.
+      <span class="block sm:inline">🔒 No one can add, edit, or delete links.</span>
     </div>
   </div>
 
-  <!-- Modal (Add/Edit) -->
-  <div id="modalOverlay" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay z-50 hidden transition-opacity">
-    <div class="glass rounded-3xl max-w-xl w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto scrollbar-hide dark:glass-dark">
-      <div class="flex justify-between items-center mb-5">
-        <h3 class="text-2xl font-bold text-gray-800 dark:text-white" id="modalTitle"><i class="fas fa-plus-circle text-blue-500 mr-2"></i>Add Link</h3>
-        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-xl"><i class="fas fa-times"></i></button>
+  <!-- Password Modal for Protected Link -->
+  <div id="linkPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 password-modal hidden">
+    <div class="glass rounded-3xl max-w-md w-full p-6 md:p-8 dark:glass-dark">
+      <div class="text-center mb-5">
+        <i class="fas fa-lock text-4xl text-red-400 mb-3"></i>
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white">🔒 Protected Link</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Enter password to access this link</p>
       </div>
-      <form id="linkForm" onsubmit="saveLink(event)">
-        <input type="hidden" id="editId" value="">
-        <div class="space-y-4">
-          <div><input type="text" id="formTitle" placeholder="Title *" required class="rounded-2xl"></div>
-          <div><input type="text" id="formUrl" placeholder="URL * (https://...)" required class="rounded-2xl"></div>
-          <div><textarea id="formDesc" rows="2" placeholder="Description (optional)" class="rounded-2xl"></textarea></div>
-          <div class="flex flex-wrap gap-3">
-            <div class="flex-1 min-w-[130px]"><input type="text" id="formCategory" placeholder="Category (e.g. Work)" class="rounded-2xl"></div>
-            <div class="flex-1 min-w-[130px]"><input type="text" id="formTags" placeholder="Tags (comma separated)" class="rounded-2xl"></div>
-          </div>
-          <div class="flex items-center gap-4">
-            <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="formFav"> <i class="fas fa-star text-yellow-400"></i> Favorite</label>
-            <label class="flex items-center gap-2 text-sm"><i class="fas fa-image text-gray-400"></i> <input type="text" id="formIcon" placeholder="Icon (emoji or fa class)" class="w-32 rounded-2xl"></label>
-          </div>
-          <div class="flex justify-end gap-3 pt-2">
-            <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-2xl border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300">Cancel</button>
-            <button type="submit" class="btn-gradient px-6 py-2 rounded-2xl"><i class="fas fa-save mr-1"></i> Save</button>
-          </div>
-        </div>
-      </form>
+      <input type="password" id="linkPasswordInput" placeholder="Enter link password..." class="rounded-2xl mb-4" onkeydown="if(event.key==='Enter') verifyLinkPassword()">
+      <div class="flex gap-3">
+        <button onclick="closeLinkPasswordModal()" class="flex-1 px-4 py-2 rounded-2xl border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300">Cancel</button>
+        <button onclick="verifyLinkPassword()" class="flex-1 btn-gradient px-4 py-2 rounded-2xl">Unlock <i class="fas fa-unlock ml-1"></i></button>
+      </div>
+      <div id="linkPasswordError" class="text-red-500 text-sm text-center mt-3 hidden">❌ Wrong password! Try again.</div>
     </div>
   </div>
 
   <script>
-    // ---- DATA LAYER (localStorage) ----
-    let links = [];
-    let editingId = null;
-    const STORAGE_KEY = 'linkhub_links';
+    // ---- CONFIG ----
+    const STORAGE_KEY = 'htet_link_app_readonly_v8';
 
-    // load from storage
+    // ---- DATA ----
+    let links = [];
+    let pendingLink = null;
+
+    // ---- RESET FUNCTION ----
+    function resetToDefault() {
+      if (confirm('⚠️ This will reset to default links. Continue?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        links = getDefaultLinks();
+        saveLinks();
+        render();
+        showToast('✅ Reset to default links!');
+      }
+    }
+
+    // ---- LINK PASSWORD FUNCTIONS ----
+    function showLinkPasswordModal(link) {
+      pendingLink = link;
+      document.getElementById('linkPasswordModal').classList.remove('hidden');
+      document.getElementById('linkPasswordInput').value = '';
+      document.getElementById('linkPasswordInput').focus();
+      document.getElementById('linkPasswordError').classList.add('hidden');
+    }
+
+    function closeLinkPasswordModal() {
+      document.getElementById('linkPasswordModal').classList.add('hidden');
+      pendingLink = null;
+    }
+
+    function verifyLinkPassword() {
+      const input = document.getElementById('linkPasswordInput').value;
+      if (pendingLink && input === pendingLink.linkPassword) {
+        window.open(pendingLink.url, '_blank');
+        closeLinkPasswordModal();
+        pendingLink = null;
+      } else {
+        document.getElementById('linkPasswordError').classList.remove('hidden');
+        document.getElementById('linkPasswordInput').value = '';
+        document.getElementById('linkPasswordInput').focus();
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 glass rounded-2xl px-6 py-3 z-50 dark:glass-dark text-gray-800 dark:text-white shadow-xl';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 2000);
+    }
+
+    // ---- DATA LAYER ----
     function loadLinks() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) links = JSON.parse(raw);
-        else links = getDefaultLinks();
-      } catch { links = getDefaultLinks(); }
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            links = parsed;
+          } else {
+            links = getDefaultLinks();
+            saveLinks();
+          }
+        } else {
+          links = getDefaultLinks();
+          saveLinks();
+        }
+      } catch (e) {
+        console.error('Error loading links:', e);
+        links = getDefaultLinks();
+        saveLinks();
+      }
+      
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('linkGrid').classList.remove('hidden');
       render();
     }
 
     function saveLinks() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
+        console.log('✅ Saved', links.length, 'links');
+      } catch (e) {
+        console.error('Error saving links:', e);
+      }
     }
 
     function getDefaultLinks() {
       return [
-        { id: '1', title: 'YouTube', url: 'https://youtube.com', description: 'Video platform', category: 'Videos', tags: ['video', 'media'], favorite: true, icon: 'fab fa-youtube', createdAt: Date.now() - 200000 },
-        { id: '2', title: 'GitHub', url: 'https://github.com', description: 'Code hosting', category: 'Work', tags: ['dev', 'code'], favorite: false, icon: 'fab fa-github', createdAt: Date.now() - 50000 },
-        { id: '3', title: 'Google Drive', url: 'https://drive.google.com', description: 'Cloud storage', category: 'Documents', tags: ['drive', 'cloud'], favorite: false, icon: 'fab fa-google-drive', createdAt: Date.now() - 10000 },
-        { id: '4', title: 'LinkedIn', url: 'https://linkedin.com', description: 'Professional network', category: 'Social Media', tags: ['social', 'career'], favorite: true, icon: 'fab fa-linkedin', createdAt: Date.now() - 8000 },
+        { 
+          id: '1', 
+          title: '🎬 YouTube', 
+          url: 'https://youtube.com', 
+          description: 'Video platform for entertainment and learning', 
+          category: 'Videos', 
+          tags: ['video', 'media', 'entertainment'], 
+          favorite: true, 
+          icon: 'fab fa-youtube', 
+          linkPassword: '', 
+          createdAt: Date.now() - 200000 
+        },
+        { 
+          id: '2', 
+          title: '🐙 free', 
+          url: 'https://www.pornhub.com', 
+          description: 'Code hosting and collaboration platform', 
+          category: 'Work', 
+          tags: ['dev', 'code', 'programming'], 
+          favorite: false, 
+          icon: 'fab fa-github', 
+          linkPassword: '', 
+          createdAt: Date.now() - 50000 
+        },
+        { 
+          id: '3', 
+          title: '☁️ Google Drive', 
+          url: 'https://drive.google.com', 
+          description: 'Cloud storage for files and documents', 
+          category: 'Documents', 
+          tags: ['drive', 'cloud', 'storage'], 
+          favorite: false, 
+          icon: 'fab fa-google-drive', 
+          linkPassword: '', 
+          createdAt: Date.now() - 10000 
+        },
+        { 
+          id: '4', 
+          title: '💼 LinkedIn', 
+          url: 'https://linkedin.com', 
+          description: 'Professional networking platform', 
+          category: 'Social Media', 
+          tags: ['social', 'career', 'professional'], 
+          favorite: true, 
+          icon: 'fab fa-linkedin', 
+          linkPassword: '', 
+          createdAt: Date.now() - 8000 
+        },
+        { 
+          id: '5', 
+          title: '🌐 My Personal Website', 
+          url: 'https://htetwailin.lovable.app', 
+          description: 'My personal portfolio and workspace', 
+          category: 'Personal', 
+          tags: ['portfolio', 'personal', 'workspace'], 
+          favorite: true, 
+          icon: 'fas fa-heart', 
+          linkPassword: '', 
+          createdAt: Date.now() - 3000 
+        },
+        { 
+          id: '6', 
+          title: '📝 Google Docs', 
+          url: 'https://docs.google.com', 
+          description: 'Online document editor and collaboration', 
+          category: 'Documents', 
+          tags: ['docs', 'writing', 'collaboration'], 
+          favorite: false, 
+          icon: 'fas fa-file-alt', 
+          linkPassword: '', 
+          createdAt: Date.now() - 1000 
+        },
+        { 
+          id: '7', 
+          title: '🎵 TikTok', 
+          url: 'https://www.tiktok.com', 
+          description: 'Short-form video platform for creative content', 
+          category: 'Social Media', 
+          tags: ['video', 'social', 'short-form', 'creative'], 
+          favorite: true, 
+          icon: 'fab fa-tiktok', 
+          linkPassword: '', 
+          createdAt: Date.now() - 500 
+        },
+        { 
+          id: '8', 
+          title: '🎮 Online Games', 
+          url: 'https://poki.com', 
+          description: 'Free online games platform - play instantly', 
+          category: 'Games', 
+          tags: ['games', 'online', 'fun', 'entertainment'], 
+          favorite: false, 
+          icon: 'fas fa-gamepad', 
+          linkPassword: '', 
+          createdAt: Date.now() - 200 
+        }
       ];
     }
 
@@ -273,8 +462,10 @@
       if (u.includes('instagram')) return 'fab fa-instagram';
       if (u.includes('telegram')) return 'fab fa-telegram';
       if (u.includes('whatsapp')) return 'fab fa-whatsapp';
-      if (u.includes('github')) return 'fab fa-github';
+      if (u.includes('pornhub/')) return 'fab fa-pornhub';
       if (u.includes('linkedin')) return 'fab fa-linkedin';
+      if (u.includes('lovable')) return 'fas fa-heart';
+      if (u.includes('poki') || u.includes('game')) return 'fas fa-gamepad';
       return 'fas fa-link';
     }
 
@@ -284,7 +475,6 @@
       const categoryFilter = document.getElementById('categoryFilter').value;
       const sortVal = document.getElementById('sortFilter').value;
 
-      // populate category filter
       const catSet = new Set();
       links.forEach(l => { if (l.category) catSet.add(l.category); });
       const catSelect = document.getElementById('categoryFilter');
@@ -299,7 +489,6 @@
       if ([...catSet].includes(currentCat)) catSelect.value = currentCat;
       else catSelect.value = 'all';
 
-      // filter
       let filtered = links.filter(link => {
         const matchSearch = link.title.toLowerCase().includes(search) || 
                            (link.tags && link.tags.some(t => t.toLowerCase().includes(search))) ||
@@ -308,12 +497,10 @@
         return matchSearch && matchCategory;
       });
 
-      // sort
       if (sortVal === 'newest') filtered.sort((a,b) => b.createdAt - a.createdAt);
       else if (sortVal === 'oldest') filtered.sort((a,b) => a.createdAt - b.createdAt);
       else if (sortVal === 'alpha') filtered.sort((a,b) => a.title.localeCompare(b.title));
 
-      // stats
       document.getElementById('totalCount').textContent = links.length;
       document.getElementById('categoryCount').textContent = getCategoryCount();
       document.getElementById('favCount').textContent = getFavCount();
@@ -334,8 +521,11 @@
         const favStar = link.favorite ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600';
         const tagsHtml = (link.tags && link.tags.length) ? link.tags.map(t => `<span class="tag-pill">#${t}</span>`).join(' ') : '';
         const dateStr = new Date(link.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const isProtected = link.linkPassword && link.linkPassword.trim() !== '';
+        const lockBadge = isProtected ? `<span class="lock-badge"><i class="fas fa-lock"></i> Protected</span>` : '';
+        
         return `
-          <div class="glass rounded-3xl p-5 card-hover dark:glass-dark flex flex-col">
+          <div class="glass rounded-3xl p-5 card-hover dark:glass-dark flex flex-col" onclick="handleLinkClick('${link.id}')">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-3">
                 <div class="icon-bg"><i class="${icon}"></i></div>
@@ -344,17 +534,20 @@
                   <span class="text-xs text-gray-400 dark:text-gray-400">${link.category || 'Uncategorized'}</span>
                 </div>
               </div>
-              <i class="fas fa-star ${favStar} text-sm"></i>
+              <div class="flex items-center gap-1">
+                ${lockBadge}
+                <i class="fas fa-star ${favStar} text-sm"></i>
+              </div>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-300 mt-2 line-clamp-2">${link.description || 'No description'}</p>
             <div class="flex flex-wrap gap-1 mt-2">${tagsHtml}</div>
             <div class="flex items-center justify-between mt-4 text-xs text-gray-400 dark:text-gray-500">
               <span><i class="far fa-calendar-alt mr-1"></i>${dateStr}</span>
               <div class="flex gap-2">
-                <button onclick="copyLink('${link.url}')" class="hover:text-blue-500 p-1"><i class="fas fa-copy"></i></button>
-                <a href="${link.url}" target="_blank" class="hover:text-blue-500 p-1"><i class="fas fa-external-link-alt"></i></a>
-                <button onclick="editLink('${link.id}')" class="hover:text-indigo-400 p-1"><i class="fas fa-edit"></i></button>
-                <button onclick="deleteLink('${link.id}')" class="hover:text-red-400 p-1"><i class="fas fa-trash-alt"></i></button>
+                <button onclick="event.stopPropagation(); copyLink('${link.url}')" class="hover:text-blue-500 p-1" title="Copy Link"><i class="fas fa-copy"></i></button>
+                <button onclick="event.stopPropagation(); handleLinkClick('${link.id}')" class="hover:text-blue-500 p-1" title="${isProtected ? '🔒 Unlock' : 'Open Link'}">
+                  <i class="${isProtected ? 'fas fa-lock' : 'fas fa-external-link-alt'}"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -362,67 +555,23 @@
       }).join('');
     }
 
-    // ---- CRUD ----
-    function saveLink(e) {
-      e.preventDefault();
-      const title = document.getElementById('formTitle').value.trim();
-      const url = document.getElementById('formUrl').value.trim();
-      const desc = document.getElementById('formDesc').value.trim();
-      const category = document.getElementById('formCategory').value.trim() || 'Uncategorized';
-      const tagsRaw = document.getElementById('formTags').value.trim();
-      const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
-      const favorite = document.getElementById('formFav').checked;
-      const icon = document.getElementById('formIcon').value.trim();
-      const editId = document.getElementById('editId').value;
-
-      if (!title || !url) return alert('Title and URL are required.');
-
-      if (editId) {
-        const idx = links.findIndex(l => l.id === editId);
-        if (idx !== -1) {
-          links[idx] = { ...links[idx], title, url, description: desc, category, tags, favorite, icon };
-        }
-      } else {
-        const newLink = {
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-          title, url, description: desc, category, tags, favorite, icon,
-          createdAt: Date.now()
-        };
-        links.push(newLink);
-      }
-      saveLinks();
-      closeModal();
-      render();
-    }
-
-    function deleteLink(id) {
-      if (!confirm('Delete this link?')) return;
-      links = links.filter(l => l.id !== id);
-      saveLinks();
-      render();
-    }
-
-    function editLink(id) {
+    // ---- HANDLE LINK CLICK ----
+    function handleLinkClick(id) {
       const link = links.find(l => l.id === id);
       if (!link) return;
-      editingId = id;
-      document.getElementById('editId').value = id;
-      document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit text-blue-500 mr-2"></i>Edit Link';
-      document.getElementById('formTitle').value = link.title;
-      document.getElementById('formUrl').value = link.url;
-      document.getElementById('formDesc').value = link.description || '';
-      document.getElementById('formCategory').value = link.category || '';
-      document.getElementById('formTags').value = (link.tags || []).join(', ');
-      document.getElementById('formFav').checked = link.favorite || false;
-      document.getElementById('formIcon').value = link.icon || '';
-      openModal();
+
+      if (link.linkPassword && link.linkPassword.trim() !== '') {
+        showLinkPasswordModal(link);
+      } else {
+        window.open(link.url, '_blank');
+      }
     }
 
     function copyLink(url) {
       navigator.clipboard.writeText(url).then(() => {
-        alert('Link copied to clipboard!');
+        showToast('✅ Link copied to clipboard!');
       }).catch(() => {
-        prompt('Copy this URL:', url);
+        prompt('📋 Copy this URL:', url);
       });
     }
 
@@ -433,22 +582,6 @@
       render();
     }
 
-    // ---- MODAL ----
-    function openModal() {
-      document.getElementById('modalOverlay').classList.remove('hidden');
-      if (!document.getElementById('editId').value) {
-        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle text-blue-500 mr-2"></i>Add Link';
-        document.getElementById('linkForm').reset();
-        document.getElementById('editId').value = '';
-        document.getElementById('formFav').checked = false;
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.add('hidden');
-      document.getElementById('editId').value = '';
-    }
-
     // ---- THEME ----
     function toggleDark() {
       document.documentElement.classList.toggle('dark');
@@ -456,24 +589,28 @@
       localStorage.setItem('darkMode', document.documentElement.classList.contains('dark') ? 'true' : 'false');
     }
 
-    // init theme
     if (localStorage.getItem('darkMode') === 'true') {
       document.documentElement.classList.add('dark');
       document.body.classList.add('dark');
     }
 
-    // ---- SEARCH & FILTER listeners ----
+    // ---- EVENT LISTENERS ----
     document.getElementById('searchInput').addEventListener('input', render);
     document.getElementById('categoryFilter').addEventListener('change', render);
     document.getElementById('sortFilter').addEventListener('change', render);
 
-    // close modal on overlay click
-    document.getElementById('modalOverlay').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
+    document.getElementById('linkPasswordModal').addEventListener('click', function(e) {
+      if (e.target === this) closeLinkPasswordModal();
     });
 
-    // start
+    document.getElementById('linkPasswordInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') verifyLinkPassword();
+    });
+
+    // ---- START ----
     loadLinks();
+    console.log('✅ HTET LINK APP (Read Only) started!');
+    console.log('📊 Total links:', links.length);
   </script>
 </body>
 </html>
