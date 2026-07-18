@@ -3,131 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTET LINK APP · Read Only</title>
+  <title>Pro H · Read Only</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease; }
+    /* ===== Smooth Transitions ===== */
+    * {
+      transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.4s ease;
+    }
+
+    /* ===== Body with Gradient ===== */
     body {
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4ff;
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 40%, #c7d2fe 100%);
       min-height: 100vh;
+      transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .dark body {
+      background: linear-gradient(135deg, #0a0e1a 0%, #0f1a2e 40%, #1a1040 100%);
+    }
+
+    /* ===== Glassmorphism ===== */
     .glass {
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 12px 40px rgba(0, 20, 60, 0.08);
+      box-shadow: 0 8px 32px rgba(60, 100, 200, 0.08);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .dark .glass {
+      background: rgba(20, 30, 70, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
     .glass-dark {
-      background: rgba(20, 30, 60, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(20, 30, 60, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
       color: #f0f4ff;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .dark .glass-dark {
+      background: rgba(12, 18, 40, 0.7);
+      border-color: rgba(255, 255, 255, 0.04);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ===== Card Hover ===== */
     .card-hover {
-      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
+
+    .card-hover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(79, 124, 255, 0.06), rgba(160, 80, 255, 0.04));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .card-hover:hover::before {
+      opacity: 1;
+    }
+
     .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px -12px rgba(0, 40, 120, 0.25);
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 24px 48px -12px rgba(60, 80, 200, 0.25);
       border-color: rgba(79, 131, 255, 0.3);
     }
-    .dark body { background: #0b1120; }
-    .dark .glass { background: rgba(25, 35, 70, 0.6); border-color: rgba(255,255,255,0.06); }
-    .dark .glass-dark { background: rgba(12, 18, 40, 0.8); border-color: rgba(255,255,255,0.04); }
-    .tag-pill {
-      background: rgba(79, 124, 255, 0.12);
-      color: #1f3a8a;
-      font-size: 0.7rem;
-      padding: 0.2rem 0.65rem;
-      border-radius: 30px;
-      display: inline-block;
-      backdrop-filter: blur(2px);
+
+    .dark .card-hover:hover {
+      box-shadow: 0 24px 48px -12px rgba(60, 80, 200, 0.15);
+      border-color: rgba(79, 131, 255, 0.2);
     }
-    .dark .tag-pill {
-      background: rgba(79, 124, 255, 0.2);
-      color: #b8caff;
+
+    /* ===== Card Entrance Animation ===== */
+    .card-enter {
+      animation: cardSlide 0.5s ease forwards;
+      opacity: 0;
     }
+
+    @keyframes cardSlide {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ===== Icon Background ===== */
     .icon-bg {
-      background: rgba(79, 124, 255, 0.08);
+      background: linear-gradient(135deg, rgba(79, 124, 255, 0.12), rgba(160, 80, 255, 0.08));
       width: 40px;
       height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 14px;
-      font-size: 1.3rem;
+      border-radius: 12px;
+      font-size: 1.2rem;
       color: #2b4eb0;
+      flex-shrink: 0;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .dark .icon-bg { background: rgba(79, 124, 255, 0.15); color: #8aadff; }
+
+    .card-hover:hover .icon-bg {
+      background: linear-gradient(135deg, rgba(79, 124, 255, 0.2), rgba(160, 80, 255, 0.15));
+      transform: scale(1.05) rotate(-3deg);
+    }
+
+    .dark .icon-bg {
+      background: rgba(79, 124, 255, 0.15);
+      color: #8aadff;
+    }
+
+    .card-hover:hover .dark .icon-bg {
+      background: rgba(79, 124, 255, 0.25);
+      box-shadow: 0 0 30px rgba(79, 124, 255, 0.1);
+    }
+
+    /* ===== Tag Pill ===== */
+    .tag-pill {
+      background: rgba(79, 124, 255, 0.1);
+      color: #1f3a8a;
+      font-size: 0.6rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 30px;
+      display: inline-block;
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(79, 124, 255, 0.05);
+    }
+
+    .tag-pill:hover {
+      background: rgba(79, 124, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .dark .tag-pill {
+      background: rgba(79, 124, 255, 0.15);
+      color: #b8caff;
+      border-color: rgba(79, 124, 255, 0.08);
+    }
+
+    /* ===== Input / Select ===== */
     input, select {
       background: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
       width: 100%;
-      transition: 0.15s;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
     }
+
     .dark input, .dark select {
       background: rgba(20, 30, 65, 0.5);
-      border-color: rgba(255,255,255,0.06);
+      border-color: rgba(255, 255, 255, 0.06);
       color: #eef2ff;
     }
+
     input:focus, select:focus {
-      outline: 2px solid #4f7cff;
-      border-color: transparent;
+      outline: none;
+      border-color: #4f7cff;
       box-shadow: 0 0 0 4px rgba(79, 124, 255, 0.15);
+      transform: scale(1.01);
     }
-    .scrollbar-hide::-webkit-scrollbar { width: 4px; }
-    .scrollbar-hide::-webkit-scrollbar-track { background: transparent; }
-    .scrollbar-hide::-webkit-scrollbar-thumb { background: #b0c8ff; border-radius: 12px; }
-    
+
+    /* ===== Badges ===== */
     .lock-badge {
-      background: rgba(239, 68, 68, 0.15);
+      background: rgba(239, 68, 68, 0.12);
       color: #ef4444;
-      font-size: 0.6rem;
-      padding: 0.15rem 0.5rem;
+      font-size: 0.5rem;
+      padding: 0.08rem 0.4rem;
       border-radius: 30px;
       display: inline-flex;
       align-items: center;
-      gap: 0.2rem;
-      border: 1px solid rgba(239, 68, 68, 0.2);
+      gap: 0.15rem;
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      transition: all 0.3s ease;
     }
+
     .dark .lock-badge {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.15);
       color: #f87171;
+      border-color: rgba(239, 68, 68, 0.15);
     }
-    
-    .password-modal {
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
-      z-index: 100;
-    }
-    
-    #loadingState {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 200px;
-    }
-    .spinner {
-      border: 4px solid rgba(79, 124, 255, 0.1);
-      border-top: 4px solid #4f7cff;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+
     .readonly-badge {
       background: rgba(79, 124, 255, 0.08);
       color: #4f7cff;
@@ -135,120 +220,275 @@
       padding: 0.15rem 0.6rem;
       border-radius: 30px;
       border: 1px solid rgba(79, 124, 255, 0.15);
+      transition: all 0.3s ease;
     }
+
     .dark .readonly-badge {
       background: rgba(79, 124, 255, 0.12);
       color: #8aadff;
       border-color: rgba(79, 124, 255, 0.2);
     }
+
+    .personal-badge {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #1a1a2e;
+      font-size: 0.5rem;
+      padding: 0.08rem 0.5rem;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.15rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 210, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .personal-badge:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 210, 0, 0.2);
+    }
+
+    .dark .personal-badge {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      color: #0b1120;
+      box-shadow: 0 0 20px rgba(255, 210, 0, 0.05);
+    }
+
+    /* ===== Brand ===== */
+    .brand-gradient {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.3s ease;
+    }
+
+    .brand-glow {
+      text-shadow: 0 0 30px rgba(255, 210, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .dark .brand-glow {
+      text-shadow: 0 0 40px rgba(255, 210, 0, 0.15), 0 0 80px rgba(255, 150, 0, 0.05);
+    }
+
+    /* ===== Theme Button ===== */
+    .theme-btn {
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.08) rotate(8deg);
+    }
+
+    .theme-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* ===== Stats Number ===== */
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+
+    .stat-number:hover {
+      transform: scale(1.05);
+    }
+
+    @media (min-width: 768px) {
+      .stat-number { font-size: 2.2rem; }
+    }
+
+    /* ===== Spinner ===== */
+    .spinner {
+      border: 4px solid rgba(79, 124, 255, 0.08);
+      border-top: 4px solid #4f7cff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ===== Password Modal ===== */
+    .password-modal {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #b0c8ff; border-radius: 12px; }
+
+    .dark ::-webkit-scrollbar-thumb {
+      background: rgba(79, 124, 255, 0.3);
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: rgba(79, 124, 255, 0.5);
+    }
+
+    /* ===== Floating Particles (Dark Mode) ===== */
+    .dark body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(100, 80, 255, 0.03) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 20%, rgba(255, 100, 200, 0.03) 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 80%, rgba(80, 200, 255, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatBg 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatBg {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5%, 5%) scale(1.05); }
+    }
+
+    /* ===== Utility ===== */
+    .relative { position: relative; }
+    .z-10 { z-index: 10; }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   </style>
 </head>
-<body class="antialiased p-4 md:p-6 transition-colors" id="app">
-  <div id="root" class="max-w-7xl mx-auto">
-    <!-- header -->
-    <div class="flex flex-wrap items-center justify-between mb-6 gap-3">
-      <div class="flex items-center gap-3">
-        <div class="text-3xl bg-gradient-to-br from-[#4f7cff] to-[#7a5cff] bg-clip-text text-transparent font-bold tracking-tight">
-          <i class="fas fa-link text-blue-500 mr-2"></i>HTET LINK APP
+<body class="antialiased p-3 md:p-5 transition-colors" id="app">
+  <div id="root" class="max-w-7xl mx-auto relative z-10">
+    <!-- ===== Header ===== -->
+    <div class="flex flex-wrap items-center justify-between mb-4 gap-2">
+      <div class="flex items-center gap-2">
+        <div class="text-2xl md:text-3xl font-bold tracking-tight brand-gradient brand-glow">
+          <i class="fas fa-bolt text-yellow-500 mr-1"></i>Pro H
         </div>
-        <span class="text-sm text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-white/5 px-3 py-1 rounded-full backdrop-blur-sm border border-white/20">📖 Read Only</span>
+        <span class="text-xs text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-white/5 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/20">📖 Read Only</span>
       </div>
-      <div class="flex items-center gap-3">
-        <button onclick="toggleDark()" class="glass px-4 py-2 rounded-2xl text-sm flex items-center gap-2 hover:scale-105 transition">
-          <i class="fas fa-moon dark:hidden"></i><i class="fas fa-sun hidden dark:inline"></i> <span class="hidden sm:inline">Theme</span>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleDark()" class="theme-btn glass px-3 py-1.5 rounded-xl text-sm flex items-center gap-1.5 hover:scale-105 transition">
+          <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+          <i class="fas fa-moon hidden dark:inline text-indigo-300"></i>
+          <span class="hidden sm:inline text-xs dark:text-white">Theme</span>
         </button>
-        <span class="readonly-badge"><i class="fas fa-lock mr-1"></i> Read Only</span>
-        <button onclick="resetToDefault()" class="glass px-4 py-2 rounded-2xl text-sm flex items-center gap-2 hover:scale-105 transition text-red-500">
-          <i class="fas fa-redo"></i> <span class="hidden sm:inline">Reset</span>
+        <span class="readonly-badge text-xs"><i class="fas fa-lock mr-0.5"></i> Read Only</span>
+        <button onclick="resetToDefault()" class="glass px-3 py-1.5 rounded-xl text-sm flex items-center gap-1.5 hover:scale-105 transition text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300">
+          <i class="fas fa-redo text-xs"></i> <span class="hidden sm:inline text-xs">Reset</span>
         </button>
       </div>
     </div>
 
-    <!-- stats -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      <div class="glass rounded-3xl p-5 card-hover dark:glass-dark">
-        <div class="text-sm text-gray-500 dark:text-gray-300 flex items-center gap-2"><i class="fas fa-link text-blue-400"></i> Total</div>
-        <div class="text-3xl font-bold text-gray-800 dark:text-white" id="totalCount">0</div>
+    <!-- ===== Stats ===== -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.05s">
+        <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-link text-blue-400"></i> Total</div>
+        <div class="stat-number text-gray-800 dark:text-white" id="totalCount">0</div>
       </div>
-      <div class="glass rounded-3xl p-5 card-hover dark:glass-dark">
-        <div class="text-sm text-gray-500 dark:text-gray-300 flex items-center gap-2"><i class="fas fa-tags text-indigo-400"></i> Categories</div>
-        <div class="text-3xl font-bold text-gray-800 dark:text-white" id="categoryCount">0</div>
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.1s">
+        <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-tags text-indigo-400"></i> Categories</div>
+        <div class="stat-number text-gray-800 dark:text-white" id="categoryCount">0</div>
       </div>
-      <div class="glass rounded-3xl p-5 card-hover dark:glass-dark">
-        <div class="text-sm text-gray-500 dark:text-gray-300 flex items-center gap-2"><i class="fas fa-star text-yellow-400"></i> Favorites</div>
-        <div class="text-3xl font-bold text-gray-800 dark:text-white" id="favCount">0</div>
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.15s">
+        <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-star text-yellow-400"></i> Favorites</div>
+        <div class="stat-number text-gray-800 dark:text-white" id="favCount">0</div>
       </div>
-      <div class="glass rounded-3xl p-5 card-hover dark:glass-dark">
-        <div class="text-sm text-gray-500 dark:text-gray-300 flex items-center gap-2"><i class="fas fa-clock text-purple-400"></i> Newest</div>
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.2s">
+        <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-clock text-purple-400"></i> Newest</div>
         <div class="text-sm font-medium text-gray-700 dark:text-gray-200 truncate" id="newestLabel">—</div>
       </div>
     </div>
 
-    <!-- search + filter -->
-    <div class="glass rounded-3xl p-4 md:p-5 mb-8 flex flex-wrap items-center gap-3 dark:glass-dark">
-      <div class="flex-1 min-w-[180px] relative">
-        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        <input type="text" id="searchInput" placeholder="Search by title, tags..." class="pl-10 pr-4 py-2.5 rounded-2xl w-full border-0 bg-white/40 dark:bg-black/20">
+    <!-- ===== Search + Filter ===== -->
+    <div class="glass rounded-2xl p-3 md:p-4 mb-5 flex flex-wrap items-center gap-2 dark:glass-dark card-enter" style="animation-delay: 0.25s">
+      <div class="flex-1 min-w-[140px] relative">
+        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm"></i>
+        <input type="text" id="searchInput" placeholder="Search links..." class="pl-9 pr-3 py-2 rounded-xl w-full border-0 bg-white/40 dark:bg-black/20 text-sm dark:text-white dark:placeholder-gray-400 focus:ring-0">
       </div>
-      <select id="categoryFilter" class="w-auto min-w-[130px] py-2.5 rounded-2xl border-0 bg-white/40 dark:bg-black/20">
+      <select id="categoryFilter" class="w-auto min-w-[110px] py-2 rounded-xl border-0 bg-white/40 dark:bg-black/20 text-sm dark:text-white appearance-none cursor-pointer">
         <option value="all">All categories</option>
       </select>
-      <select id="sortFilter" class="w-auto min-w-[120px] py-2.5 rounded-2xl border-0 bg-white/40 dark:bg-black/20">
+      <select id="sortFilter" class="w-auto min-w-[100px] py-2 rounded-xl border-0 bg-white/40 dark:bg-black/20 text-sm dark:text-white appearance-none cursor-pointer">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="alpha">A–Z</option>
       </select>
-      <button onclick="clearFilters()" class="text-sm text-gray-500 hover:text-blue-500 px-3 py-1"><i class="fas fa-times"></i> Reset</button>
+      <button onclick="clearFilters()" class="text-xs text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 px-2 py-1 transition-colors">
+        <i class="fas fa-times"></i> Reset
+      </button>
     </div>
 
-    <!-- link cards grid -->
+    <!-- ===== Link Grid ===== -->
     <div id="loadingState">
       <div class="spinner"></div>
     </div>
-    <div id="linkGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 hidden">
+    <div id="linkGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 hidden">
       <!-- dynamic cards -->
     </div>
-    <div id="emptyState" class="glass rounded-3xl p-12 text-center mt-6 hidden dark:glass-dark">
-      <i class="fas fa-link text-4xl text-blue-300/50 mb-3"></i>
-      <p class="text-gray-500 dark:text-gray-300">No links available.</p>
+    <div id="emptyState" class="glass rounded-2xl p-8 text-center mt-4 hidden dark:glass-dark card-enter">
+      <i class="fas fa-link text-3xl text-blue-300/50 dark:text-blue-400/30 mb-2"></i>
+      <p class="text-gray-500 dark:text-gray-300 text-sm">No links available.</p>
     </div>
 
-    <!-- Footer -->
-    <div class="text-center text-xs text-gray-400 dark:text-gray-600 mt-8 pb-4">
-      <i class="fas fa-shield-alt text-blue-400 mr-1"></i>
+    <!-- ===== Footer ===== -->
+    <div class="text-center text-[0.6rem] text-gray-400 dark:text-gray-600 mt-6 pb-3">
+      <i class="fas fa-shield-alt text-yellow-400 mr-0.5"></i>
       This is a read-only link hub.
       <span class="block sm:inline">🔒 No one can add, edit, or delete links.</span>
     </div>
   </div>
 
-  <!-- Password Modal for Protected Link -->
+  <!-- ===== Password Modal ===== -->
   <div id="linkPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 password-modal hidden">
-    <div class="glass rounded-3xl max-w-md w-full p-6 md:p-8 dark:glass-dark">
-      <div class="text-center mb-5">
-        <i class="fas fa-lock text-4xl text-red-400 mb-3"></i>
-        <h3 class="text-xl font-bold text-gray-800 dark:text-white">🔒 Protected Link</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Enter password to access this link</p>
+    <div class="glass rounded-2xl max-w-sm w-full p-5 md:p-6 dark:glass-dark">
+      <div class="text-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-3">
+          <i class="fas fa-lock text-2xl text-red-400"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-800 dark:text-white">Protected Link</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Enter password to access this link</p>
       </div>
-      <input type="password" id="linkPasswordInput" placeholder="Enter link password..." class="rounded-2xl mb-4" onkeydown="if(event.key==='Enter') verifyLinkPassword()">
-      <div class="flex gap-3">
-        <button onclick="closeLinkPasswordModal()" class="flex-1 px-4 py-2 rounded-2xl border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300">Cancel</button>
-        <button onclick="verifyLinkPassword()" class="flex-1 btn-gradient px-4 py-2 rounded-2xl">Unlock <i class="fas fa-unlock ml-1"></i></button>
+      <input type="password" id="linkPasswordInput" placeholder="Enter link password..." class="rounded-xl mb-3 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyLinkPassword()">
+      <div class="flex gap-2">
+        <button onclick="closeLinkPasswordModal()" class="flex-1 px-3 py-1.5 rounded-xl border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+        <button onclick="verifyLinkPassword()" class="flex-1 px-3 py-1.5 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-800 font-semibold text-sm hover:from-yellow-500 hover:to-orange-500 transition-all transform hover:scale-105">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
       </div>
-      <div id="linkPasswordError" class="text-red-500 text-sm text-center mt-3 hidden">❌ Wrong password! Try again.</div>
+      <div id="linkPasswordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password! Try again.</div>
     </div>
   </div>
 
   <script>
-    // ---- CONFIG ----
-    const STORAGE_KEY = 'htet_link_app_readonly_v8';
+    // ===== CONFIG =====
+    const STORAGE_KEY = 'pro_h_link_app_readonly_v1';
+    const PERSONAL_ID = '7';
 
-    // ---- DATA ----
+    // ===== DATA =====
     let links = [];
     let pendingLink = null;
 
-    // ---- RESET FUNCTION ----
+    // ===== RESET =====
     function resetToDefault() {
-      if (confirm('⚠️ This will reset to default links. Continue?')) {
+      if (confirm('⚠️ Reset to default links?')) {
         localStorage.removeItem(STORAGE_KEY);
         links = getDefaultLinks();
         saveLinks();
@@ -257,12 +497,12 @@
       }
     }
 
-    // ---- LINK PASSWORD FUNCTIONS ----
+    // ===== PASSWORD MODAL =====
     function showLinkPasswordModal(link) {
       pendingLink = link;
       document.getElementById('linkPasswordModal').classList.remove('hidden');
       document.getElementById('linkPasswordInput').value = '';
-      document.getElementById('linkPasswordInput').focus();
+      setTimeout(() => document.getElementById('linkPasswordInput').focus(), 100);
       document.getElementById('linkPasswordError').classList.add('hidden');
     }
 
@@ -284,9 +524,10 @@
       }
     }
 
+    // ===== TOAST =====
     function showToast(message) {
       const toast = document.createElement('div');
-      toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 glass rounded-2xl px-6 py-3 z-50 dark:glass-dark text-gray-800 dark:text-white shadow-xl';
+      toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 glass rounded-xl px-5 py-2.5 z-50 dark:glass-dark text-gray-800 dark:text-white shadow-xl text-sm animate-[fadeIn_0.3s_ease]';
       toast.textContent = message;
       document.body.appendChild(toast);
       setTimeout(() => {
@@ -296,18 +537,14 @@
       }, 2000);
     }
 
-    // ---- DATA LAYER ----
+    // ===== LOAD / SAVE =====
     function loadLinks() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            links = parsed;
-          } else {
-            links = getDefaultLinks();
-            saveLinks();
-          }
+          if (Array.isArray(parsed) && parsed.length > 0) links = parsed;
+          else { links = getDefaultLinks(); saveLinks(); }
         } else {
           links = getDefaultLinks();
           saveLinks();
@@ -317,7 +554,6 @@
         links = getDefaultLinks();
         saveLinks();
       }
-      
       document.getElementById('loadingState').classList.add('hidden');
       document.getElementById('linkGrid').classList.remove('hidden');
       render();
@@ -326,114 +562,25 @@
     function saveLinks() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
-        console.log('✅ Saved', links.length, 'links');
-      } catch (e) {
-        console.error('Error saving links:', e);
-      }
+      } catch (e) { console.error('Error saving links:', e); }
     }
 
+    // ===== DEFAULT LINKS =====
     function getDefaultLinks() {
       return [
-        { 
-          id: '1', 
-          title: '🎬 YouTube', 
-          url: 'https://youtube.com', 
-          description: 'Video platform for entertainment and learning', 
-          category: 'Videos', 
-          tags: ['video', 'media', 'entertainment'], 
-          favorite: true, 
-          icon: 'fab fa-youtube', 
-          linkPassword: '', 
-          createdAt: Date.now() - 200000 
-        },
-        { 
-          id: '2', 
-          title: '🐙 free', 
-          url: 'https://www.pornhub.com', 
-          description: 'Code hosting and collaboration platform', 
-          category: 'Work', 
-          tags: ['dev', 'code', 'programming'], 
-          favorite: false, 
-          icon: 'fab fa-github', 
-          linkPassword: '', 
-          createdAt: Date.now() - 50000 
-        },
-        { 
-          id: '3', 
-          title: '☁️ Google Drive', 
-          url: 'https://drive.google.com', 
-          description: 'Cloud storage for files and documents', 
-          category: 'Documents', 
-          tags: ['drive', 'cloud', 'storage'], 
-          favorite: false, 
-          icon: 'fab fa-google-drive', 
-          linkPassword: '', 
-          createdAt: Date.now() - 10000 
-        },
-        { 
-          id: '4', 
-          title: '💼 LinkedIn', 
-          url: 'https://linkedin.com', 
-          description: 'Professional networking platform', 
-          category: 'Social Media', 
-          tags: ['social', 'career', 'professional'], 
-          favorite: true, 
-          icon: 'fab fa-linkedin', 
-          linkPassword: '', 
-          createdAt: Date.now() - 8000 
-        },
-        { 
-          id: '5', 
-          title: '🌐 My Personal Website', 
-          url: 'https://htetwailin.lovable.app', 
-          description: 'My personal portfolio and workspace', 
-          category: 'Personal', 
-          tags: ['portfolio', 'personal', 'workspace'], 
-          favorite: true, 
-          icon: 'fas fa-heart', 
-          linkPassword: '', 
-          createdAt: Date.now() - 3000 
-        },
-        { 
-          id: '6', 
-          title: '📝 Google Docs', 
-          url: 'https://docs.google.com', 
-          description: 'Online document editor and collaboration', 
-          category: 'Documents', 
-          tags: ['docs', 'writing', 'collaboration'], 
-          favorite: false, 
-          icon: 'fas fa-file-alt', 
-          linkPassword: '', 
-          createdAt: Date.now() - 1000 
-        },
-        { 
-          id: '7', 
-          title: '🎵 TikTok', 
-          url: 'https://www.tiktok.com', 
-          description: 'Short-form video platform for creative content', 
-          category: 'Social Media', 
-          tags: ['video', 'social', 'short-form', 'creative'], 
-          favorite: true, 
-          icon: 'fab fa-tiktok', 
-          linkPassword: '', 
-          createdAt: Date.now() - 500 
-        },
-        { 
-          id: '8', 
-          title: '🎮 Online Games', 
-          url: 'https://poki.com', 
-          description: 'Free online games platform - play instantly', 
-          category: 'Games', 
-          tags: ['games', 'online', 'fun', 'entertainment'], 
-          favorite: false, 
-          icon: 'fas fa-gamepad', 
-          linkPassword: '', 
-          createdAt: Date.now() - 200 
-        }
+        { id: '7', title: '🌐 My Personal Website', url: 'https://htetwailin.lovable.app', description: 'My personal portfolio and workspace', category: 'Personal', tags: ['portfolio', 'personal', 'workspace'], favorite: true, icon: 'fas fa-heart', linkPassword: '', createdAt: Date.now() - 3000 },
+        { id: '1', title: '🎬 YouTube', url: 'https://youtube.com', description: 'Video platform for entertainment and learning', category: 'Videos', tags: ['video', 'media', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 200000 },
+        { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI-powered assistant for conversations, coding, and creativity', category: 'AI Tools', tags: ['ai', 'chat', 'assistant', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
+        { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress, convert and more', category: 'Documents', tags: ['pdf', 'tools', 'office', 'productivity'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
+        { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming, scores and highlights', category: 'Sports', tags: ['sports', 'live', 'streaming', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
+        { id: '6', title: '💼 LinkedIn', url: 'https://linkedin.com', description: 'Professional networking platform', category: 'Social Media', tags: ['social', 'career', 'professional'], favorite: true, icon: 'fab fa-linkedin', linkPassword: '', createdAt: Date.now() - 8000 },
+        { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant for creative and analytical tasks', category: 'AI Tools', tags: ['ai', 'google', 'assistant', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
+        { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform for creative content', category: 'Social Media', tags: ['video', 'social', 'short-form', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
+        { id: '10', title: '🎮 Online Games', url: 'https://poki.com', description: 'Free online games platform - play instantly', category: 'Games', tags: ['games', 'online', 'fun', 'entertainment'], favorite: false, icon: 'fas fa-gamepad', linkPassword: '', createdAt: Date.now() - 200 }
       ];
     }
 
-    // ---- HELPERS ----
+    // ===== HELPERS =====
     function getCategoryCount() {
       const cats = new Set(links.map(l => l.category || 'Uncategorized'));
       return cats.size;
@@ -445,7 +592,7 @@
 
     function getNewestTitle() {
       if (!links.length) return '—';
-      const sorted = [...links].sort((a,b) => b.createdAt - a.createdAt);
+      const sorted = [...links].sort((a, b) => b.createdAt - a.createdAt);
       return sorted[0]?.title || '—';
     }
 
@@ -454,27 +601,28 @@
       if (!url) return 'fas fa-globe';
       const u = url.toLowerCase();
       if (u.includes('youtube')) return 'fab fa-youtube';
-      if (u.includes('drive.google')) return 'fab fa-google-drive';
-      if (u.includes('docs.google')) return 'fas fa-file-alt';
-      if (u.includes('sheets.google')) return 'fas fa-table';
+      if (u.includes('gemini')) return 'fas fa-star';
       if (u.includes('tiktok')) return 'fab fa-tiktok';
       if (u.includes('facebook')) return 'fab fa-facebook';
       if (u.includes('instagram')) return 'fab fa-instagram';
       if (u.includes('telegram')) return 'fab fa-telegram';
       if (u.includes('whatsapp')) return 'fab fa-whatsapp';
-      if (u.includes('pornhub/')) return 'fab fa-pornhub';
       if (u.includes('linkedin')) return 'fab fa-linkedin';
       if (u.includes('lovable')) return 'fas fa-heart';
       if (u.includes('poki') || u.includes('game')) return 'fas fa-gamepad';
+      if (u.includes('chatgpt')) return 'fas fa-robot';
+      if (u.includes('ilovepdf')) return 'fas fa-file-pdf';
+      if (u.includes('livesports808')) return 'fas fa-futbol';
       return 'fas fa-link';
     }
 
-    // ---- RENDER ----
+    // ===== RENDER =====
     function render() {
       const search = document.getElementById('searchInput').value.toLowerCase().trim();
       const categoryFilter = document.getElementById('categoryFilter').value;
       const sortVal = document.getElementById('sortFilter').value;
 
+      // Update categories
       const catSet = new Set();
       links.forEach(l => { if (l.category) catSet.add(l.category); });
       const catSelect = document.getElementById('categoryFilter');
@@ -489,18 +637,27 @@
       if ([...catSet].includes(currentCat)) catSelect.value = currentCat;
       else catSelect.value = 'all';
 
+      // Filter
       let filtered = links.filter(link => {
-        const matchSearch = link.title.toLowerCase().includes(search) || 
+        const matchSearch = link.title.toLowerCase().includes(search) ||
                            (link.tags && link.tags.some(t => t.toLowerCase().includes(search))) ||
                            (link.description && link.description.toLowerCase().includes(search));
         const matchCategory = categoryFilter === 'all' || link.category === categoryFilter;
         return matchSearch && matchCategory;
       });
 
-      if (sortVal === 'newest') filtered.sort((a,b) => b.createdAt - a.createdAt);
-      else if (sortVal === 'oldest') filtered.sort((a,b) => a.createdAt - b.createdAt);
-      else if (sortVal === 'alpha') filtered.sort((a,b) => a.title.localeCompare(b.title));
+      // Sort (Personal always first)
+      const sortFn = (a, b) => {
+        if (a.id === PERSONAL_ID) return -1;
+        if (b.id === PERSONAL_ID) return 1;
+        if (sortVal === 'newest') return b.createdAt - a.createdAt;
+        if (sortVal === 'oldest') return a.createdAt - b.createdAt;
+        if (sortVal === 'alpha') return a.title.localeCompare(b.title);
+        return b.createdAt - a.createdAt;
+      };
+      filtered.sort(sortFn);
 
+      // Update stats
       document.getElementById('totalCount').textContent = links.length;
       document.getElementById('categoryCount').textContent = getCategoryCount();
       document.getElementById('favCount').textContent = getFavCount();
@@ -516,36 +673,42 @@
       }
       empty.classList.add('hidden');
 
-      grid.innerHTML = filtered.map(link => {
+      // Render cards
+      grid.innerHTML = filtered.map((link, index) => {
         const icon = getPlatformIcon(link.url, link.icon);
         const favStar = link.favorite ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600';
-        const tagsHtml = (link.tags && link.tags.length) ? link.tags.map(t => `<span class="tag-pill">#${t}</span>`).join(' ') : '';
+        const tagsHtml = (link.tags && link.tags.length) ?
+          link.tags.map(t => `<span class="tag-pill">#${t}</span>`).join(' ') : '';
         const dateStr = new Date(link.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         const isProtected = link.linkPassword && link.linkPassword.trim() !== '';
         const lockBadge = isProtected ? `<span class="lock-badge"><i class="fas fa-lock"></i> Protected</span>` : '';
-        
+        const isPersonal = link.id === PERSONAL_ID;
+        const personalBadge = isPersonal ? `<span class="personal-badge"><i class="fas fa-star"></i> Personal</span>` : '';
+        const delay = Math.min(index * 0.04, 0.4);
+
         return `
-          <div class="glass rounded-3xl p-5 card-hover dark:glass-dark flex flex-col" onclick="handleLinkClick('${link.id}')">
+          <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/50 dark:border-yellow-400/30' : ''} card-enter" style="animation-delay: ${delay}s" onclick="handleLinkClick('${link.id}')">
             <div class="flex items-start justify-between">
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 min-w-0">
                 <div class="icon-bg"><i class="${icon}"></i></div>
-                <div>
-                  <h4 class="font-semibold text-gray-800 dark:text-white">${link.title}</h4>
-                  <span class="text-xs text-gray-400 dark:text-gray-400">${link.category || 'Uncategorized'}</span>
+                <div class="min-w-0">
+                  <h4 class="font-semibold text-gray-800 dark:text-white text-sm truncate">${link.title}</h4>
+                  <span class="text-[0.6rem] text-gray-400 dark:text-gray-400">${link.category || 'Uncategorized'}</span>
                 </div>
               </div>
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-0.5 flex-shrink-0">
+                ${personalBadge}
                 ${lockBadge}
-                <i class="fas fa-star ${favStar} text-sm"></i>
+                <i class="fas fa-star ${favStar} text-[0.6rem]"></i>
               </div>
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-300 mt-2 line-clamp-2">${link.description || 'No description'}</p>
-            <div class="flex flex-wrap gap-1 mt-2">${tagsHtml}</div>
-            <div class="flex items-center justify-between mt-4 text-xs text-gray-400 dark:text-gray-500">
-              <span><i class="far fa-calendar-alt mr-1"></i>${dateStr}</span>
-              <div class="flex gap-2">
-                <button onclick="event.stopPropagation(); copyLink('${link.url}')" class="hover:text-blue-500 p-1" title="Copy Link"><i class="fas fa-copy"></i></button>
-                <button onclick="event.stopPropagation(); handleLinkClick('${link.id}')" class="hover:text-blue-500 p-1" title="${isProtected ? '🔒 Unlock' : 'Open Link'}">
+            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1.5 line-clamp-2">${link.description || 'No description'}</p>
+            <div class="flex flex-wrap gap-0.5 mt-1.5">${tagsHtml}</div>
+            <div class="flex items-center justify-between mt-2.5 text-[0.6rem] text-gray-400 dark:text-gray-500">
+              <span><i class="far fa-calendar-alt mr-0.5"></i>${dateStr}</span>
+              <div class="flex gap-1.5">
+                <button onclick="event.stopPropagation(); copyLink('${link.url}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="Copy Link"><i class="fas fa-copy"></i></button>
+                <button onclick="event.stopPropagation(); handleLinkClick('${link.id}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="${isProtected ? '🔒 Unlock' : 'Open Link'}">
                   <i class="${isProtected ? 'fas fa-lock' : 'fas fa-external-link-alt'}"></i>
                 </button>
               </div>
@@ -555,11 +718,10 @@
       }).join('');
     }
 
-    // ---- HANDLE LINK CLICK ----
+    // ===== HANDLERS =====
     function handleLinkClick(id) {
       const link = links.find(l => l.id === id);
       if (!link) return;
-
       if (link.linkPassword && link.linkPassword.trim() !== '') {
         showLinkPasswordModal(link);
       } else {
@@ -582,11 +744,11 @@
       render();
     }
 
-    // ---- THEME ----
+    // ===== THEME =====
     function toggleDark() {
-      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.toggle('dark');
       document.body.classList.toggle('dark');
-      localStorage.setItem('darkMode', document.documentElement.classList.contains('dark') ? 'true' : 'false');
+      localStorage.setItem('darkMode', isDark ? 'true' : 'false');
     }
 
     if (localStorage.getItem('darkMode') === 'true') {
@@ -594,7 +756,7 @@
       document.body.classList.add('dark');
     }
 
-    // ---- EVENT LISTENERS ----
+    // ===== EVENT LISTENERS =====
     document.getElementById('searchInput').addEventListener('input', render);
     document.getElementById('categoryFilter').addEventListener('change', render);
     document.getElementById('sortFilter').addEventListener('change', render);
@@ -607,9 +769,9 @@
       if (e.key === 'Enter') verifyLinkPassword();
     });
 
-    // ---- START ----
+    // ===== START =====
     loadLinks();
-    console.log('✅ HTET LINK APP (Read Only) started!');
+    console.log('✅ Pro H (Read Only) started!');
     console.log('📊 Total links:', links.length);
   </script>
 </body>
