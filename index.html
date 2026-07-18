@@ -7,14 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ===== Smooth Transitions ===== */
+    /* ===== FASTER Transitions ===== */
     * {
-      transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                  color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  opacity 0.4s ease;
+      transition: background 0.15s ease,
+                  border-color 0.15s ease,
+                  box-shadow 0.15s ease,
+                  color 0.15s ease,
+                  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.15s ease;
     }
 
     /* ===== Body with Gradient ===== */
@@ -22,7 +22,7 @@
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 40%, #c7d2fe 100%);
       min-height: 100vh;
-      transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background 0.3s ease;
     }
 
     .dark body {
@@ -36,7 +36,7 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.25);
       box-shadow: 0 8px 32px rgba(60, 100, 200, 0.08);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.15s ease;
     }
 
     .dark .glass {
@@ -54,7 +54,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
       color: #f0f4ff;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.15s ease;
     }
 
     .dark .glass-dark {
@@ -65,7 +65,7 @@
 
     /* ===== Card Hover ===== */
     .card-hover {
-      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -77,7 +77,7 @@
       inset: 0;
       background: linear-gradient(135deg, rgba(79, 124, 255, 0.06), rgba(160, 80, 255, 0.04));
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.2s ease;
       border-radius: inherit;
       pointer-events: none;
     }
@@ -87,26 +87,26 @@
     }
 
     .card-hover:hover {
-      transform: translateY(-6px) scale(1.01);
-      box-shadow: 0 24px 48px -12px rgba(60, 80, 200, 0.25);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 40px -12px rgba(60, 80, 200, 0.25);
       border-color: rgba(79, 131, 255, 0.3);
     }
 
     .dark .card-hover:hover {
-      box-shadow: 0 24px 48px -12px rgba(60, 80, 200, 0.15);
+      box-shadow: 0 20px 40px -12px rgba(60, 80, 200, 0.15);
       border-color: rgba(79, 131, 255, 0.2);
     }
 
-    /* ===== Card Entrance Animation ===== */
+    /* ===== Card Entrance Animation (faster) ===== */
     .card-enter {
-      animation: cardSlide 0.5s ease forwards;
+      animation: cardSlide 0.3s ease forwards;
       opacity: 0;
     }
 
     @keyframes cardSlide {
       from {
         opacity: 0;
-        transform: translateY(24px) scale(0.96);
+        transform: translateY(16px) scale(0.97);
       }
       to {
         opacity: 1;
@@ -126,22 +126,17 @@
       font-size: 1.2rem;
       color: #2b4eb0;
       flex-shrink: 0;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .card-hover:hover .icon-bg {
       background: linear-gradient(135deg, rgba(79, 124, 255, 0.2), rgba(160, 80, 255, 0.15));
-      transform: scale(1.05) rotate(-3deg);
+      transform: scale(1.04) rotate(-3deg);
     }
 
     .dark .icon-bg {
       background: rgba(79, 124, 255, 0.15);
       color: #8aadff;
-    }
-
-    .card-hover:hover .dark .icon-bg {
-      background: rgba(79, 124, 255, 0.25);
-      box-shadow: 0 0 30px rgba(79, 124, 255, 0.1);
     }
 
     /* ===== Tag Pill ===== */
@@ -153,13 +148,13 @@
       border-radius: 30px;
       display: inline-block;
       backdrop-filter: blur(2px);
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
       border: 1px solid rgba(79, 124, 255, 0.05);
     }
 
     .tag-pill:hover {
       background: rgba(79, 124, 255, 0.2);
-      transform: scale(1.05);
+      transform: scale(1.04);
     }
 
     .dark .tag-pill {
@@ -176,7 +171,7 @@
       border-radius: 12px;
       padding: 0.5rem 1rem;
       width: 100%;
-      transition: all 0.3s ease;
+      transition: all 0.12s ease;
       font-size: 0.9rem;
     }
 
@@ -204,7 +199,7 @@
       align-items: center;
       gap: 0.15rem;
       border: 1px solid rgba(239, 68, 68, 0.15);
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
     }
 
     .dark .lock-badge {
@@ -220,7 +215,7 @@
       padding: 0.15rem 0.6rem;
       border-radius: 30px;
       border: 1px solid rgba(79, 124, 255, 0.15);
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
     }
 
     .dark .readonly-badge {
@@ -240,18 +235,16 @@
       gap: 0.15rem;
       font-weight: 600;
       border: 1px solid rgba(255, 210, 0, 0.3);
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
     }
 
     .personal-badge:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 210, 0, 0.2);
+      transform: scale(1.04);
     }
 
     .dark .personal-badge {
       background: linear-gradient(135deg, #f7971e, #ffd200);
       color: #0b1120;
-      box-shadow: 0 0 20px rgba(255, 210, 0, 0.05);
     }
 
     /* ===== Brand ===== */
@@ -260,40 +253,38 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      transition: all 0.3s ease;
     }
 
     .brand-glow {
       text-shadow: 0 0 30px rgba(255, 210, 0, 0.2);
-      transition: all 0.3s ease;
     }
 
     .dark .brand-glow {
-      text-shadow: 0 0 40px rgba(255, 210, 0, 0.15), 0 0 80px rgba(255, 150, 0, 0.05);
+      text-shadow: 0 0 40px rgba(255, 210, 0, 0.15);
     }
 
     /* ===== Theme Button ===== */
     .theme-btn {
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .theme-btn:hover {
-      transform: scale(1.08) rotate(8deg);
+      transform: scale(1.06) rotate(6deg);
     }
 
     .theme-btn:active {
-      transform: scale(0.92);
+      transform: scale(0.94);
     }
 
     /* ===== Stats Number ===== */
     .stat-number {
       font-size: 1.8rem;
       font-weight: 700;
-      transition: all 0.3s ease;
+      transition: all 0.15s ease;
     }
 
     .stat-number:hover {
-      transform: scale(1.05);
+      transform: scale(1.04);
     }
 
     @media (min-width: 768px) {
@@ -305,9 +296,9 @@
       border: 4px solid rgba(79, 124, 255, 0.08);
       border-top: 4px solid #4f7cff;
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      width: 32px;
+      height: 32px;
+      animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin {
@@ -321,11 +312,11 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 100;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.2s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
+      from { opacity: 0; transform: scale(0.96); }
       to { opacity: 1; transform: scale(1); }
     }
 
@@ -336,28 +327,6 @@
 
     .dark ::-webkit-scrollbar-thumb {
       background: rgba(79, 124, 255, 0.3);
-    }
-
-    .dark ::-webkit-scrollbar-thumb:hover {
-      background: rgba(79, 124, 255, 0.5);
-    }
-
-    /* ===== Floating Particles (Dark Mode) ===== */
-    .dark body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 20% 50%, rgba(100, 80, 255, 0.03) 0%, transparent 50%),
-                  radial-gradient(ellipse at 80% 20%, rgba(255, 100, 200, 0.03) 0%, transparent 50%),
-                  radial-gradient(ellipse at 50% 80%, rgba(80, 200, 255, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatBg 20s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatBg {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(5%, 5%) scale(1.05); }
     }
 
     /* ===== Utility ===== */
@@ -373,6 +342,20 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    /* ===== Faster theme switching ===== */
+    .dark body {
+      transition: background 0.2s ease;
+    }
+    .dark .glass,
+    .dark .glass-dark,
+    .dark .readonly-badge,
+    .dark .tag-pill,
+    .dark .lock-badge,
+    .dark input,
+    .dark select {
+      transition: all 0.12s ease;
     }
   </style>
 </head>
@@ -401,26 +384,26 @@
 
     <!-- ===== Stats ===== -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.05s">
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.03s">
         <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-link text-blue-400"></i> Total</div>
         <div class="stat-number text-gray-800 dark:text-white" id="totalCount">0</div>
       </div>
-      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.1s">
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.06s">
         <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-tags text-indigo-400"></i> Categories</div>
         <div class="stat-number text-gray-800 dark:text-white" id="categoryCount">0</div>
       </div>
-      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.15s">
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.09s">
         <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-star text-yellow-400"></i> Favorites</div>
         <div class="stat-number text-gray-800 dark:text-white" id="favCount">0</div>
       </div>
-      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.2s">
+      <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.12s">
         <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-clock text-purple-400"></i> Newest</div>
         <div class="text-sm font-medium text-gray-700 dark:text-gray-200 truncate" id="newestLabel">—</div>
       </div>
     </div>
 
     <!-- ===== Search + Filter ===== -->
-    <div class="glass rounded-2xl p-3 md:p-4 mb-5 flex flex-wrap items-center gap-2 dark:glass-dark card-enter" style="animation-delay: 0.25s">
+    <div class="glass rounded-2xl p-3 md:p-4 mb-5 flex flex-wrap items-center gap-2 dark:glass-dark card-enter" style="animation-delay: 0.15s">
       <div class="flex-1 min-w-[140px] relative">
         <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm"></i>
         <input type="text" id="searchInput" placeholder="Search links..." class="pl-9 pr-3 py-2 rounded-xl w-full border-0 bg-white/40 dark:bg-black/20 text-sm dark:text-white dark:placeholder-gray-400 focus:ring-0">
@@ -502,7 +485,7 @@
       pendingLink = link;
       document.getElementById('linkPasswordModal').classList.remove('hidden');
       document.getElementById('linkPasswordInput').value = '';
-      setTimeout(() => document.getElementById('linkPasswordInput').focus(), 100);
+      setTimeout(() => document.getElementById('linkPasswordInput').focus(), 80);
       document.getElementById('linkPasswordError').classList.add('hidden');
     }
 
@@ -527,14 +510,14 @@
     // ===== TOAST =====
     function showToast(message) {
       const toast = document.createElement('div');
-      toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 glass rounded-xl px-5 py-2.5 z-50 dark:glass-dark text-gray-800 dark:text-white shadow-xl text-sm animate-[fadeIn_0.3s_ease]';
+      toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 glass rounded-xl px-5 py-2.5 z-50 dark:glass-dark text-gray-800 dark:text-white shadow-xl text-sm animate-[fadeIn_0.2s_ease]';
       toast.textContent = message;
       document.body.appendChild(toast);
       setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 2000);
+        toast.style.transition = 'opacity 0.15s ease';
+        setTimeout(() => toast.remove(), 200);
+      }, 1800);
     }
 
     // ===== LOAD / SAVE =====
@@ -569,14 +552,14 @@
     function getDefaultLinks() {
       return [
         { id: '7', title: '🌐 My Personal Website', url: 'https://htetwailin.lovable.app', description: 'My personal portfolio and workspace', category: 'Personal', tags: ['portfolio', 'personal', 'workspace'], favorite: true, icon: 'fas fa-heart', linkPassword: '', createdAt: Date.now() - 3000 },
+        { id: '10', title: '🎮 Online Games', url: 'https://poki.com', description: 'Free online games platform - play instantly', category: 'Games', tags: ['games', 'online', 'fun', 'entertainment'], favorite: false, icon: 'fas fa-gamepad', linkPassword: '', createdAt: Date.now() - 200 },
+        { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform for creative content', category: 'Social Media', tags: ['video', 'social', 'short-form', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
         { id: '1', title: '🎬 YouTube', url: 'https://youtube.com', description: 'Video platform for entertainment and learning', category: 'Videos', tags: ['video', 'media', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 200000 },
         { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI-powered assistant for conversations, coding, and creativity', category: 'AI Tools', tags: ['ai', 'chat', 'assistant', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
         { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress, convert and more', category: 'Documents', tags: ['pdf', 'tools', 'office', 'productivity'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
         { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming, scores and highlights', category: 'Sports', tags: ['sports', 'live', 'streaming', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
-        { id: '6', title: '💼 LinkedIn', url: 'https://linkedin.com', description: 'Professional networking platform', category: 'Social Media', tags: ['social', 'career', 'professional'], favorite: true, icon: 'fab fa-linkedin', linkPassword: '', createdAt: Date.now() - 8000 },
-        { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant for creative and analytical tasks', category: 'AI Tools', tags: ['ai', 'google', 'assistant', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
-        { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform for creative content', category: 'Social Media', tags: ['video', 'social', 'short-form', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
-        { id: '10', title: '🎮 Online Games', url: 'https://poki.com', description: 'Free online games platform - play instantly', category: 'Games', tags: ['games', 'online', 'fun', 'entertainment'], favorite: false, icon: 'fas fa-gamepad', linkPassword: '', createdAt: Date.now() - 200 }
+        { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Professional networking platform', category: 'Social Media', tags: ['social', 'career', 'professional'], favorite: true, icon: 'fab fa-linkedin', linkPassword: '', createdAt: Date.now() - 8000 },
+        { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant for creative and analytical tasks', category: 'AI Tools', tags: ['ai', 'google', 'assistant', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 }
       ];
     }
 
@@ -607,7 +590,7 @@
       if (u.includes('instagram')) return 'fab fa-instagram';
       if (u.includes('telegram')) return 'fab fa-telegram';
       if (u.includes('whatsapp')) return 'fab fa-whatsapp';
-      if (u.includes('linkedin')) return 'fab fa-linkedin';
+      if (u.includes('pornhub')) return 'fab fa-pornhub';
       if (u.includes('lovable')) return 'fas fa-heart';
       if (u.includes('poki') || u.includes('game')) return 'fas fa-gamepad';
       if (u.includes('chatgpt')) return 'fas fa-robot';
@@ -646,10 +629,14 @@
         return matchSearch && matchCategory;
       });
 
-      // Sort (Personal always first)
+      // Sort: Personal → Online Games → TikTok → rest
+      const order = ['7', '10', '9'];
       const sortFn = (a, b) => {
-        if (a.id === PERSONAL_ID) return -1;
-        if (b.id === PERSONAL_ID) return 1;
+        const idxA = order.indexOf(a.id);
+        const idxB = order.indexOf(b.id);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
         if (sortVal === 'newest') return b.createdAt - a.createdAt;
         if (sortVal === 'oldest') return a.createdAt - b.createdAt;
         if (sortVal === 'alpha') return a.title.localeCompare(b.title);
@@ -684,7 +671,7 @@
         const lockBadge = isProtected ? `<span class="lock-badge"><i class="fas fa-lock"></i> Protected</span>` : '';
         const isPersonal = link.id === PERSONAL_ID;
         const personalBadge = isPersonal ? `<span class="personal-badge"><i class="fas fa-star"></i> Personal</span>` : '';
-        const delay = Math.min(index * 0.04, 0.4);
+        const delay = Math.min(index * 0.03, 0.3);
 
         return `
           <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/50 dark:border-yellow-400/30' : ''} card-enter" style="animation-delay: ${delay}s" onclick="handleLinkClick('${link.id}')">
@@ -744,7 +731,7 @@
       render();
     }
 
-    // ===== THEME =====
+    // ===== THEME (FAST) =====
     function toggleDark() {
       const isDark = document.documentElement.classList.toggle('dark');
       document.body.classList.toggle('dark');
