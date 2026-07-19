@@ -575,7 +575,18 @@
         { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI-powered assistant for conversations, coding, and creativity', category: 'AI Tools', tags: ['ai', 'chat', 'assistant', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
         { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress, convert and more', category: 'Documents', tags: ['pdf', 'tools', 'office', 'productivity'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
         { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming, scores and highlights', category: 'Sports', tags: ['sports', 'live', 'streaming', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
-        { id: '6', title: '💼 Free', url: '', description: 'Free videos', category: 'Social Media', tags: ['social', 'career', 'professional'], favorite: true, icon: 'fab fa-linkedin', linkPassword: '', createdAt: Date.now() - 8000 },
+        { 
+          id: '6', 
+          title: '💼 Free', 
+          url: 'https://www.pornhub.com', 
+          description: 'Free videos and resources for learning and entertainment', 
+          category: 'Social Media', 
+          tags: ['social', 'career', 'professional', 'free', 'videos'], 
+          favorite: true, 
+          icon: 'fas fa-play-circle', 
+          linkPassword: 'free123',
+          createdAt: Date.now() - 8000 
+        },
         { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant for creative and analytical tasks', category: 'AI Tools', tags: ['ai', 'google', 'assistant', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 }
       ];
     }
@@ -612,6 +623,7 @@
       if (u.includes('chatgpt')) return 'fas fa-robot';
       if (u.includes('ilovepdf')) return 'fas fa-file-pdf';
       if (u.includes('livesports808')) return 'fas fa-futbol';
+      if (u.includes('example.com/free')) return 'fas fa-play-circle';
       return 'fas fa-link';
     }
 
@@ -689,7 +701,7 @@
         const personalBadge = isPersonal ? `<span class="personal-badge"><i class="fas fa-star"></i> Personal</span>` : '';
         const delay = Math.min(index * 0.03, 0.3);
 
-        // Check if this is a video platform
+        // Check if this is a video platform - but we removed the download button from Free card
         const isVideo = link.url && (link.url.includes('youtube') || link.url.includes('tiktok') || link.url.includes('video'));
         const downloadBtn = isVideo ? `
           <button onclick="event.stopPropagation(); showDownloadModal()" class="download-badge" title="Download Video">
@@ -791,6 +803,8 @@
     loadLinks();
     console.log('✅ Pro H (Read Only) started!');
     console.log('📊 Total links:', links.length);
+    console.log('🔒 "Free" link now has password: free123');
+    console.log('🗑️ Download button removed from Free card');
   </script>
 </body>
 </html>
