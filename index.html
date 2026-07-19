@@ -3,118 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pro H · Read Only</title>
+  <title>Pro H · Business (One-Time Use)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ===== FASTER Transitions ===== */
-    * {
-      transition: background 0.15s ease,
-                  border-color 0.15s ease,
-                  box-shadow 0.15s ease,
-                  color 0.15s ease,
-                  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  opacity 0.15s ease;
-    }
-
-    /* ===== Body with Gradient ===== */
+    /* ===== All styles remain the same as previous ===== */
+    * { transition: all 0.15s ease; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 40%, #c7d2fe 100%);
       min-height: 100vh;
-      transition: background 0.3s ease;
     }
-
     .dark body {
       background: linear-gradient(135deg, #0a0e1a 0%, #0f1a2e 40%, #1a1040 100%);
     }
-
-    /* ===== Glassmorphism ===== */
     .glass {
       background: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.25);
       box-shadow: 0 8px 32px rgba(60, 100, 200, 0.08);
-      transition: all 0.15s ease;
     }
-
     .dark .glass {
       background: rgba(20, 30, 70, 0.5);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-
     .glass-dark {
       background: rgba(20, 30, 60, 0.6);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
       color: #f0f4ff;
-      transition: all 0.15s ease;
     }
-
     .dark .glass-dark {
       background: rgba(12, 18, 40, 0.7);
       border-color: rgba(255, 255, 255, 0.04);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     }
-
-    /* ===== Card Hover ===== */
     .card-hover {
       transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       position: relative;
       overflow: hidden;
     }
-
-    .card-hover::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(79, 124, 255, 0.06), rgba(160, 80, 255, 0.04));
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      border-radius: inherit;
-      pointer-events: none;
-    }
-
-    .card-hover:hover::before {
-      opacity: 1;
-    }
-
     .card-hover:hover {
       transform: translateY(-4px) scale(1.01);
       box-shadow: 0 20px 40px -12px rgba(60, 80, 200, 0.25);
       border-color: rgba(79, 131, 255, 0.3);
     }
-
     .dark .card-hover:hover {
       box-shadow: 0 20px 40px -12px rgba(60, 80, 200, 0.15);
       border-color: rgba(79, 131, 255, 0.2);
     }
-
-    /* ===== Card Entrance Animation (faster) ===== */
     .card-enter {
       animation: cardSlide 0.3s ease forwards;
       opacity: 0;
     }
-
     @keyframes cardSlide {
-      from {
-        opacity: 0;
-        transform: translateY(16px) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-
-    /* ===== Icon Background ===== */
     .icon-bg {
       background: linear-gradient(135deg, rgba(79, 124, 255, 0.12), rgba(160, 80, 255, 0.08));
       width: 40px;
@@ -126,20 +75,11 @@
       font-size: 1.2rem;
       color: #2b4eb0;
       flex-shrink: 0;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-
-    .card-hover:hover .icon-bg {
-      background: linear-gradient(135deg, rgba(79, 124, 255, 0.2), rgba(160, 80, 255, 0.15));
-      transform: scale(1.04) rotate(-3deg);
-    }
-
     .dark .icon-bg {
       background: rgba(79, 124, 255, 0.15);
       color: #8aadff;
     }
-
-    /* ===== Tag Pill ===== */
     .tag-pill {
       background: rgba(79, 124, 255, 0.1);
       color: #1f3a8a;
@@ -148,22 +88,13 @@
       border-radius: 30px;
       display: inline-block;
       backdrop-filter: blur(2px);
-      transition: all 0.15s ease;
       border: 1px solid rgba(79, 124, 255, 0.05);
     }
-
-    .tag-pill:hover {
-      background: rgba(79, 124, 255, 0.2);
-      transform: scale(1.04);
-    }
-
     .dark .tag-pill {
       background: rgba(79, 124, 255, 0.15);
       color: #b8caff;
       border-color: rgba(79, 124, 255, 0.08);
     }
-
-    /* ===== Input / Select ===== */
     input, select {
       background: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(4px);
@@ -174,21 +105,17 @@
       transition: all 0.12s ease;
       font-size: 0.9rem;
     }
-
     .dark input, .dark select {
       background: rgba(20, 30, 65, 0.5);
       border-color: rgba(255, 255, 255, 0.06);
       color: #eef2ff;
     }
-
     input:focus, select:focus {
       outline: none;
       border-color: #4f7cff;
       box-shadow: 0 0 0 4px rgba(79, 124, 255, 0.15);
       transform: scale(1.01);
     }
-
-    /* ===== Badges ===== */
     .lock-badge {
       background: rgba(239, 68, 68, 0.12);
       color: #ef4444;
@@ -199,15 +126,12 @@
       align-items: center;
       gap: 0.15rem;
       border: 1px solid rgba(239, 68, 68, 0.15);
-      transition: all 0.15s ease;
     }
-
     .dark .lock-badge {
       background: rgba(239, 68, 68, 0.15);
       color: #f87171;
       border-color: rgba(239, 68, 68, 0.15);
     }
-
     .readonly-badge {
       background: rgba(79, 124, 255, 0.08);
       color: #4f7cff;
@@ -215,16 +139,13 @@
       padding: 0.15rem 0.6rem;
       border-radius: 30px;
       border: 1px solid rgba(79, 124, 255, 0.15);
-      transition: all 0.15s ease;
     }
-
     .dark .readonly-badge {
       background: rgba(79, 124, 255, 0.12);
       color: #8aadff;
       border-color: rgba(79, 124, 255, 0.2);
     }
-
-    .personal-badge {
+    .premium-badge {
       background: linear-gradient(135deg, #f7971e, #ffd200);
       color: #1a1a2e;
       font-size: 0.5rem;
@@ -235,103 +156,46 @@
       gap: 0.15rem;
       font-weight: 600;
       border: 1px solid rgba(255, 210, 0, 0.3);
-      transition: all 0.15s ease;
     }
-
-    .personal-badge:hover {
-      transform: scale(1.04);
-    }
-
-    .dark .personal-badge {
+    .dark .premium-badge {
       background: linear-gradient(135deg, #f7971e, #ffd200);
       color: #0b1120;
     }
-
-    /* ===== Brand ===== */
     .brand-gradient {
       background: linear-gradient(135deg, #f7971e, #ffd200);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     .brand-glow {
       text-shadow: 0 0 30px rgba(255, 210, 0, 0.2);
     }
-
     .dark .brand-glow {
       text-shadow: 0 0 40px rgba(255, 210, 0, 0.15);
     }
-
-    /* ===== Theme Button ===== */
-    .theme-btn {
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .theme-btn:hover {
-      transform: scale(1.06) rotate(6deg);
-    }
-
-    .theme-btn:active {
-      transform: scale(0.94);
-    }
-
-    /* ===== Stats Number ===== */
     .stat-number {
       font-size: 1.8rem;
       font-weight: 700;
-      transition: all 0.15s ease;
     }
-
-    .stat-number:hover {
-      transform: scale(1.04);
-    }
-
     @media (min-width: 768px) {
       .stat-number { font-size: 2.2rem; }
     }
-
-    /* ===== Spinner ===== */
-    .spinner {
-      border: 4px solid rgba(79, 124, 255, 0.08);
-      border-top: 4px solid #4f7cff;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* ===== Password Modal ===== */
     .password-modal {
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       z-index: 100;
       animation: fadeIn 0.2s ease;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.96); }
       to { opacity: 1; transform: scale(1); }
     }
-
-    /* ===== Scrollbar ===== */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #b0c8ff; border-radius: 12px; }
-
     .dark ::-webkit-scrollbar-thumb {
       background: rgba(79, 124, 255, 0.3);
     }
-
-    /* ===== Utility ===== */
-    .relative { position: relative; }
-    .z-10 { z-index: 10; }
     .line-clamp-2 {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -343,19 +207,66 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
-    /* ===== Faster theme switching ===== */
-    .dark body {
-      transition: background 0.2s ease;
+    .download-badge {
+      background: rgba(34, 197, 94, 0.12);
+      color: #16a34a;
+      font-size: 0.5rem;
+      padding: 0.08rem 0.4rem;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.15rem;
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      cursor: pointer;
     }
-    .dark .glass,
-    .dark .glass-dark,
-    .dark .readonly-badge,
-    .dark .tag-pill,
-    .dark .lock-badge,
-    .dark input,
-    .dark select {
-      transition: all 0.12s ease;
+    .dark .download-badge {
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.2);
+    }
+    .download-badge:hover {
+      transform: scale(1.04);
+      background: rgba(34, 197, 94, 0.2);
+    }
+    .code-input {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .locked-card {
+      opacity: 0.5;
+      filter: blur(1px);
+      pointer-events: none;
+      position: relative;
+    }
+    .locked-card::after {
+      content: '🔒 Premium Only';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      border-radius: 1rem;
+      z-index: 10;
+    }
+    .dark .locked-card::after {
+      background: rgba(0, 0, 0, 0.5);
+    }
+    .expired-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      font-size: 0.5rem;
+      padding: 0.08rem 0.4rem;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.15rem;
+      border: 1px solid rgba(239, 68, 68, 0.15);
     }
   </style>
 </head>
@@ -367,7 +278,7 @@
         <div class="text-2xl md:text-3xl font-bold tracking-tight brand-gradient brand-glow">
           <i class="fas fa-bolt text-yellow-500 mr-1"></i>Pro H
         </div>
-        <span class="text-xs text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-white/5 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/20">📖 Read Only</span>
+        <span class="text-xs text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-white/5 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/20">🔒 One-Time Use</span>
       </div>
       <div class="flex items-center gap-2">
         <button onclick="toggleDark()" class="theme-btn glass px-3 py-1.5 rounded-xl text-sm flex items-center gap-1.5 hover:scale-105 transition">
@@ -375,7 +286,7 @@
           <i class="fas fa-moon hidden dark:inline text-indigo-300"></i>
           <span class="hidden sm:inline text-xs dark:text-white">Theme</span>
         </button>
-        <span class="readonly-badge text-xs"><i class="fas fa-lock mr-0.5"></i> Read Only</span>
+        <span class="readonly-badge text-xs"><i class="fas fa-lock mr-0.5"></i> Business</span>
         <button onclick="resetToDefault()" class="glass px-3 py-1.5 rounded-xl text-sm flex items-center gap-1.5 hover:scale-105 transition text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300">
           <i class="fas fa-redo text-xs"></i> <span class="hidden sm:inline text-xs">Reset</span>
         </button>
@@ -399,6 +310,29 @@
       <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark card-enter" style="animation-delay: 0.12s">
         <div class="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-clock text-purple-400"></i> Newest</div>
         <div class="text-sm font-medium text-gray-700 dark:text-gray-200 truncate" id="newestLabel">—</div>
+      </div>
+    </div>
+
+    <!-- ===== Access Code Section ===== -->
+    <div class="glass rounded-2xl p-3 md:p-4 mb-5 dark:glass-dark card-enter" style="animation-delay: 0.10s">
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-[200px]">
+          <label class="text-xs text-gray-500 dark:text-gray-400 block mb-1">
+            <i class="fas fa-key text-yellow-500 mr-1"></i> Enter Access Code
+          </label>
+          <div class="flex gap-2">
+            <input type="text" id="accessCodeInput" placeholder="e.g. FREE-001 or PROH-2026" class="code-input flex-1 rounded-xl text-sm dark:text-white">
+            <button onclick="verifyAccessCode()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-800 font-semibold text-sm hover:from-yellow-500 hover:to-orange-500 transition-all transform hover:scale-105 whitespace-nowrap">
+              <i class="fas fa-unlock mr-1"></i> Unlock
+            </button>
+          </div>
+          <div id="accessCodeStatus" class="text-xs mt-1 hidden"></div>
+        </div>
+        <div class="text-xs text-gray-400 dark:text-gray-500 flex-shrink-0 text-right">
+          <span class="block">🔓 Free: <span class="text-green-400">FREE-001</span> (Unlimited)</span>
+          <span class="block">⭐ Paid: <span class="text-yellow-400">PROH-2026</span> (One-Time)</span>
+          <span class="block text-red-400">⚠️ One-time use only</span>
+        </div>
       </div>
     </div>
 
@@ -436,12 +370,11 @@
     <!-- ===== Footer ===== -->
     <div class="text-center text-[0.6rem] text-gray-400 dark:text-gray-600 mt-6 pb-3">
       <i class="fas fa-shield-alt text-yellow-400 mr-0.5"></i>
-      This is a read-only link hub.
-      <span class="block sm:inline">🔒 No one can add, edit, or delete links.</span>
+      Pro H Business — One-time use codes. FREE-001 is unlimited.
     </div>
   </div>
 
-  <!-- ===== Password Modal ===== -->
+  <!-- ===== Link Password Modal ===== -->
   <div id="linkPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 password-modal hidden">
     <div class="glass rounded-2xl max-w-sm w-full p-5 md:p-6 dark:glass-dark">
       <div class="text-center mb-4">
@@ -449,7 +382,7 @@
           <i class="fas fa-lock text-2xl text-red-400"></i>
         </div>
         <h3 class="text-lg font-bold text-gray-800 dark:text-white">Protected Link</h3>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Enter password to access this link</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Enter link password to access</p>
       </div>
       <input type="password" id="linkPasswordInput" placeholder="Enter link password..." class="rounded-xl mb-3 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyLinkPassword()">
       <div class="flex gap-2">
@@ -460,23 +393,242 @@
     </div>
   </div>
 
-  <script>
-    // ===== CONFIG =====
-    const STORAGE_KEY = 'pro_h_link_app_readonly_v1';
-    const PERSONAL_ID = '7';
+  <!-- ===== Download Modal ===== -->
+  <div id="downloadModal" class="fixed inset-0 flex items-center justify-center p-4 password-modal hidden">
+    <div class="glass rounded-2xl max-w-sm w-full p-5 md:p-6 dark:glass-dark">
+      <div class="text-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-3">
+          <i class="fas fa-download text-2xl text-green-400"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-800 dark:text-white">Download YouTube Video</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Paste YouTube URL to download (Paid Premium Feature)</p>
+      </div>
+      <input type="text" id="downloadUrlInput" placeholder="https://www.youtube.com/watch?v=..." class="rounded-xl mb-3 text-sm dark:text-white">
+      <div class="flex gap-2">
+        <button onclick="closeDownloadModal()" class="flex-1 px-3 py-1.5 rounded-xl border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+        <button onclick="downloadVideo()" class="flex-1 px-3 py-1.5 rounded-xl bg-gradient-to-r from-green-400 to-emerald-400 text-gray-800 font-semibold text-sm hover:from-green-500 hover:to-emerald-500 transition-all transform hover:scale-105">
+          <i class="fas fa-download mr-0.5"></i> Get Link
+        </button>
+      </div>
+      <div id="downloadResult" class="mt-3 text-xs text-center text-gray-600 dark:text-gray-300 hidden"></div>
+    </div>
+  </div>
 
-    // ===== DATA =====
+  <script>
+    // ============================================================
+    // ===== 🔑 PREMIUM KEYS WITH EXPIRY =====
+    // ============================================================
+    const PREMIUM_KEYS = {
+      'PROH-2026': 30,
+      'VIP-001': 7,
+      'PREMIUM-123': 30,
+      'BUSINESS-2026': 90,
+      'GOLD-999': 90,
+      'SILVER-888': 14,
+      'DIAMOND-777': 180,
+      'MY-CODE-001': 15,
+      'SPECIAL-2026': 60,
+      'TEST-123': 3
+    };
+
+    // ===== 🆓 FREE CODE (Unlimited) =====
+    const FREE_CODES = ['FREE-001'];
+    const ALL_CODES = [...FREE_CODES, ...Object.keys(PREMIUM_KEYS)];
+
+    // ===== CONFIG =====
+    const STORAGE_KEY = 'pro_h_business_v1';
+    const ACCESS_CODE_KEY = 'pro_h_access_code';
+    const USED_CODES_KEY = 'pro_h_used_codes';
+    const CODE_EXPIRY_KEY = 'pro_h_code_expiry';
+
     let links = [];
     let pendingLink = null;
+    let isPremium = false;
+    let usedCodes = [];
+    let currentCodeType = '';
+    let codeExpiryData = {};
+
+    // ===== LOAD USED CODES & EXPIRY =====
+    function loadUsedCodes() {
+      try {
+        const saved = localStorage.getItem(USED_CODES_KEY);
+        if (saved) {
+          usedCodes = JSON.parse(saved);
+          if (!Array.isArray(usedCodes)) usedCodes = [];
+        } else {
+          usedCodes = [];
+        }
+      } catch (e) {
+        usedCodes = [];
+      }
+    }
+
+    function saveUsedCodes() {
+      try {
+        localStorage.setItem(USED_CODES_KEY, JSON.stringify(usedCodes));
+      } catch (e) { console.error('Error saving used codes:', e); }
+    }
+
+    function loadCodeExpiry() {
+      try {
+        const saved = localStorage.getItem(CODE_EXPIRY_KEY);
+        if (saved) {
+          codeExpiryData = JSON.parse(saved);
+          if (typeof codeExpiryData !== 'object') codeExpiryData = {};
+        } else {
+          codeExpiryData = {};
+        }
+      } catch (e) {
+        codeExpiryData = {};
+      }
+    }
+
+    function saveCodeExpiry() {
+      try {
+        localStorage.setItem(CODE_EXPIRY_KEY, JSON.stringify(codeExpiryData));
+      } catch (e) { console.error('Error saving expiry data:', e); }
+    }
+
+    function isCodeExpired(code) {
+      if (!codeExpiryData[code]) return false;
+      const expiryDate = new Date(codeExpiryData[code]);
+      return new Date() > expiryDate;
+    }
+
+    // ===== LOAD ACCESS CODE =====
+    function loadAccessCode() {
+      const saved = localStorage.getItem(ACCESS_CODE_KEY);
+      if (saved && ALL_CODES.includes(saved)) {
+        if (FREE_CODES.includes(saved)) {
+          isPremium = true;
+          currentCodeType = 'free';
+          document.getElementById('accessCodeInput').value = saved;
+          showAccessCodeStatus('✅ Free trial unlocked!', 'text-green-500');
+          return;
+        }
+
+        if (PREMIUM_KEYS[saved]) {
+          // 🛑 Check if already used
+          if (usedCodes.includes(saved)) {
+            isPremium = false;
+            localStorage.removeItem(ACCESS_CODE_KEY);
+            showAccessCodeStatus('❌ This code has already been used.', 'text-red-500');
+            return;
+          }
+
+          if (isCodeExpired(saved)) {
+            isPremium = false;
+            localStorage.removeItem(ACCESS_CODE_KEY);
+            showAccessCodeStatus('❌ This code has expired.', 'text-red-500');
+            return;
+          }
+
+          isPremium = true;
+          currentCodeType = 'paid';
+          document.getElementById('accessCodeInput').value = saved;
+          const days = PREMIUM_KEYS[saved];
+          showAccessCodeStatus(`✅ Premium unlocked! Expires in ${days} days.`, 'text-green-500');
+          return;
+        }
+      } else {
+        isPremium = false;
+      }
+    }
+
+    // ===== VERIFY ACCESS CODE (FIXED: One-Time Use) =====
+    function verifyAccessCode() {
+      const code = document.getElementById('accessCodeInput').value.trim();
+      const statusEl = document.getElementById('accessCodeStatus');
+      
+      if (!code) {
+        showAccessCodeStatus('⚠️ Please enter an access code.', 'text-red-500');
+        return;
+      }
+
+      if (!ALL_CODES.includes(code)) {
+        showAccessCodeStatus('❌ Invalid access code.', 'text-red-500');
+        return;
+      }
+
+      // ===== FREE CODE (Unlimited) =====
+      if (FREE_CODES.includes(code)) {
+        isPremium = true;
+        currentCodeType = 'free';
+        localStorage.setItem(ACCESS_CODE_KEY, code);
+        showAccessCodeStatus('✅ Free trial unlocked!', 'text-green-500');
+        render();
+        showToast('🎉 Free trial activated!');
+        return;
+      }
+
+      // ===== PAID CODE (One-Time Use) =====
+      if (PREMIUM_KEYS[code]) {
+        // 🛑 Check if already used (CRITICAL)
+        if (usedCodes.includes(code)) {
+          showAccessCodeStatus('❌ This code has already been used. One-time use only.', 'text-red-500');
+          localStorage.removeItem(ACCESS_CODE_KEY);
+          isPremium = false;
+          render();
+          return;
+        }
+
+        // 🛑 Check if expired
+        if (isCodeExpired(code)) {
+          showAccessCodeStatus('❌ This code has expired.', 'text-red-500');
+          localStorage.removeItem(ACCESS_CODE_KEY);
+          isPremium = false;
+          render();
+          return;
+        }
+
+        // ✅ Valid code - Mark as used IMMEDIATELY
+        const days = PREMIUM_KEYS[code];
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + days);
+        codeExpiryData[code] = expiryDate.toISOString();
+        saveCodeExpiry();
+
+        // ⚠️ CRITICAL: Add to used codes BEFORE giving access
+        usedCodes.push(code);
+        saveUsedCodes();
+
+        // Grant access
+        isPremium = true;
+        currentCodeType = 'paid';
+        localStorage.setItem(ACCESS_CODE_KEY, code);
+        showAccessCodeStatus(`✅ Premium unlocked! Expires in ${days} days. (One-time use)`, 'text-green-500');
+        render();
+        showToast(`🎉 Premium access granted! (One-time code used)`);
+        return;
+      }
+    }
+
+    function showAccessCodeStatus(msg, className) {
+      const el = document.getElementById('accessCodeStatus');
+      el.textContent = msg;
+      el.className = `text-xs mt-1 ${className}`;
+      el.classList.remove('hidden');
+      setTimeout(() => {
+        el.classList.add('hidden');
+      }, 5000);
+    }
 
     // ===== RESET =====
     function resetToDefault() {
-      if (confirm('⚠️ Reset to default links?')) {
+      if (confirm('⚠️ Reset to default business links? This will reset all codes and expiry.')) {
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(ACCESS_CODE_KEY);
+        localStorage.removeItem(USED_CODES_KEY);
+        localStorage.removeItem(CODE_EXPIRY_KEY);
+        isPremium = false;
+        usedCodes = [];
+        codeExpiryData = {};
+        currentCodeType = '';
+        document.getElementById('accessCodeInput').value = '';
         links = getDefaultLinks();
         saveLinks();
         render();
-        showToast('✅ Reset to default links!');
+        showToast('✅ Reset to default business links!');
       }
     }
 
@@ -505,6 +657,45 @@
         document.getElementById('linkPasswordInput').value = '';
         document.getElementById('linkPasswordInput').focus();
       }
+    }
+
+    // ===== DOWNLOAD MODAL =====
+    function showDownloadModal() {
+      if (!isPremium || currentCodeType === 'free') {
+        showToast('🔒 YouTube Download is a Paid Premium feature only.');
+        return;
+      }
+      document.getElementById('downloadModal').classList.remove('hidden');
+      document.getElementById('downloadUrlInput').value = '';
+      document.getElementById('downloadResult').classList.add('hidden');
+      setTimeout(() => document.getElementById('downloadUrlInput').focus(), 80);
+    }
+
+    function closeDownloadModal() {
+      document.getElementById('downloadModal').classList.add('hidden');
+    }
+
+    function downloadVideo() {
+      const url = document.getElementById('downloadUrlInput').value.trim();
+      const resultEl = document.getElementById('downloadResult');
+      if (!url) {
+        resultEl.classList.remove('hidden');
+        resultEl.innerHTML = '⚠️ Please enter a YouTube URL';
+        resultEl.className = 'mt-3 text-xs text-center text-red-500';
+        return;
+      }
+      resultEl.classList.remove('hidden');
+      resultEl.innerHTML = '⏳ Opening download page...';
+      resultEl.className = 'mt-3 text-xs text-center text-blue-500';
+
+      const encodedUrl = encodeURIComponent(url);
+      const saveFromUrl = `https://savefrom.net/?url=${encodedUrl}`;
+      window.open(saveFromUrl, '_blank');
+      resultEl.innerHTML = '✅ Opening SaveFrom.net download page...';
+      resultEl.className = 'mt-3 text-xs text-center text-green-500';
+      setTimeout(() => {
+        closeDownloadModal();
+      }, 1500);
     }
 
     // ===== TOAST =====
@@ -548,18 +739,23 @@
       } catch (e) { console.error('Error saving links:', e); }
     }
 
-    // ===== DEFAULT LINKS =====
+    // ===== DEFAULT BUSINESS LINKS =====
     function getDefaultLinks() {
       return [
-        { id: '7', title: '🌐 My Personal Website', url: 'https://htetwailin.lovable.app', description: 'My personal portfolio and workspace', category: 'Personal', tags: ['portfolio', 'personal', 'workspace'], favorite: true, icon: 'fas fa-heart', linkPassword: '', createdAt: Date.now() - 3000 },
-        { id: '10', title: '🎮 Online Games', url: 'https://poki.com', description: 'Free online games platform - play instantly', category: 'Games', tags: ['games', 'online', 'fun', 'entertainment'], favorite: false, icon: 'fas fa-gamepad', linkPassword: '', createdAt: Date.now() - 200 },
-        { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform for creative content', category: 'Social Media', tags: ['video', 'social', 'short-form', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
-        { id: '1', title: '🎬 YouTube', url: 'https://youtube.com', description: 'Video platform for entertainment and learning', category: 'Videos', tags: ['video', 'media', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 200000 },
-        { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI-powered assistant for conversations, coding, and creativity', category: 'AI Tools', tags: ['ai', 'chat', 'assistant', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
-        { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress, convert and more', category: 'Documents', tags: ['pdf', 'tools', 'office', 'productivity'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
-        { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming, scores and highlights', category: 'Sports', tags: ['sports', 'live', 'streaming', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
-        { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos', category: 'Social Media', tags: ['social', 'career', 'professional'], favorite: true, icon: 'fab fa-linkedin', linkPassword: '', createdAt: Date.now() - 8000 },
-        { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant for creative and analytical tasks', category: 'AI Tools', tags: ['ai', 'google', 'assistant', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 }
+        // ===== FREE DEMO LINKS =====
+        { id: 'free0', title: '👨‍💻 My IT Portfolio', url: 'https://htetwailin.lovable.app', description: 'IT Specialist - Networking, Servers, Security & CCTV', category: 'Personal', tags: ['portfolio', 'it', 'networking', 'personal'], favorite: true, icon: 'fas fa-user-tie', linkPassword: '', isPremium: false, createdAt: Date.now() - 300000 },
+        { id: 'free1', title: '🎬 YouTube (Free Demo)', url: 'https://youtube.com', description: 'Video platform for entertainment and learning', category: 'Videos', tags: ['video', 'media', 'entertainment', 'free'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', isPremium: false, createdAt: Date.now() - 200000 },
+        { id: 'free2', title: '🤖 ChatGPT (Free Demo)', url: 'https://chatgpt.com/', description: 'AI-powered assistant for conversations and coding', category: 'AI Tools', tags: ['ai', 'chat', 'assistant', 'free'], favorite: true, icon: 'fas fa-robot', linkPassword: '', isPremium: false, createdAt: Date.now() - 150000 },
+        { id: 'free3', title: '📄 iLovePDF (Free Demo)', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress and convert', category: 'Documents', tags: ['pdf', 'tools', 'office', 'free'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', isPremium: false, createdAt: Date.now() - 120000 },
+        
+        // ===== PREMIUM LINKS =====
+        { id: 'prem1', title: '🌐 Premium Portfolio Hub', url: 'https://htetwailin.lovable.app', description: 'Exclusive premium portfolio and workspace', category: 'Personal', tags: ['portfolio', 'premium', 'workspace'], favorite: true, icon: 'fas fa-heart', linkPassword: 'prem123', isPremium: true, createdAt: Date.now() - 3000 },
+        { id: 'prem2', title: '🎮 Premium Online Games', url: 'https://poki.com', description: 'Ad-free premium games platform', category: 'Games', tags: ['games', 'premium', 'fun'], favorite: false, icon: 'fas fa-gamepad', linkPassword: 'game456', isPremium: true, createdAt: Date.now() - 200 },
+        { id: 'prem3', title: '🎵 TikTok Premium', url: 'https://www.tiktok.com', description: 'Premium short-form video platform', category: 'Social Media', tags: ['video', 'social', 'premium'], favorite: true, icon: 'fab fa-tiktok', linkPassword: 'tiktok789', isPremium: true, createdAt: Date.now() - 500 },
+        { id: 'prem4', title: '⚽ LiveSports Premium', url: 'https://www.livesports808.site', description: 'Premium live sports streaming and highlights', category: 'Sports', tags: ['sports', 'live', 'premium'], favorite: true, icon: 'fas fa-futbol', linkPassword: 'sport321', isPremium: true, createdAt: Date.now() - 90000 },
+        { id: 'prem5', title: '✨ Gemini Pro', url: 'https://gemini.google.com/', description: 'Google\'s premium AI assistant for advanced tasks', category: 'AI Tools', tags: ['ai', 'google', 'premium'], favorite: true, icon: 'fas fa-star', linkPassword: 'gemini555', isPremium: true, createdAt: Date.now() - 4000 },
+        { id: 'prem6', title: '🎵 Spotify Premium', url: 'https://spotify.com', description: 'Ad-free music streaming with premium features', category: 'Music', tags: ['music', 'streaming', 'premium'], favorite: true, icon: 'fab fa-spotify', linkPassword: 'music777', isPremium: true, createdAt: Date.now() - 2000 },
+        { id: 'prem7', title: '📺 Netflix Premium', url: 'https://netflix.com', description: 'Premium streaming service for movies and shows', category: 'Entertainment', tags: ['streaming', 'movies', 'premium'], favorite: true, icon: 'fab fa-netflix', linkPassword: 'netflix888', isPremium: true, createdAt: Date.now() - 1000 }
       ];
     }
 
@@ -584,13 +780,14 @@
       if (!url) return 'fas fa-globe';
       const u = url.toLowerCase();
       if (u.includes('youtube')) return 'fab fa-youtube';
+      if (u.includes('netflix')) return 'fab fa-netflix';
+      if (u.includes('spotify')) return 'fab fa-spotify';
       if (u.includes('gemini')) return 'fas fa-star';
       if (u.includes('tiktok')) return 'fab fa-tiktok';
       if (u.includes('facebook')) return 'fab fa-facebook';
       if (u.includes('instagram')) return 'fab fa-instagram';
       if (u.includes('telegram')) return 'fab fa-telegram';
       if (u.includes('whatsapp')) return 'fab fa-whatsapp';
-      if (u.includes('pornhub')) return 'fab fa-pornhub';
       if (u.includes('lovable')) return 'fas fa-heart';
       if (u.includes('poki') || u.includes('game')) return 'fas fa-gamepad';
       if (u.includes('chatgpt')) return 'fas fa-robot';
@@ -605,7 +802,6 @@
       const categoryFilter = document.getElementById('categoryFilter').value;
       const sortVal = document.getElementById('sortFilter').value;
 
-      // Update categories
       const catSet = new Set();
       links.forEach(l => { if (l.category) catSet.add(l.category); });
       const catSelect = document.getElementById('categoryFilter');
@@ -620,8 +816,8 @@
       if ([...catSet].includes(currentCat)) catSelect.value = currentCat;
       else catSelect.value = 'all';
 
-      // Filter
       let filtered = links.filter(link => {
+        if (!isPremium && link.isPremium) return false;
         const matchSearch = link.title.toLowerCase().includes(search) ||
                            (link.tags && link.tags.some(t => t.toLowerCase().includes(search))) ||
                            (link.description && link.description.toLowerCase().includes(search));
@@ -629,14 +825,8 @@
         return matchSearch && matchCategory;
       });
 
-      // Sort: Personal → Online Games → TikTok → rest
-      const order = ['7', '10', '9'];
       const sortFn = (a, b) => {
-        const idxA = order.indexOf(a.id);
-        const idxB = order.indexOf(b.id);
-        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-        if (idxA !== -1) return -1;
-        if (idxB !== -1) return 1;
+        if (a.isPremium !== b.isPremium) return a.isPremium ? 1 : -1;
         if (sortVal === 'newest') return b.createdAt - a.createdAt;
         if (sortVal === 'oldest') return a.createdAt - b.createdAt;
         if (sortVal === 'alpha') return a.title.localeCompare(b.title);
@@ -644,7 +834,6 @@
       };
       filtered.sort(sortFn);
 
-      // Update stats
       document.getElementById('totalCount').textContent = links.length;
       document.getElementById('categoryCount').textContent = getCategoryCount();
       document.getElementById('favCount').textContent = getFavCount();
@@ -660,7 +849,6 @@
       }
       empty.classList.add('hidden');
 
-      // Render cards
       grid.innerHTML = filtered.map((link, index) => {
         const icon = getPlatformIcon(link.url, link.icon);
         const favStar = link.favorite ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600';
@@ -669,12 +857,20 @@
         const dateStr = new Date(link.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         const isProtected = link.linkPassword && link.linkPassword.trim() !== '';
         const lockBadge = isProtected ? `<span class="lock-badge"><i class="fas fa-lock"></i> Protected</span>` : '';
-        const isPersonal = link.id === PERSONAL_ID;
-        const personalBadge = isPersonal ? `<span class="personal-badge"><i class="fas fa-star"></i> Personal</span>` : '';
+        const premiumBadge = link.isPremium ? `<span class="premium-badge"><i class="fas fa-crown"></i> Premium</span>` : '';
         const delay = Math.min(index * 0.03, 0.3);
 
+        const isVideo = link.url && (link.url.includes('youtube') || link.url.includes('tiktok') || link.url.includes('video'));
+        const downloadBtn = (isVideo && isPremium && currentCodeType === 'paid') ? `
+          <button onclick="event.stopPropagation(); showDownloadModal()" class="download-badge" title="Download Video (Paid Premium)">
+            <i class="fas fa-download"></i> Download
+          </button>
+        ` : '';
+
+        const lockedClass = (link.isPremium && !isPremium) ? 'locked-card' : '';
+
         return `
-          <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/50 dark:border-yellow-400/30' : ''} card-enter" style="animation-delay: ${delay}s" onclick="handleLinkClick('${link.id}')">
+          <div class="glass rounded-2xl p-3.5 card-hover dark:glass-dark flex flex-col ${lockedClass} card-enter" style="animation-delay: ${delay}s" onclick="${!link.isPremium || isPremium ? `handleLinkClick('${link.id}')` : `showToast('🔒 Premium link. Enter access code to unlock.')`}">
             <div class="flex items-start justify-between">
               <div class="flex items-center gap-2 min-w-0">
                 <div class="icon-bg"><i class="${icon}"></i></div>
@@ -684,7 +880,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-0.5 flex-shrink-0">
-                ${personalBadge}
+                ${premiumBadge}
                 ${lockBadge}
                 <i class="fas fa-star ${favStar} text-[0.6rem]"></i>
               </div>
@@ -693,9 +889,10 @@
             <div class="flex flex-wrap gap-0.5 mt-1.5">${tagsHtml}</div>
             <div class="flex items-center justify-between mt-2.5 text-[0.6rem] text-gray-400 dark:text-gray-500">
               <span><i class="far fa-calendar-alt mr-0.5"></i>${dateStr}</span>
-              <div class="flex gap-1.5">
+              <div class="flex gap-1.5 items-center">
+                ${downloadBtn}
                 <button onclick="event.stopPropagation(); copyLink('${link.url}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="Copy Link"><i class="fas fa-copy"></i></button>
-                <button onclick="event.stopPropagation(); handleLinkClick('${link.id}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="${isProtected ? '🔒 Unlock' : 'Open Link'}">
+                <button onclick="event.stopPropagation(); ${!link.isPremium || isPremium ? `handleLinkClick('${link.id}')` : `showToast('🔒 Premium link. Enter access code to unlock.')`}" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="${isProtected ? '🔒 Unlock' : 'Open Link'}">
                   <i class="${isProtected ? 'fas fa-lock' : 'fas fa-external-link-alt'}"></i>
                 </button>
               </div>
@@ -709,6 +906,10 @@
     function handleLinkClick(id) {
       const link = links.find(l => l.id === id);
       if (!link) return;
+      if (link.isPremium && !isPremium) {
+        showToast('🔒 Premium link. Enter access code to unlock.');
+        return;
+      }
       if (link.linkPassword && link.linkPassword.trim() !== '') {
         showLinkPasswordModal(link);
       } else {
@@ -731,7 +932,7 @@
       render();
     }
 
-    // ===== THEME (FAST) =====
+    // ===== THEME =====
     function toggleDark() {
       const isDark = document.documentElement.classList.toggle('dark');
       document.body.classList.toggle('dark');
@@ -751,15 +952,29 @@
     document.getElementById('linkPasswordModal').addEventListener('click', function(e) {
       if (e.target === this) closeLinkPasswordModal();
     });
+    document.getElementById('downloadModal').addEventListener('click', function(e) {
+      if (e.target === this) closeDownloadModal();
+    });
 
     document.getElementById('linkPasswordInput').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') verifyLinkPassword();
     });
+    document.getElementById('accessCodeInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') verifyAccessCode();
+    });
+    document.getElementById('downloadUrlInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') downloadVideo();
+    });
 
     // ===== START =====
+    loadUsedCodes();
+    loadCodeExpiry();
     loadLinks();
-    console.log('✅ Pro H (Read Only) started!');
+    loadAccessCode();
+    console.log('✅ Pro H Business (One-Time Use) started!');
     console.log('📊 Total links:', links.length);
+    console.log('🔑 Premium status:', isPremium);
+    console.log('📋 Used codes:', usedCodes);
   </script>
 </body>
 </html>
