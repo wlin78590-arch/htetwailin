@@ -3,11 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
   <title>Pro H · Read Only</title>
-  <!-- Version: 2.0.0 - Auto update from GitHub -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <style>
@@ -222,21 +218,15 @@
 
     /* ===== MODAL ===== */
     .modal-overlay {
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 100;
-      animation: fadeIn 0.2s ease;
+      animation: fadeIn 0.15s ease;
     }
     @keyframes fadeIn {
-      from { opacity:0; transform:scale(0.96); }
+      from { opacity:0; transform:scale(0.97); }
       to { opacity:1; transform:scale(1); }
-    }
-
-    /* ===== PASSWORD MODAL SPECIAL ===== */
-    .password-modal .glass {
-      max-width: 340px;
-      width: 100%;
     }
 
     /* ===== SCROLLBAR ===== */
@@ -276,24 +266,6 @@
       transition: transform 0.15s ease, background 0.15s ease;
     }
     .download-option-btn:active { transform: scale(0.96); }
-    .btn-unlock {
-      transition: transform 0.15s ease;
-    }
-    .btn-unlock:active { transform: scale(0.94); }
-
-    /* ===== VERSION BADGE ===== */
-    .version-badge {
-      font-size: 0.45rem;
-      background: rgba(79,124,255,0.06);
-      color: #6b7fa0;
-      padding: 0.05rem 0.4rem;
-      border-radius: 12px;
-      border: 1px solid rgba(79,124,255,0.04);
-    }
-    .dark .version-badge {
-      background: rgba(79,124,255,0.06);
-      color: #6a7fa0;
-    }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 480px) {
@@ -306,36 +278,6 @@
   </style>
 </head>
 <body>
-
-<!-- ============================================================ -->
-<!--  PASSWORD OVERLAY (shows first, before anything else)         -->
-<!-- ============================================================ -->
-<div id="passwordOverlay" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay" style="z-index:999; background:rgba(0,0,0,0.5); backdrop-filter:blur(14px);">
-  <div class="glass rounded-2xl p-6 max-w-sm w-full dark:glass-dark password-modal">
-    <div class="text-center mb-4">
-      <div class="w-16 h-16 rounded-full bg-yellow-500/15 flex items-center justify-center mx-auto mb-3">
-        <i class="fas fa-shield-alt text-3xl text-yellow-400"></i>
-      </div>
-      <h3 class="text-xl font-bold text-gray-800 dark:text-white">🔐 Pro H</h3>
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Enter password to access the hub</p>
-      <p class="text-[0.5rem] text-gray-400 dark:text-gray-500 mt-0.5">Password: <span class="font-mono bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded">pro</span></p>
-      <p class="text-[0.45rem] text-gray-400 dark:text-gray-500 mt-1">
-        <i class="fas fa-sync-alt mr-0.5"></i> Auto-reset on unlock · v2.0.0
-      </p>
-    </div>
-    <input type="password" id="masterPasswordInput" placeholder="Enter password..." class="rounded-xl mb-3 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyMasterPassword()" autofocus>
-    <button onclick="verifyMasterPassword()" class="w-full btn-unlock px-4 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-800 font-semibold text-sm hover:from-yellow-500 hover:to-orange-500 transition-all active:scale-95">
-      <i class="fas fa-unlock mr-1"></i> Unlock & Reset
-    </button>
-    <div id="passwordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password! Try again.</div>
-  </div>
-</div>
-
-<!-- ============================================================ -->
-<!--  MAIN APP (hidden until password is correct)                  -->
-<!-- ============================================================ -->
-<div id="mainApp" style="display:none;">
-
 <div id="root" class="max-w-7xl mx-auto">
 
   <!-- ===== HEADER ===== -->
@@ -345,7 +287,6 @@
         <i class="fas fa-bolt text-yellow-500 mr-1"></i>Pro H
       </div>
       <span class="readonly-badge text-xs">📖 Read Only</span>
-      <span class="version-badge">v2.0.0</span>
     </div>
     <div class="flex items-center gap-1.5">
       <button onclick="toggleDark()" class="btn-theme glass px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1">
@@ -357,11 +298,6 @@
       <button onclick="resetToDefault()" class="btn-reset glass px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1 text-red-500 hover:text-red-600 dark:text-red-400">
         <i class="fas fa-redo text-[0.65rem]"></i>
         <span class="hidden sm:inline text-[0.65rem]">Reset</span>
-      </button>
-      <!-- Check for Update button -->
-      <button onclick="checkForUpdate()" class="glass px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1 text-blue-500 hover:text-blue-600 dark:text-blue-400">
-        <i class="fas fa-cloud-download-alt text-[0.65rem]"></i>
-        <span class="hidden sm:inline text-[0.65rem]">Update</span>
       </button>
     </div>
   </div>
@@ -416,14 +352,11 @@
   <!-- ===== FOOTER ===== -->
   <div class="text-center text-[0.5rem] text-gray-400 dark:text-gray-600 mt-4 pb-2">
     <i class="fas fa-shield-alt text-yellow-400 mr-0.5"></i>
-    Read-only link hub · v2.0.0 · Auto-update enabled
-    <span class="block text-[0.4rem] text-gray-400 dark:text-gray-600 mt-0.5">
-      <i class="fas fa-github mr-0.5"></i> GitHub: Auto-update on load
-    </span>
+    Read-only link hub · No edits allowed
   </div>
 </div>
 
-<!-- ===== PASSWORD MODAL (for individual protected links) ===== -->
+<!-- ===== PASSWORD MODAL ===== -->
 <div id="linkPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
   <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
     <div class="text-center mb-3">
@@ -466,65 +399,12 @@
   </div>
 </div>
 
-</div><!-- end mainApp -->
-
 <script>
 // ============================================================
 //  CONFIG
 // ============================================================
-const MASTER_PASSWORD = 'pro';  // ✅ Changed from 'proh123' to 'pro'
 const STORAGE_KEY = 'pro_h_link_app_readonly_v1';
 const PERSONAL_ID = '7';
-const APP_VERSION = '2.0.0';
-let isUnlocked = false;
-
-// ============================================================
-//  MASTER PASSWORD
-// ============================================================
-function verifyMasterPassword() {
-  const input = document.getElementById('masterPasswordInput').value;
-  const errorEl = document.getElementById('passwordError');
-  if (input === MASTER_PASSWORD) {
-    errorEl.classList.add('hidden');
-    isUnlocked = true;
-    // 🔥 Auto Reset on successful unlock
-    localStorage.removeItem(STORAGE_KEY);
-    links = getDefaultLinks();
-    saveLinks();
-    // Hide password overlay, show main app
-    document.getElementById('passwordOverlay').style.display = 'none';
-    document.getElementById('mainApp').style.display = 'block';
-    // Load and render
-    loadLinks();
-    showToast('✅ Unlocked! Auto-reset complete.');
-    // Check for update after unlock
-    checkForUpdate();
-  } else {
-    errorEl.classList.remove('hidden');
-    document.getElementById('masterPasswordInput').value = '';
-    document.getElementById('masterPasswordInput').focus();
-  }
-}
-
-// ============================================================
-//  CHECK FOR UPDATE (GitHub / Web)
-// ============================================================
-function checkForUpdate() {
-  // This function simulates checking for updates.
-  // In a real scenario, you would fetch a version file from GitHub.
-  // For now, we just show a toast message.
-  // But the real auto-update happens because of the meta tags above
-  // that prevent caching.
-  showToast('🔄 Checking for updates... (Cache cleared)');
-  // Force reload from server (bypass cache)
-  // This ensures the latest version is loaded
-  setTimeout(() => {
-    // Reload the page to get fresh version
-    // But only if there's a newer version available
-    // For now, we just show a message
-    showToast('✅ Using latest version v' + APP_VERSION);
-  }, 500);
-}
 
 // ============================================================
 //  DATA
@@ -546,7 +426,7 @@ function resetToDefault() {
 }
 
 // ============================================================
-//  PASSWORD MODAL (individual link)
+//  PASSWORD MODAL
 // ============================================================
 function showLinkPasswordModal(link) {
   pendingLink = link;
@@ -658,7 +538,7 @@ function getDefaultLinks() {
     { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI assistant for conversations & coding', category: 'AI Tools', tags: ['ai', 'chat', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
     { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress', category: 'Documents', tags: ['pdf', 'tools', 'office'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
     { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming & highlights', category: 'Sports', tags: ['sports', 'live', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
-    { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: '123', createdAt: Date.now() - 8000 },
+    { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
     { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant', category: 'AI Tools', tags: ['ai', 'google', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
     { id: '11', title: '🇨🇳 Chinese For All', url: 'https://www.youtube.com/@chineseforall-saihsaikham7440', description: 'Learn Chinese with Sai Hsaikham', category: 'Education', tags: ['chinese', 'learning', 'language'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 100 }
   ];
@@ -840,24 +720,20 @@ if (localStorage.getItem('darkMode') === 'true') {
 }
 
 // ============================================================
-//  EVENTS (only after main app is shown)
+//  EVENTS
 // ============================================================
-document.addEventListener('DOMContentLoaded', function() {
-  // These are only used after unlock
-  document.getElementById('searchInput')?.addEventListener('input', render);
-  document.getElementById('categoryFilter')?.addEventListener('change', render);
-  document.getElementById('sortFilter')?.addEventListener('change', render);
-  document.getElementById('linkPasswordModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeLinkPasswordModal(); });
-  document.getElementById('downloadModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeDownloadModal(); });
-  document.getElementById('linkPasswordInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') verifyLinkPassword(); });
-});
+document.getElementById('searchInput').addEventListener('input', render);
+document.getElementById('categoryFilter').addEventListener('change', render);
+document.getElementById('sortFilter').addEventListener('change', render);
+document.getElementById('linkPasswordModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLinkPasswordModal(); });
+document.getElementById('downloadModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeDownloadModal(); });
+document.getElementById('linkPasswordInput').addEventListener('keydown', e => { if (e.key === 'Enter') verifyLinkPassword(); });
 
 // ============================================================
 //  START
 // ============================================================
-console.log('🔐 Pro H · Password: pro');
-console.log('🔄 Auto-reset on unlock · v' + APP_VERSION);
-console.log('📱 Web-to-APK ready · Auto-update via GitHub');
+loadLinks();
+console.log('✅ Pro H · Optimized for UI/UX & Performance');
 </script>
 </body>
 </html>
