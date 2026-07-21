@@ -138,6 +138,18 @@
       background: linear-gradient(135deg, #f7971e, #ffd200);
       color: #0b1120;
     }
+    .hidden-badge {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      color: #fff;
+      font-size: 0.45rem;
+      padding: 0.05rem 0.4rem;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.1rem;
+      font-weight: 600;
+      border: 1px solid rgba(139,92,246,0.3);
+    }
     .readonly-badge {
       background: rgba(79,124,255,0.06);
       color: #4f7cff;
@@ -170,6 +182,32 @@
       border-color: rgba(34,197,94,0.1);
     }
     .download-badge:active { transform: scale(0.94); }
+
+    /* ===== HIDDEN LINKS BUTTON ===== */
+    .hidden-toggle-btn {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      color: white;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .hidden-toggle-btn:active { transform: scale(0.94); }
+    .hidden-toggle-btn:hover {
+      box-shadow: 0 4px 16px rgba(139,92,246,0.4);
+    }
+    .hidden-toggle-btn.active {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+    .hidden-toggle-btn.active:hover {
+      box-shadow: 0 4px 16px rgba(239,68,68,0.4);
+    }
 
     /* ===== INPUTS ===== */
     input, select {
@@ -274,6 +312,7 @@
       .card { padding: 10px; }
       .icon-bg { width: 32px; height: 32px; font-size: 0.9rem; }
       input, select { font-size: 0.8rem; padding: 0.3rem 0.6rem; }
+      .hidden-toggle-btn { font-size: 0.6rem; padding: 3px 10px; }
     }
   </style>
 </head>
@@ -288,7 +327,11 @@
       </div>
       <span class="readonly-badge text-xs">📖 Read Only</span>
     </div>
-    <div class="flex items-center gap-1.5">
+    <div class="flex items-center gap-1.5 flex-wrap">
+      <!-- Hidden Links Toggle Button -->
+      <button onclick="toggleHiddenLinks()" id="hiddenToggleBtn" class="hidden-toggle-btn">
+        <i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>
+      </button>
       <button onclick="toggleDark()" class="btn-theme glass px-2.5 py-1.5 rounded-lg text-sm flex items-center gap-1">
         <i class="fas fa-sun text-yellow-500 dark:hidden text-xs"></i>
         <i class="fas fa-moon hidden dark:inline text-indigo-300 text-xs"></i>
@@ -356,7 +399,7 @@
   </div>
 </div>
 
-<!-- ===== PASSWORD MODAL ===== -->
+<!-- ===== PASSWORD MODAL (for individual links) ===== -->
 <div id="linkPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
   <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
     <div class="text-center mb-3">
@@ -372,6 +415,25 @@
       <button onclick="verifyLinkPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-800 font-semibold text-sm transition-transform active:scale-95">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
     </div>
     <div id="linkPasswordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password!</div>
+  </div>
+</div>
+
+<!-- ===== HIDDEN LINKS PASSWORD MODAL ===== -->
+<div id="hiddenPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
+  <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
+    <div class="text-center mb-3">
+      <div class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center mx-auto mb-2">
+        <i class="fas fa-eye-slash text-xl text-purple-400"></i>
+      </div>
+      <h3 class="text-base font-bold text-gray-800 dark:text-white">🔐 Hidden Links</h3>
+      <p class="text-xs text-gray-500 dark:text-gray-400">Enter password to reveal hidden links</p>
+    </div>
+    <input type="password" id="hiddenPasswordInput" placeholder="Enter password..." class="rounded-lg mb-2 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyHiddenPassword()">
+    <div class="flex gap-2">
+      <button onclick="closeHiddenPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+      <button onclick="verifyHiddenPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold text-sm transition-transform active:scale-95">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
+    </div>
+    <div id="hiddenPasswordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password!</div>
   </div>
 </div>
 
@@ -405,12 +467,62 @@
 // ============================================================
 const STORAGE_KEY = 'pro_h_link_app_readonly_v1';
 const PERSONAL_ID = '7';
+const HIDDEN_PASSWORD = 'admin123';
 
 // ============================================================
 //  DATA
 // ============================================================
 let links = [];
 let pendingLink = null;
+let hiddenLinksVisible = false;
+
+// Hidden links data (only shown after password)
+const hiddenLinks = [
+  { id: 'h1', title: '🔥 telegram video', url: 'https://t.me/myanmarvideohd', description: 'Confidential internal project', category: 'Hidden', tags: ['secret', 'internal', 'project'], favorite: true, icon: 'fas fa-fire', linkPassword: '', createdAt: Date.now() - 1000 },
+  { id: 'h2', title: '📁 internet Tools', url: 'https://www.rk777mm.com/pages/desktop/index', description: 'Company internal tools dashboard', category: 'Hidden', tags: ['internal', 'tools', 'work'], favorite: true, icon: 'fas fa-folder-open', linkPassword: '', createdAt: Date.now() - 800 },
+  { id: 'h3', title: '🚀 Premium Resources', url: 'https://premium-resources.example.com', description: 'Exclusive premium content', category: 'Hidden', tags: ['premium', 'exclusive', 'resources'], favorite: true, icon: 'fas fa-gem', linkPassword: '', createdAt: Date.now() - 500 }
+];
+
+// ============================================================
+//  HIDDEN LINKS TOGGLE
+// ============================================================
+function toggleHiddenLinks() {
+  if (hiddenLinksVisible) {
+    // Hide hidden links
+    hiddenLinksVisible = false;
+    document.getElementById('hiddenToggleBtn').classList.remove('active');
+    document.getElementById('hiddenBtnText').textContent = 'Hidden';
+    document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>';
+    render();
+    showToast('🔒 Hidden links hidden');
+  } else {
+    // Show password modal
+    document.getElementById('hiddenPasswordModal').classList.remove('hidden');
+    document.getElementById('hiddenPasswordInput').value = '';
+    document.getElementById('hiddenPasswordError').classList.add('hidden');
+    setTimeout(() => document.getElementById('hiddenPasswordInput').focus(), 80);
+  }
+}
+
+function closeHiddenPasswordModal() {
+  document.getElementById('hiddenPasswordModal').classList.add('hidden');
+}
+
+function verifyHiddenPassword() {
+  const input = document.getElementById('hiddenPasswordInput').value;
+  if (input === HIDDEN_PASSWORD) {
+    hiddenLinksVisible = true;
+    document.getElementById('hiddenToggleBtn').classList.add('active');
+    document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye-slash"></i> <span id="hiddenBtnText">Hide</span>';
+    closeHiddenPasswordModal();
+    render();
+    showToast('🔓 Hidden links revealed!');
+  } else {
+    document.getElementById('hiddenPasswordError').classList.remove('hidden');
+    document.getElementById('hiddenPasswordInput').value = '';
+    document.getElementById('hiddenPasswordInput').focus();
+  }
+}
 
 // ============================================================
 //  RESET
@@ -420,13 +532,16 @@ function resetToDefault() {
     localStorage.removeItem(STORAGE_KEY);
     links = getDefaultLinks();
     saveLinks();
+    hiddenLinksVisible = false;
+    document.getElementById('hiddenToggleBtn').classList.remove('active');
+    document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>';
     render();
     showToast('✅ Reset to default');
   }
 }
 
 // ============================================================
-//  PASSWORD MODAL
+//  PASSWORD MODAL (individual links)
 // ============================================================
 function showLinkPasswordModal(link) {
   pendingLink = link;
@@ -532,6 +647,7 @@ function saveLinks() {
 function getDefaultLinks() {
   return [
     { id: '7', title: '🌐 My Personal Website', url: 'https://htetwailin.lovable.app', description: 'My personal portfolio and workspace', category: 'Personal', tags: ['portfolio', 'personal', 'workspace'], favorite: true, icon: 'fas fa-heart', linkPassword: '', createdAt: Date.now() - 3000 },
+    { id: '13', title: '🌍 My New Website', url: 'https://example.com', description: 'My awesome new website', category: 'Personal', tags: ['web', 'personal', 'new'], favorite: true, icon: 'fas fa-globe', linkPassword: '', createdAt: Date.now() - 200 },
     { id: '12', title: '📚 W3Schools', url: 'https://www.w3schools.com/', description: 'Learn web development with tutorials', category: 'Education', tags: ['coding', 'web', 'html', 'css', 'javascript'], favorite: true, icon: 'fas fa-code', linkPassword: '', createdAt: Date.now() - 150 },
     { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform', category: 'Social Media', tags: ['video', 'social', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
     { id: '1', title: '🎬 YouTube', url: 'https://youtube.com', description: 'Video platform for entertainment & learning', category: 'Videos', tags: ['video', 'media', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 200000 },
@@ -548,14 +664,17 @@ function getDefaultLinks() {
 //  HELPERS
 // ============================================================
 function getCategoryCount() {
-  return new Set(links.map(l => l.category || 'Uncategorized')).size;
+  const allLinks = hiddenLinksVisible ? [...links, ...hiddenLinks] : links;
+  return new Set(allLinks.map(l => l.category || 'Uncategorized')).size;
 }
 function getFavCount() {
-  return links.filter(l => l.favorite).length;
+  const allLinks = hiddenLinksVisible ? [...links, ...hiddenLinks] : links;
+  return allLinks.filter(l => l.favorite).length;
 }
 function getNewestTitle() {
-  if (!links.length) return '—';
-  return [...links].sort((a,b) => b.createdAt - a.createdAt)[0]?.title || '—';
+  const allLinks = hiddenLinksVisible ? [...links, ...hiddenLinks] : links;
+  if (!allLinks.length) return '—';
+  return [...allLinks].sort((a,b) => b.createdAt - a.createdAt)[0]?.title || '—';
 }
 function getPlatformIcon(url, iconOverride) {
   if (iconOverride && iconOverride.trim()) return iconOverride.trim();
@@ -569,6 +688,7 @@ function getPlatformIcon(url, iconOverride) {
   if (u.includes('ilovepdf')) return 'fas fa-file-pdf';
   if (u.includes('livesports808')) return 'fas fa-futbol';
   if (u.includes('lovable')) return 'fas fa-heart';
+  if (u.includes('example.com')) return 'fas fa-globe';
   return 'fas fa-link';
 }
 
@@ -580,9 +700,15 @@ function render() {
   const categoryFilter = document.getElementById('categoryFilter').value;
   const sortVal = document.getElementById('sortFilter').value;
 
+  // Get all links (including hidden if visible)
+  let allLinks = [...links];
+  if (hiddenLinksVisible) {
+    allLinks = [...allLinks, ...hiddenLinks];
+  }
+
   // Update category dropdown
   const catSet = new Set();
-  links.forEach(l => { if (l.category) catSet.add(l.category); });
+  allLinks.forEach(l => { if (l.category) catSet.add(l.category); });
   const catSelect = document.getElementById('categoryFilter');
   const currentCat = catSelect.value;
   catSelect.innerHTML = '<option value="all">All cats</option>';
@@ -596,7 +722,7 @@ function render() {
   else catSelect.value = 'all';
 
   // Filter
-  let filtered = links.filter(link => {
+  let filtered = allLinks.filter(link => {
     const matchSearch = link.title.toLowerCase().includes(search) ||
                        (link.tags && link.tags.some(t => t.toLowerCase().includes(search))) ||
                        (link.description && link.description.toLowerCase().includes(search));
@@ -604,8 +730,8 @@ function render() {
     return matchSearch && matchCategory;
   });
 
-  // Sort (priority order: Personal → W3Schools → TikTok → Chinese For All → rest)
-  const order = ['7', '12', '9', '11'];
+  // Sort (priority order: Personal → New Website → W3Schools → TikTok → Chinese For All → rest)
+  const order = ['7', '13', '12', '9', '11'];
   const sortFn = (a, b) => {
     const ia = order.indexOf(a.id), ib = order.indexOf(b.id);
     if (ia !== -1 && ib !== -1) return ia - ib;
@@ -619,7 +745,7 @@ function render() {
   filtered.sort(sortFn);
 
   // Stats
-  document.getElementById('totalCount').textContent = links.length;
+  document.getElementById('totalCount').textContent = allLinks.length;
   document.getElementById('categoryCount').textContent = getCategoryCount();
   document.getElementById('favCount').textContent = getFavCount();
   document.getElementById('newestLabel').textContent = getNewestTitle();
@@ -642,8 +768,10 @@ function render() {
     const dateStr = new Date(link.createdAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
     const isProtected = !!(link.linkPassword && link.linkPassword.trim());
     const lockBadge = isProtected ? `<span class="lock-badge"><i class="fas fa-lock"></i> Protected</span>` : '';
-    const isPersonal = link.id === PERSONAL_ID;
+    const isPersonal = link.id === PERSONAL_ID || link.id === '13';
     const personalBadge = isPersonal ? `<span class="personal-badge"><i class="fas fa-star"></i> Personal</span>` : '';
+    const isHidden = link.id && link.id.startsWith('h');
+    const hiddenBadge = isHidden && hiddenLinksVisible ? `<span class="hidden-badge"><i class="fas fa-eye"></i> Hidden</span>` : '';
     const isVideo = link.url && (link.url.includes('youtube') || link.url.includes('tiktok') || link.url.includes('video'));
     const downloadBtn = isVideo ? `
       <button onclick="event.stopPropagation(); showDownloadModal()" class="download-badge" title="Download Video">
@@ -652,7 +780,7 @@ function render() {
     ` : '';
 
     return `
-      <div class="glass rounded-xl p-2.5 card dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/40 dark:border-yellow-400/20' : ''} card-enter" style="animation-delay:${Math.min(i*0.02,0.2)}s" onclick="handleLinkClick('${link.id}')">
+      <div class="glass rounded-xl p-2.5 card dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/40 dark:border-yellow-400/20' : ''} ${isHidden ? 'border-2 border-purple-500/40 dark:border-purple-500/20' : ''} card-enter" style="animation-delay:${Math.min(i*0.02,0.2)}s" onclick="handleLinkClick('${link.id}')">
         <div class="flex items-start justify-between">
           <div class="flex items-center gap-1.5 min-w-0">
             <div class="icon-bg"><i class="${icon}"></i></div>
@@ -662,6 +790,7 @@ function render() {
             </div>
           </div>
           <div class="flex items-center gap-0.5 flex-shrink-0">
+            ${hiddenBadge}
             ${personalBadge}
             ${lockBadge}
             <i class="fas fa-star ${favStar} text-[0.5rem]"></i>
@@ -688,7 +817,8 @@ function render() {
 //  HANDLERS
 // ============================================================
 function handleLinkClick(id) {
-  const link = links.find(l => l.id === id);
+  const allLinks = hiddenLinksVisible ? [...links, ...hiddenLinks] : links;
+  const link = allLinks.find(l => l.id === id);
   if (!link) return;
   if (link.linkPassword && link.linkPassword.trim()) {
     showLinkPasswordModal(link);
@@ -726,8 +856,10 @@ document.getElementById('searchInput').addEventListener('input', render);
 document.getElementById('categoryFilter').addEventListener('change', render);
 document.getElementById('sortFilter').addEventListener('change', render);
 document.getElementById('linkPasswordModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLinkPasswordModal(); });
+document.getElementById('hiddenPasswordModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeHiddenPasswordModal(); });
 document.getElementById('downloadModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeDownloadModal(); });
 document.getElementById('linkPasswordInput').addEventListener('keydown', e => { if (e.key === 'Enter') verifyLinkPassword(); });
+document.getElementById('hiddenPasswordInput').addEventListener('keydown', e => { if (e.key === 'Enter') verifyHiddenPassword(); });
 
 // ============================================================
 //  START
