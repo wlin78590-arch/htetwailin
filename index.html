@@ -4,16 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Pro H · Read Only</title>
-  <meta name="description" content="Pro H - Read-only link hub for personal and hidden links">
-  <!-- Preconnect for faster CDN loading -->
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" />
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <style>
     /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #f0f4ff;
@@ -70,11 +66,11 @@
       border-color: rgba(79,131,255,0.15);
     }
     .card-enter {
-      animation: cardSlide 0.25s ease forwards;
+      animation: cardSlide 0.2s ease forwards;
       opacity: 0;
     }
     @keyframes cardSlide {
-      from { opacity:0; transform:translateY(12px) scale(0.97); }
+      from { opacity:0; transform:translateY(10px) scale(0.98); }
       to { opacity:1; transform:translateY(0) scale(1); }
     }
 
@@ -199,7 +195,7 @@
     }
     .download-badge:active { transform: scale(0.94); }
 
-    /* ===== BUTTONS ===== */
+    /* ===== HIDDEN / VAULT TOGGLE BUTTONS ===== */
     .hidden-toggle-btn {
       background: linear-gradient(135deg, #8b5cf6, #6d28d9);
       color: white;
@@ -215,11 +211,15 @@
       gap: 4px;
     }
     .hidden-toggle-btn:active { transform: scale(0.94); }
-    .hidden-toggle-btn:hover { box-shadow: 0 4px 16px rgba(139,92,246,0.4); }
+    .hidden-toggle-btn:hover {
+      box-shadow: 0 4px 16px rgba(139,92,246,0.4);
+    }
     .hidden-toggle-btn.active {
       background: linear-gradient(135deg, #ef4444, #dc2626);
     }
-    .hidden-toggle-btn.active:hover { box-shadow: 0 4px 16px rgba(239,68,68,0.4); }
+    .hidden-toggle-btn.active:hover {
+      box-shadow: 0 4px 16px rgba(239,68,68,0.4);
+    }
     .vault-toggle-btn {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: white;
@@ -235,11 +235,15 @@
       gap: 4px;
     }
     .vault-toggle-btn:active { transform: scale(0.94); }
-    .vault-toggle-btn:hover { box-shadow: 0 4px 16px rgba(245,158,11,0.4); }
+    .vault-toggle-btn:hover {
+      box-shadow: 0 4px 16px rgba(245,158,11,0.4);
+    }
     .vault-toggle-btn.active {
       background: linear-gradient(135deg, #ef4444, #dc2626);
     }
-    .vault-toggle-btn.active:hover { box-shadow: 0 4px 16px rgba(239,68,68,0.4); }
+    .vault-toggle-btn.active:hover {
+      box-shadow: 0 4px 16px rgba(239,68,68,0.4);
+    }
 
     /* ===== INPUTS ===== */
     input, select {
@@ -270,7 +274,11 @@
     .dark input::placeholder { color: #5a6a8a; }
 
     /* ===== STATS ===== */
-    .stat-number { font-size: 1.6rem; font-weight: 700; line-height: 1.2; }
+    .stat-number {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
     @media (min-width: 640px) { .stat-number { font-size: 2rem; } }
 
     /* ===== BRAND ===== */
@@ -356,9 +364,11 @@
       <span class="readonly-badge text-xs">📖 Read Only</span>
     </div>
     <div class="flex items-center gap-1.5 flex-wrap">
+      <!-- Hidden Links Toggle Button (admin123) -->
       <button onclick="toggleHiddenLinks()" id="hiddenToggleBtn" class="hidden-toggle-btn">
         <i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>
       </button>
+      <!-- Secret Vault Toggle Button (Zxcv123) -->
       <button onclick="toggleVaultLinks()" id="vaultToggleBtn" class="vault-toggle-btn">
         <i class="fas fa-vault"></i> <span id="vaultBtnText">Vault</span>
       </button>
@@ -402,7 +412,7 @@
       <input type="text" id="searchInput" placeholder="Search links..." class="pl-7 pr-2 py-1.5 rounded-lg w-full border-0 bg-white/30 dark:bg-black/20 text-sm dark:text-white dark:placeholder-gray-500 focus:ring-0">
     </div>
     <select id="categoryFilter" class="w-auto min-w-[90px] py-1.5 rounded-lg border-0 bg-white/30 dark:bg-black/20 text-sm dark:text-white appearance-none cursor-pointer">
-      <option value="all">All Categories</option>
+      <option value="all">All cats</option>
     </select>
     <select id="sortFilter" class="w-auto min-w-[80px] py-1.5 rounded-lg border-0 bg-white/30 dark:bg-black/20 text-sm dark:text-white appearance-none cursor-pointer">
       <option value="newest">Newest</option>
@@ -429,7 +439,7 @@
   </div>
 </div>
 
-<!-- ===== MODALS ===== -->
+<!-- ===== PASSWORD MODAL (for individual links) ===== -->
 <div id="linkPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
   <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
     <div class="text-center mb-3">
@@ -448,6 +458,7 @@
   </div>
 </div>
 
+<!-- ===== HIDDEN LINKS PASSWORD MODAL (admin123) ===== -->
 <div id="hiddenPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
   <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
     <div class="text-center mb-3">
@@ -466,6 +477,7 @@
   </div>
 </div>
 
+<!-- ===== VAULT LINKS PASSWORD MODAL (Zxcv123) ===== -->
 <div id="vaultPasswordModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
   <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
     <div class="text-center mb-3">
@@ -484,6 +496,7 @@
   </div>
 </div>
 
+<!-- ===== DOWNLOAD MODAL ===== -->
 <div id="downloadModal" class="fixed inset-0 flex items-center justify-center p-4 modal-overlay hidden">
   <div class="glass rounded-xl max-w-xs w-full p-4 dark:glass-dark">
     <div class="text-center mb-3">
@@ -527,24 +540,25 @@ let vaultLinksVisible = false;
 // Hidden links (password: admin123)
 const hiddenLinks = [
   { id: 'h1', title: '🔥 telegram video', url: 'https://t.me/myanmarvideohd', description: 'Confidential internal project', category: 'Hidden', tags: ['secret', 'internal', 'project'], favorite: true, icon: 'fas fa-fire', linkPassword: '', createdAt: Date.now() - 1000 },
-  { id: 'h2', title: '📁 internet Tools', url: '', description: 'Company internal tools dashboard', category: 'Hidden', tags: ['internal', 'tools', 'work'], favorite: true, icon: 'fas fa-folder-open', linkPassword: '', createdAt: Date.now() - 800 },
+  { id: 'h2', title: '📁 internet Tools', url: 'https://www.buumal.com/', description: 'Company internal tools dashboard', category: 'Hidden', tags: ['internal', 'tools', 'work'], favorite: true, icon: 'fas fa-folder-open', linkPassword: '', createdAt: Date.now() - 800 },
   { id: 'h3', title: '🚀 Premium Resources', url: 'https://premium-resources.example.com', description: 'Exclusive premium content', category: 'Hidden', tags: ['premium', 'exclusive', 'resources'], favorite: true, icon: 'fas fa-gem', linkPassword: '', createdAt: Date.now() - 500 }
 ];
 
-// Vault links (password: Zxcv123) — fixed URL for v1
+// Vault links (password: Zxcv123) — 3 new websites
 const vaultLinks = [
-  { id: 'v1', title: '🏛️ Myanmar Video', url: 'https://www.youtube.com/@myanmarmedia', description: 'Myanmar video content and entertainment', category: 'Vault', tags: ['myanmar', 'video', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: 'Zxcv123', createdAt: Date.now() - 200 },
+  { id: 'v1', title: '🏛️ Myanmar video', url: '', description: 'Digital archive of rare manuscripts', category: 'Vault', tags: ['archive', 'rare', 'history'], favorite: true, icon: 'fas fa-landmark', linkPassword: 'Zxcv123', createdAt: Date.now() - 200 },
   { id: 'v2', title: '🔬 Quantum Lab', url: 'https://quantum-lab.example.net', description: 'Cutting-edge quantum computing research', category: 'Vault', tags: ['quantum', 'science', 'lab'], favorite: true, icon: 'fas fa-atom', linkPassword: 'Zxcv123', createdAt: Date.now() - 150 },
   { id: 'v3', title: '🌌 Star Atlas', url: 'https://star-atlas.example.org', description: 'Interactive 3D map of the known universe', category: 'Vault', tags: ['space', 'astronomy', '3d'], favorite: true, icon: 'fas fa-rocket', linkPassword: 'Zxcv123', createdAt: Date.now() - 100 }
 ];
 
 // ============================================================
-//  TOGGLE FUNCTIONS
+//  HIDDEN LINKS TOGGLE (admin123)
 // ============================================================
 function toggleHiddenLinks() {
   if (hiddenLinksVisible) {
     hiddenLinksVisible = false;
     document.getElementById('hiddenToggleBtn').classList.remove('active');
+    document.getElementById('hiddenBtnText').textContent = 'Hidden';
     document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>';
     render();
     showToast('🔒 Hidden links hidden');
@@ -555,9 +569,12 @@ function toggleHiddenLinks() {
     setTimeout(() => document.getElementById('hiddenPasswordInput').focus(), 80);
   }
 }
-function closeHiddenPasswordModal() { document.getElementById('hiddenPasswordModal').classList.add('hidden'); }
+function closeHiddenPasswordModal() {
+  document.getElementById('hiddenPasswordModal').classList.add('hidden');
+}
 function verifyHiddenPassword() {
-  if (document.getElementById('hiddenPasswordInput').value === HIDDEN_PASSWORD) {
+  const input = document.getElementById('hiddenPasswordInput').value;
+  if (input === HIDDEN_PASSWORD) {
     hiddenLinksVisible = true;
     document.getElementById('hiddenToggleBtn').classList.add('active');
     document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye-slash"></i> <span id="hiddenBtnText">Hide</span>';
@@ -571,10 +588,14 @@ function verifyHiddenPassword() {
   }
 }
 
+// ============================================================
+//  VAULT LINKS TOGGLE (Zxcv123)
+// ============================================================
 function toggleVaultLinks() {
   if (vaultLinksVisible) {
     vaultLinksVisible = false;
     document.getElementById('vaultToggleBtn').classList.remove('active');
+    document.getElementById('vaultBtnText').textContent = 'Vault';
     document.getElementById('vaultToggleBtn').innerHTML = '<i class="fas fa-vault"></i> <span id="vaultBtnText">Vault</span>';
     render();
     showToast('🔒 Vault hidden');
@@ -585,9 +606,12 @@ function toggleVaultLinks() {
     setTimeout(() => document.getElementById('vaultPasswordInput').focus(), 80);
   }
 }
-function closeVaultPasswordModal() { document.getElementById('vaultPasswordModal').classList.add('hidden'); }
+function closeVaultPasswordModal() {
+  document.getElementById('vaultPasswordModal').classList.add('hidden');
+}
 function verifyVaultPassword() {
-  if (document.getElementById('vaultPasswordInput').value === VAULT_PASSWORD) {
+  const input = document.getElementById('vaultPasswordInput').value;
+  if (input === VAULT_PASSWORD) {
     vaultLinksVisible = true;
     document.getElementById('vaultToggleBtn').classList.add('active');
     document.getElementById('vaultToggleBtn').innerHTML = '<i class="fas fa-vault"></i> <span id="vaultBtnText">Hide Vault</span>';
@@ -627,15 +651,16 @@ function showLinkPasswordModal(link) {
   pendingLink = link;
   document.getElementById('linkPasswordModal').classList.remove('hidden');
   document.getElementById('linkPasswordInput').value = '';
-  document.getElementById('linkPasswordError').classList.add('hidden');
   setTimeout(() => document.getElementById('linkPasswordInput').focus(), 80);
+  document.getElementById('linkPasswordError').classList.add('hidden');
 }
 function closeLinkPasswordModal() {
   document.getElementById('linkPasswordModal').classList.add('hidden');
   pendingLink = null;
 }
 function verifyLinkPassword() {
-  if (pendingLink && document.getElementById('linkPasswordInput').value === pendingLink.linkPassword) {
+  const input = document.getElementById('linkPasswordInput').value;
+  if (pendingLink && input === pendingLink.linkPassword) {
     window.open(pendingLink.url, '_blank');
     closeLinkPasswordModal();
     pendingLink = null;
@@ -655,7 +680,9 @@ function showDownloadModal() {
   document.getElementById('downloadResult').classList.add('hidden');
   setTimeout(() => document.getElementById('downloadUrlInput').focus(), 80);
 }
-function closeDownloadModal() { document.getElementById('downloadModal').classList.add('hidden'); }
+function closeDownloadModal() {
+  document.getElementById('downloadModal').classList.add('hidden');
+}
 function downloadVideo(format) {
   const url = document.getElementById('downloadUrlInput').value.trim();
   const resultEl = document.getElementById('downloadResult');
@@ -668,9 +695,15 @@ function downloadVideo(format) {
   resultEl.classList.remove('hidden');
   resultEl.innerHTML = '⏳ Opening...';
   resultEl.className = 'mt-2 text-xs text-center text-blue-500';
+
   const encoded = encodeURIComponent(url);
-  window.open(format === 'mp3' ? `https://ytmp3.cc/en68/search?q=${encoded}` : `https://savefrom.net/?url=${encoded}`, '_blank');
-  resultEl.innerHTML = format === 'mp3' ? '✅ Opening YTMP3.cc for MP3' : '✅ Opening SaveFrom.net for MP4';
+  const dlUrl = format === 'mp3'
+    ? `https://ytmp3.cc/en68/search?q=${encoded}`
+    : `https://savefrom.net/?url=${encoded}`;
+  window.open(dlUrl, '_blank');
+  resultEl.innerHTML = format === 'mp3'
+    ? '✅ Opening YTMP3.cc for MP3'
+    : '✅ Opening SaveFrom.net for MP4';
   resultEl.className = 'mt-2 text-xs text-center text-green-500';
   setTimeout(closeDownloadModal, 1400);
 }
@@ -692,17 +725,28 @@ function showToast(msg) {
 function loadLinks() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) { const parsed = JSON.parse(raw); if (Array.isArray(parsed) && parsed.length) links = parsed; else { links = getDefaultLinks(); saveLinks(); } }
-    else { links = getDefaultLinks(); saveLinks(); }
-  } catch (e) { links = getDefaultLinks(); saveLinks(); }
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length) links = parsed;
+      else { links = getDefaultLinks(); saveLinks(); }
+    } else {
+      links = getDefaultLinks();
+      saveLinks();
+    }
+  } catch (e) {
+    links = getDefaultLinks();
+    saveLinks();
+  }
   document.getElementById('loadingState').classList.add('hidden');
   document.getElementById('linkGrid').classList.remove('hidden');
   render();
 }
-function saveLinks() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(links)); } catch (e) {} }
+function saveLinks() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(links)); } catch (e) {}
+}
 
 // ============================================================
-//  DEFAULT LINKS
+//  DEFAULT LINKS (removed 'My New Website')
 // ============================================================
 function getDefaultLinks() {
   return [
@@ -713,7 +757,7 @@ function getDefaultLinks() {
     { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI assistant for conversations & coding', category: 'AI Tools', tags: ['ai', 'chat', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
     { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress', category: 'Documents', tags: ['pdf', 'tools', 'office'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
     { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming & highlights', category: 'Sports', tags: ['sports', 'live', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
-    { id: '6', title: '💼 Free', url: '', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
+    { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
     { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant', category: 'AI Tools', tags: ['ai', 'google', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
     { id: '11', title: '🇨🇳 Chinese For All', url: 'https://www.youtube.com/@chineseforall-saihsaikham7440', description: 'Learn Chinese with Sai Hsaikham', category: 'Education', tags: ['chinese', 'learning', 'language'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 100 }
   ];
@@ -722,6 +766,25 @@ function getDefaultLinks() {
 // ============================================================
 //  HELPERS
 // ============================================================
+function getCategoryCount() {
+  let allLinks = [...links];
+  if (hiddenLinksVisible) allLinks = [...allLinks, ...hiddenLinks];
+  if (vaultLinksVisible) allLinks = [...allLinks, ...vaultLinks];
+  return new Set(allLinks.map(l => l.category || 'Uncategorized')).size;
+}
+function getFavCount() {
+  let allLinks = [...links];
+  if (hiddenLinksVisible) allLinks = [...allLinks, ...hiddenLinks];
+  if (vaultLinksVisible) allLinks = [...allLinks, ...vaultLinks];
+  return allLinks.filter(l => l.favorite).length;
+}
+function getNewestTitle() {
+  let allLinks = [...links];
+  if (hiddenLinksVisible) allLinks = [...allLinks, ...hiddenLinks];
+  if (vaultLinksVisible) allLinks = [...allLinks, ...vaultLinks];
+  if (!allLinks.length) return '—';
+  return [...allLinks].sort((a,b) => b.createdAt - a.createdAt)[0]?.title || '—';
+}
 function getPlatformIcon(url, iconOverride) {
   if (iconOverride && iconOverride.trim()) return iconOverride.trim();
   if (!url) return 'fas fa-globe';
@@ -734,6 +797,7 @@ function getPlatformIcon(url, iconOverride) {
   if (u.includes('ilovepdf')) return 'fas fa-file-pdf';
   if (u.includes('livesports808')) return 'fas fa-futbol';
   if (u.includes('lovable')) return 'fas fa-heart';
+  if (u.includes('example.com')) return 'fas fa-globe';
   return 'fas fa-link';
 }
 
@@ -745,15 +809,17 @@ function render() {
   const categoryFilter = document.getElementById('categoryFilter').value;
   const sortVal = document.getElementById('sortFilter').value;
 
+  // Get all links
   let allLinks = [...links];
   if (hiddenLinksVisible) allLinks = [...allLinks, ...hiddenLinks];
   if (vaultLinksVisible) allLinks = [...allLinks, ...vaultLinks];
 
+  // Update category dropdown
   const catSet = new Set();
   allLinks.forEach(l => { if (l.category) catSet.add(l.category); });
   const catSelect = document.getElementById('categoryFilter');
   const currentCat = catSelect.value;
-  catSelect.innerHTML = '<option value="all">All Categories</option>';
+  catSelect.innerHTML = '<option value="all">All cats</option>';
   [...catSet].sort().forEach(c => {
     const opt = document.createElement('option');
     opt.value = c;
@@ -763,6 +829,7 @@ function render() {
   if ([...catSet].includes(currentCat)) catSelect.value = currentCat;
   else catSelect.value = 'all';
 
+  // Filter
   let filtered = allLinks.filter(link => {
     const matchSearch = link.title.toLowerCase().includes(search) ||
                        (link.tags && link.tags.some(t => t.toLowerCase().includes(search))) ||
@@ -771,8 +838,9 @@ function render() {
     return matchSearch && matchCategory;
   });
 
+  // Sort
   const order = ['7', '12', '9', '11'];
-  filtered.sort((a, b) => {
+  const sortFn = (a, b) => {
     const ia = order.indexOf(a.id), ib = order.indexOf(b.id);
     if (ia !== -1 && ib !== -1) return ia - ib;
     if (ia !== -1) return -1;
@@ -781,18 +849,26 @@ function render() {
     if (sortVal === 'oldest') return a.createdAt - b.createdAt;
     if (sortVal === 'alpha') return a.title.localeCompare(b.title);
     return b.createdAt - a.createdAt;
-  });
+  };
+  filtered.sort(sortFn);
 
+  // Stats
   document.getElementById('totalCount').textContent = allLinks.length;
-  document.getElementById('categoryCount').textContent = new Set(allLinks.map(l => l.category || 'Uncategorized')).size;
-  document.getElementById('favCount').textContent = allLinks.filter(l => l.favorite).length;
-  document.getElementById('newestLabel').textContent = allLinks.length ? [...allLinks].sort((a,b) => b.createdAt - a.createdAt)[0]?.title || '—' : '—';
+  document.getElementById('categoryCount').textContent = getCategoryCount();
+  document.getElementById('favCount').textContent = getFavCount();
+  document.getElementById('newestLabel').textContent = getNewestTitle();
 
   const grid = document.getElementById('linkGrid');
   const empty = document.getElementById('emptyState');
-  if (!filtered.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
   empty.classList.add('hidden');
 
+  // Build cards
   grid.innerHTML = filtered.map((link, i) => {
     const icon = getPlatformIcon(link.url, link.icon);
     const favStar = link.favorite ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600';
@@ -807,23 +883,44 @@ function render() {
     const isVault = link.id && link.id.startsWith('v');
     const vaultBadge = isVault && vaultLinksVisible ? `<span class="vault-badge"><i class="fas fa-vault"></i> Vault</span>` : '';
     const isVideo = link.url && (link.url.includes('youtube') || link.url.includes('tiktok') || link.url.includes('video'));
-    const downloadBtn = isVideo ? `<button onclick="event.stopPropagation(); showDownloadModal()" class="download-badge" title="Download Video"><i class="fas fa-download"></i> Download</button>` : '';
+    const downloadBtn = isVideo ? `
+      <button onclick="event.stopPropagation(); showDownloadModal()" class="download-badge" title="Download Video">
+        <i class="fas fa-download"></i> Download
+      </button>
+    ` : '';
 
-    return `<div class="glass rounded-xl p-2.5 card dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/40 dark:border-yellow-400/20' : ''} ${isHidden ? 'border-2 border-purple-500/40 dark:border-purple-500/20' : ''} ${isVault ? 'border-2 border-amber-500/40 dark:border-amber-500/20' : ''} card-enter" style="animation-delay:${Math.min(i*0.02,0.2)}s" onclick="handleLinkClick('${link.id}')">
+    return `
+      <div class="glass rounded-xl p-2.5 card dark:glass-dark flex flex-col ${isPersonal ? 'border-2 border-yellow-400/40 dark:border-yellow-400/20' : ''} ${isHidden ? 'border-2 border-purple-500/40 dark:border-purple-500/20' : ''} ${isVault ? 'border-2 border-amber-500/40 dark:border-amber-500/20' : ''} card-enter" style="animation-delay:${Math.min(i*0.02,0.2)}s" onclick="handleLinkClick('${link.id}')">
         <div class="flex items-start justify-between">
           <div class="flex items-center gap-1.5 min-w-0">
             <div class="icon-bg"><i class="${icon}"></i></div>
-            <div class="min-w-0"><h4 class="font-semibold text-gray-800 dark:text-white text-sm truncate">${link.title}</h4><span class="text-[0.5rem] text-gray-400 dark:text-gray-500">${link.category || 'Uncategorized'}</span></div>
+            <div class="min-w-0">
+              <h4 class="font-semibold text-gray-800 dark:text-white text-sm truncate">${link.title}</h4>
+              <span class="text-[0.5rem] text-gray-400 dark:text-gray-500">${link.category || 'Uncategorized'}</span>
+            </div>
           </div>
-          <div class="flex items-center gap-0.5 flex-shrink-0">${hiddenBadge}${vaultBadge}${personalBadge}${lockBadge}<i class="fas fa-star ${favStar} text-[0.5rem]"></i></div>
+          <div class="flex items-center gap-0.5 flex-shrink-0">
+            ${hiddenBadge}
+            ${vaultBadge}
+            ${personalBadge}
+            ${lockBadge}
+            <i class="fas fa-star ${favStar} text-[0.5rem]"></i>
+          </div>
         </div>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${link.description || 'No description'}</p>
         <div class="flex flex-wrap gap-0.5 mt-1">${tagsHtml}</div>
         <div class="flex items-center justify-between mt-1.5 text-[0.5rem] text-gray-400 dark:text-gray-500">
           <span><i class="far fa-calendar-alt mr-0.5"></i>${dateStr}</span>
-          <div class="flex gap-1 items-center">${downloadBtn}<button onclick="event.stopPropagation(); copyLink('${link.url}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="Copy"><i class="fas fa-copy"></i></button><button onclick="event.stopPropagation(); handleLinkClick('${link.id}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="${isProtected ? '🔒 Unlock' : 'Open'}"><i class="${isProtected ? 'fas fa-lock' : 'fas fa-external-link-alt'}"></i></button></div>
+          <div class="flex gap-1 items-center">
+            ${downloadBtn}
+            <button onclick="event.stopPropagation(); copyLink('${link.url}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="Copy"><i class="fas fa-copy"></i></button>
+            <button onclick="event.stopPropagation(); handleLinkClick('${link.id}')" class="hover:text-blue-500 dark:hover:text-blue-400 p-0.5 transition-colors" title="${isProtected ? '🔒 Unlock' : 'Open'}">
+              <i class="${isProtected ? 'fas fa-lock' : 'fas fa-external-link-alt'}"></i>
+            </button>
+          </div>
         </div>
-      </div>`;
+      </div>
+    `;
   }).join('');
 }
 
@@ -836,8 +933,11 @@ function handleLinkClick(id) {
   if (vaultLinksVisible) allLinks = [...allLinks, ...vaultLinks];
   const link = allLinks.find(l => l.id === id);
   if (!link) return;
-  if (link.linkPassword && link.linkPassword.trim()) { showLinkPasswordModal(link); }
-  else { window.open(link.url, '_blank'); }
+  if (link.linkPassword && link.linkPassword.trim()) {
+    showLinkPasswordModal(link);
+  } else {
+    window.open(link.url, '_blank');
+  }
 }
 function copyLink(url) {
   navigator.clipboard.writeText(url).then(() => showToast('✅ Copied!')).catch(() => prompt('Copy URL:', url));
