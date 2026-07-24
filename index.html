@@ -341,6 +341,37 @@
     }
     .download-option-btn:active { transform: scale(0.96); }
 
+    /* ===== LANGUAGE SWITCHER ===== */
+    .lang-btn {
+      background: rgba(79,124,255,0.08);
+      padding: 3px 10px;
+      border-radius: 16px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      border: 1px solid rgba(79,124,255,0.1);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: #4f7cff;
+    }
+    .dark .lang-btn {
+      background: rgba(79,124,255,0.12);
+      color: #8aadff;
+      border-color: rgba(79,124,255,0.08);
+    }
+    .lang-btn:hover {
+      background: rgba(79,124,255,0.18);
+      transform: scale(1.02);
+    }
+    .lang-btn.active {
+      background: linear-gradient(135deg, #4f7cff, #6d28d9);
+      color: white;
+      border-color: #4f7cff;
+    }
+    .dark .lang-btn.active {
+      background: linear-gradient(135deg, #4f7cff, #6d28d9);
+      color: white;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 480px) {
       body { padding: 8px; }
@@ -350,6 +381,10 @@
       input, select { font-size: 0.8rem; padding: 0.3rem 0.6rem; }
       .hidden-toggle-btn, .vault-toggle-btn { font-size: 0.6rem; padding: 3px 10px; }
     }
+
+    /* ===== FONTS FOR MYANMAR & CHINESE ===== */
+    .myanmar-text { font-family: 'Pyidaungsu', 'Noto Sans Myanmar', 'Myanmar Text', sans-serif; }
+    .chinese-text { font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
   </style>
 </head>
 <body>
@@ -364,6 +399,10 @@
       <span class="readonly-badge text-xs">📖 Read Only</span>
     </div>
     <div class="flex items-center gap-1.5 flex-wrap">
+      <!-- Language Switcher -->
+      <button onclick="setLanguage('en')" class="lang-btn active" id="langEn">🇬🇧 EN</button>
+      <button onclick="setLanguage('my')" class="lang-btn" id="langMy">🇲🇲 မြန်မာ</button>
+      <button onclick="setLanguage('zh')" class="lang-btn" id="langZh">🇨🇳 中文</button>
       <!-- Hidden Links Toggle Button (admin123) -->
       <button onclick="toggleHiddenLinks()" id="hiddenToggleBtn" class="hidden-toggle-btn">
         <i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>
@@ -388,19 +427,19 @@
   <!-- ===== STATS ===== -->
   <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
     <div class="glass rounded-xl p-2.5 card card-enter" style="animation-delay:0.02s">
-      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-link text-blue-400 text-xs"></i> Total</div>
+      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-link text-blue-400 text-xs"></i> <span class="stat-label" data-key="total">Total</span></div>
       <div class="stat-number text-gray-800 dark:text-white" id="totalCount">0</div>
     </div>
     <div class="glass rounded-xl p-2.5 card card-enter" style="animation-delay:0.04s">
-      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-tags text-indigo-400 text-xs"></i> Categories</div>
+      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-tags text-indigo-400 text-xs"></i> <span class="stat-label" data-key="categories">Categories</span></div>
       <div class="stat-number text-gray-800 dark:text-white" id="categoryCount">0</div>
     </div>
     <div class="glass rounded-xl p-2.5 card card-enter" style="animation-delay:0.06s">
-      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-star text-yellow-400 text-xs"></i> Favorites</div>
+      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-star text-yellow-400 text-xs"></i> <span class="stat-label" data-key="favorites">Favorites</span></div>
       <div class="stat-number text-gray-800 dark:text-white" id="favCount">0</div>
     </div>
     <div class="glass rounded-xl p-2.5 card card-enter" style="animation-delay:0.08s">
-      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-clock text-purple-400 text-xs"></i> Newest</div>
+      <div class="text-[0.6rem] text-gray-500 dark:text-gray-400 flex items-center gap-1"><i class="fas fa-clock text-purple-400 text-xs"></i> <span class="stat-label" data-key="newest">Newest</span></div>
       <div class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate" id="newestLabel">—</div>
     </div>
   </div>
@@ -420,7 +459,7 @@
       <option value="alpha">A–Z</option>
     </select>
     <button onclick="clearFilters()" class="text-[0.6rem] text-gray-400 hover:text-blue-500 dark:text-gray-500 dark:hover:text-blue-400 px-2 py-1 transition-colors">
-      <i class="fas fa-times"></i> Reset
+      <i class="fas fa-times"></i> <span class="filter-label" data-key="reset">Reset</span>
     </button>
   </div>
 
@@ -429,13 +468,13 @@
   <div id="linkGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 hidden"></div>
   <div id="emptyState" class="glass rounded-xl p-6 text-center mt-3 hidden dark:glass-dark card-enter">
     <i class="fas fa-link text-2xl text-blue-300/40 dark:text-blue-400/20 mb-1"></i>
-    <p class="text-gray-500 dark:text-gray-400 text-sm">No links found.</p>
+    <p class="text-gray-500 dark:text-gray-400 text-sm empty-label" data-key="noLinks">No links found.</p>
   </div>
 
   <!-- ===== FOOTER ===== -->
   <div class="text-center text-[0.5rem] text-gray-400 dark:text-gray-600 mt-4 pb-2">
     <i class="fas fa-shield-alt text-yellow-400 mr-0.5"></i>
-    Read-only link hub · No edits allowed
+    <span class="footer-label" data-key="footer">Read-only link hub · No edits allowed</span>
   </div>
 </div>
 
@@ -446,13 +485,13 @@
       <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-2">
         <i class="fas fa-lock text-xl text-red-400"></i>
       </div>
-      <h3 class="text-base font-bold text-gray-800 dark:text-white">Protected Link</h3>
-      <p class="text-xs text-gray-500 dark:text-gray-400">Enter password to access</p>
+      <h3 class="text-base font-bold text-gray-800 dark:text-white modal-title" data-key="protectedLink">Protected Link</h3>
+      <p class="text-xs text-gray-500 dark:text-gray-400 modal-sub" data-key="enterPassword">Enter password to access</p>
     </div>
     <input type="password" id="linkPasswordInput" placeholder="Enter password..." class="rounded-lg mb-2 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyLinkPassword()">
     <div class="flex gap-2">
-      <button onclick="closeLinkPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
-      <button onclick="verifyLinkPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-800 font-semibold text-sm transition-transform active:scale-95">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
+      <button onclick="closeLinkPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors btn-cancel" data-key="cancel">Cancel</button>
+      <button onclick="verifyLinkPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-800 font-semibold text-sm transition-transform active:scale-95 btn-unlock" data-key="unlock">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
     </div>
     <div id="linkPasswordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password!</div>
   </div>
@@ -465,13 +504,13 @@
       <div class="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center mx-auto mb-2">
         <i class="fas fa-eye-slash text-xl text-purple-400"></i>
       </div>
-      <h3 class="text-base font-bold text-gray-800 dark:text-white">🔐 Hidden Links</h3>
-      <p class="text-xs text-gray-500 dark:text-gray-400">Enter password to reveal hidden links</p>
+      <h3 class="text-base font-bold text-gray-800 dark:text-white">🔐 <span class="modal-title" data-key="hiddenLinks">Hidden Links</span></h3>
+      <p class="text-xs text-gray-500 dark:text-gray-400 modal-sub" data-key="enterHiddenPassword">Enter password to reveal hidden links</p>
     </div>
     <input type="password" id="hiddenPasswordInput" placeholder="Enter password..." class="rounded-lg mb-2 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyHiddenPassword()">
     <div class="flex gap-2">
-      <button onclick="closeHiddenPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
-      <button onclick="verifyHiddenPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold text-sm transition-transform active:scale-95">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
+      <button onclick="closeHiddenPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors btn-cancel" data-key="cancel">Cancel</button>
+      <button onclick="verifyHiddenPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-semibold text-sm transition-transform active:scale-95 btn-unlock" data-key="unlock">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
     </div>
     <div id="hiddenPasswordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password!</div>
   </div>
@@ -484,13 +523,13 @@
       <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-2">
         <i class="fas fa-vault text-xl text-amber-400"></i>
       </div>
-      <h3 class="text-base font-bold text-gray-800 dark:text-white">🔐 Secret Vault</h3>
-      <p class="text-xs text-gray-500 dark:text-gray-400">Enter password to reveal vault links</p>
+      <h3 class="text-base font-bold text-gray-800 dark:text-white">🔐 <span class="modal-title" data-key="secretVault">Secret Vault</span></h3>
+      <p class="text-xs text-gray-500 dark:text-gray-400 modal-sub" data-key="enterVaultPassword">Enter password to reveal vault links</p>
     </div>
     <input type="password" id="vaultPasswordInput" placeholder="Enter password..." class="rounded-lg mb-2 text-sm dark:text-white" onkeydown="if(event.key==='Enter') verifyVaultPassword()">
     <div class="flex gap-2">
-      <button onclick="closeVaultPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
-      <button onclick="verifyVaultPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm transition-transform active:scale-95">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
+      <button onclick="closeVaultPasswordModal()" class="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors btn-cancel" data-key="cancel">Cancel</button>
+      <button onclick="verifyVaultPassword()" class="flex-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold text-sm transition-transform active:scale-95 btn-unlock" data-key="unlock">Unlock <i class="fas fa-unlock ml-0.5"></i></button>
     </div>
     <div id="vaultPasswordError" class="text-red-500 text-xs text-center mt-2 hidden">❌ Wrong password!</div>
   </div>
@@ -503,8 +542,8 @@
       <div class="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-2">
         <i class="fas fa-download text-xl text-green-400"></i>
       </div>
-      <h3 class="text-base font-bold text-gray-800 dark:text-white">Download</h3>
-      <p class="text-xs text-gray-500 dark:text-gray-400">YouTube URL &amp; choose format</p>
+      <h3 class="text-base font-bold text-gray-800 dark:text-white modal-title" data-key="download">Download</h3>
+      <p class="text-xs text-gray-500 dark:text-gray-400 modal-sub" data-key="downloadDesc">YouTube URL &amp; choose format</p>
     </div>
     <input type="text" id="downloadUrlInput" placeholder="https://youtube.com/..." class="rounded-lg mb-2 text-sm dark:text-white" onkeydown="if(event.key==='Enter') downloadVideo('mp3')">
     <div class="flex gap-2 mb-2">
@@ -515,7 +554,7 @@
         <i class="fas fa-video mr-1"></i> MP4
       </button>
     </div>
-    <button onclick="closeDownloadModal()" class="w-full px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+    <button onclick="closeDownloadModal()" class="w-full px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 dark:border-gray-600 dark:text-gray-300 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors btn-cancel" data-key="cancel">Cancel</button>
     <div id="downloadResult" class="mt-2 text-xs text-center text-gray-600 dark:text-gray-300 hidden"></div>
   </div>
 </div>
@@ -530,6 +569,140 @@ const HIDDEN_PASSWORD = 'admin123';
 const VAULT_PASSWORD = 'Zxcv123';
 
 // ============================================================
+//  TRANSLATIONS
+// ============================================================
+const translations = {
+  en: {
+    total: 'Total',
+    categories: 'Categories',
+    favorites: 'Favorites',
+    newest: 'Newest',
+    reset: 'Reset',
+    noLinks: 'No links found.',
+    footer: 'Read-only link hub · No edits allowed',
+    protectedLink: 'Protected Link',
+    enterPassword: 'Enter password to access',
+    cancel: 'Cancel',
+    unlock: 'Unlock',
+    hiddenLinks: 'Hidden Links',
+    enterHiddenPassword: 'Enter password to reveal hidden links',
+    secretVault: 'Secret Vault',
+    enterVaultPassword: 'Enter password to reveal vault links',
+    download: 'Download',
+    downloadDesc: 'YouTube URL & choose format',
+    searchPlaceholder: 'Search links...',
+    allCats: 'All cats',
+    newestSort: 'Newest',
+    oldestSort: 'Oldest',
+    alphaSort: 'A–Z',
+    hidden: 'Hidden',
+    hide: 'Hide',
+    vault: 'Vault',
+    hideVault: 'Hide Vault',
+    theme: 'Theme',
+    readOnly: 'Read Only',
+    resetBtn: 'Reset',
+    // Category names
+    catPersonal: 'Personal',
+    catEducation: 'Education',
+    catSocialMedia: 'Social Media',
+    catVideos: 'Videos',
+    catDocuments: 'Documents',
+    catSports: 'Sports',
+    catAITools: 'AI Tools',
+    catHealth: 'Health',
+    catHidden: 'Hidden',
+    catVault: 'Vault'
+  },
+  my: {
+    total: 'စုစုပေါင်း',
+    categories: 'အမျိုးအစားများ',
+    favorites: 'အကြိုက်ဆုံးများ',
+    newest: 'အသစ်ဆုံး',
+    reset: 'ပြန်လည်သတ်မှတ်ရန်',
+    noLinks: 'လင့်ခ်မတွေ့ပါ။',
+    footer: 'ဖတ်ရှုရန်သာ · ပြင်ဆင်ခွင့်မရှိပါ',
+    protectedLink: 'ကာကွယ်ထားသော လင့်ခ်',
+    enterPassword: 'ဝင်ရောက်ရန် စကားဝှက်ထည့်ပါ',
+    cancel: 'မလုပ်တော့ပါ',
+    unlock: 'ဖွင့်မည်',
+    hiddenLinks: 'ဝှက်ထားသော လင့်ခ်များ',
+    enterHiddenPassword: 'ဝှက်ထားသော လင့်ခ်များကိုဖွင့်ရန် စကားဝှက်ထည့်ပါ',
+    secretVault: 'လျှို့ဝှက်သိုလှောင်ခန်း',
+    enterVaultPassword: 'သိုလှောင်ခန်းကိုဖွင့်ရန် စကားဝှက်ထည့်ပါ',
+    download: 'ဒေါင်းလုဒ်',
+    downloadDesc: 'YouTube URL နှင့် ဖော်မတ်ရွေးပါ',
+    searchPlaceholder: 'လင့်ခ်ရှာရန်...',
+    allCats: 'အားလုံး',
+    newestSort: 'အသစ်ဆုံး',
+    oldestSort: 'အဟောင်းဆုံး',
+    alphaSort: 'A–Z',
+    hidden: 'ဝှက်',
+    hide: 'ဖျောက်',
+    vault: 'သိုလှောင်',
+    hideVault: 'သိုလှောင်ခန်းဖျောက်',
+    theme: 'အရောင်',
+    readOnly: 'ဖတ်ရန်သာ',
+    resetBtn: 'ပြန်လည်',
+    // Category names
+    catPersonal: 'ကိုယ်ပိုင်',
+    catEducation: 'ပညာရေး',
+    catSocialMedia: 'လူမှုကွန်ရက်',
+    catVideos: 'ဗီဒီယိုများ',
+    catDocuments: 'စာရွက်စာတမ်း',
+    catSports: 'အားကစား',
+    catAITools: 'AI ကိရိယာများ',
+    catHealth: 'ကျန်းမာရေး',
+    catHidden: 'ဝှက်',
+    catVault: 'သိုလှောင်'
+  },
+  zh: {
+    total: '总数',
+    categories: '分类',
+    favorites: '收藏',
+    newest: '最新',
+    reset: '重置',
+    noLinks: '未找到链接。',
+    footer: '只读链接中心 · 不可编辑',
+    protectedLink: '受保护的链接',
+    enterPassword: '输入密码以访问',
+    cancel: '取消',
+    unlock: '解锁',
+    hiddenLinks: '隐藏链接',
+    enterHiddenPassword: '输入密码以显示隐藏链接',
+    secretVault: '秘密保险库',
+    enterVaultPassword: '输入密码以显示保险库链接',
+    download: '下载',
+    downloadDesc: 'YouTube 网址并选择格式',
+    searchPlaceholder: '搜索链接...',
+    allCats: '全部分类',
+    newestSort: '最新',
+    oldestSort: '最旧',
+    alphaSort: 'A–Z',
+    hidden: '隐藏',
+    hide: '隐藏',
+    vault: '保险库',
+    hideVault: '隐藏保险库',
+    theme: '主题',
+    readOnly: '只读',
+    resetBtn: '重置',
+    // Category names
+    catPersonal: '个人',
+    catEducation: '教育',
+    catSocialMedia: '社交媒体',
+    catVideos: '视频',
+    catDocuments: '文档',
+    catSports: '体育',
+    catAITools: 'AI 工具',
+    catHealth: '健康',
+    catHidden: '隐藏',
+    catVault: '保险库'
+  }
+};
+
+let currentLang = 'en';
+
+// ============================================================
 //  DATA
 // ============================================================
 let links = [];
@@ -541,15 +714,86 @@ let vaultLinksVisible = false;
 const hiddenLinks = [
   { id: 'h1', title: '🔥 telegram video', url: 'https://t.me/myanmarvideohd', description: 'Confidential internal project', category: 'Hidden', tags: ['secret', 'internal', 'project'], favorite: true, icon: 'fas fa-fire', linkPassword: '', createdAt: Date.now() - 1000 },
   { id: 'h2', title: '📁 Myanmar video', url: 'https://www.buumal.com/', description: 'Company internal tools dashboard', category: 'Hidden', tags: ['internal', 'tools', 'work'], favorite: true, icon: 'fas fa-folder-open', linkPassword: '', createdAt: Date.now() - 800 },
-  { id: 'h3', title: '🚀 Premium Resources', url: 'https://premium-resources.example.com', description: 'Exclusive premium content', category: 'Hidden', tags: ['premium', 'exclusive', 'resources'], favorite: true, icon: 'fas fa-gem', linkPassword: '', createdAt: Date.now() - 500 }
+  { id: 'h3', title: '🚀 Premium ', url: '', description: 'Exclusive premium content', category: 'Hidden', tags: ['premium', 'exclusive', 'resources'], favorite: true, icon: 'fas fa-gem', linkPassword: '', createdAt: Date.now() - 500 }
 ];
 
-// Vault links (password: Zxcv123) — 3 new websites
+// Vault links (password: Zxcv123)
 const vaultLinks = [
-  { id: 'v1', title: '🏛️ Myanmar video', url: '', description: 'Digital archive of rare manuscripts', category: 'Vault', tags: ['archive', 'rare', 'history'], favorite: true, icon: 'fas fa-landmark', linkPassword: 'Zxcv123', createdAt: Date.now() - 200 },
-  { id: 'v2', title: '🔬 Quantum Lab', url: 'https://quantum-lab.example.net', description: 'Cutting-edge quantum computing research', category: 'Vault', tags: ['quantum', 'science', 'lab'], favorite: true, icon: 'fas fa-atom', linkPassword: 'Zxcv123', createdAt: Date.now() - 150 },
-  { id: 'v3', title: '🌌 Star Atlas', url: 'https://star-atlas.example.org', description: 'Interactive 3D map of the known universe', category: 'Vault', tags: ['space', 'astronomy', '3d'], favorite: true, icon: 'fas fa-rocket', linkPassword: 'Zxcv123', createdAt: Date.now() - 100 }
+  { id: 'v1', title: '🏛️ ProH link 1', url: '', description: 'Digital archive of rare manuscripts', category: 'Vault', tags: ['archive', 'rare', 'history'], favorite: true, icon: 'fas fa-landmark', linkPassword: 'Zxcv123', createdAt: Date.now() - 200 },
+  { id: 'v2', title: '🔬 ProH link 2', url: '', description: 'Cutting-edge quantum computing research', category: 'Vault', tags: ['quantum', 'science', 'lab'], favorite: true, icon: 'fas fa-atom', linkPassword: 'Zxcv123', createdAt: Date.now() - 150 },
+  { id: 'v3', title: '🌌 ProH link 3', url: '', description: 'Interactive 3D map of the known universe', category: 'Vault', tags: ['space', 'astronomy', '3d'], favorite: true, icon: 'fas fa-rocket', linkPassword: 'Zxcv123', createdAt: Date.now() - 100 }
 ];
+
+// ============================================================
+//  LANGUAGE FUNCTIONS
+// ============================================================
+function setLanguage(lang) {
+  currentLang = lang;
+  // Update button states
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById('langEn').classList.toggle('active', lang === 'en');
+  document.getElementById('langMy').classList.toggle('active', lang === 'my');
+  document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+  // Update all translatable elements
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.dataset.key;
+    if (translations[lang] && translations[lang][key] !== undefined) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  // Update placeholders
+  document.getElementById('searchInput').placeholder = translations[lang].searchPlaceholder || 'Search links...';
+  // Update category dropdown first option
+  const catSelect = document.getElementById('categoryFilter');
+  const firstOpt = catSelect.querySelector('option[value="all"]');
+  if (firstOpt) firstOpt.textContent = translations[lang].allCats || 'All cats';
+  // Update sort dropdown
+  const sortSelect = document.getElementById('sortFilter');
+  const opts = sortSelect.querySelectorAll('option');
+  if (opts.length >= 3) {
+    opts[0].textContent = translations[lang].newestSort || 'Newest';
+    opts[1].textContent = translations[lang].oldestSort || 'Oldest';
+    opts[2].textContent = translations[lang].alphaSort || 'A–Z';
+  }
+  // Update hidden button text
+  updateHiddenButtonText();
+  updateVaultButtonText();
+  // Update theme button
+  const themeBtn = document.querySelector('.btn-theme span');
+  if (themeBtn) themeBtn.textContent = translations[lang].theme || 'Theme';
+  // Update readonly badge
+  const readonlyBadges = document.querySelectorAll('.readonly-badge');
+  readonlyBadges.forEach(b => {
+    if (b.textContent.includes('Read Only') || b.textContent.includes('ဖတ်ရန်သာ') || b.textContent.includes('只读')) {
+      b.innerHTML = `<i class="fas fa-lock mr-0.5"></i> ${translations[lang].readOnly || 'Read Only'}`;
+    }
+  });
+  // Update reset button
+  const resetBtn = document.querySelector('.btn-reset span');
+  if (resetBtn) resetBtn.textContent = translations[lang].resetBtn || 'Reset';
+  // Re-render to update badges and card text
+  render();
+}
+
+function updateHiddenButtonText() {
+  const btn = document.getElementById('hiddenToggleBtn');
+  const span = document.getElementById('hiddenBtnText');
+  if (hiddenLinksVisible) {
+    span.textContent = translations[currentLang].hide || 'Hide';
+  } else {
+    span.textContent = translations[currentLang].hidden || 'Hidden';
+  }
+}
+
+function updateVaultButtonText() {
+  const btn = document.getElementById('vaultToggleBtn');
+  const span = document.getElementById('vaultBtnText');
+  if (vaultLinksVisible) {
+    span.textContent = translations[currentLang].hideVault || 'Hide Vault';
+  } else {
+    span.textContent = translations[currentLang].vault || 'Vault';
+  }
+}
 
 // ============================================================
 //  HIDDEN LINKS TOGGLE (admin123)
@@ -558,10 +802,9 @@ function toggleHiddenLinks() {
   if (hiddenLinksVisible) {
     hiddenLinksVisible = false;
     document.getElementById('hiddenToggleBtn').classList.remove('active');
-    document.getElementById('hiddenBtnText').textContent = 'Hidden';
-    document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>';
+    updateHiddenButtonText();
     render();
-    showToast('🔒 Hidden links hidden');
+    showToast('🔒 ' + (translations[currentLang].hidden || 'Hidden') + ' ' + (translations[currentLang].hide || 'hide') + 'd');
   } else {
     document.getElementById('hiddenPasswordModal').classList.remove('hidden');
     document.getElementById('hiddenPasswordInput').value = '';
@@ -577,10 +820,10 @@ function verifyHiddenPassword() {
   if (input === HIDDEN_PASSWORD) {
     hiddenLinksVisible = true;
     document.getElementById('hiddenToggleBtn').classList.add('active');
-    document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye-slash"></i> <span id="hiddenBtnText">Hide</span>';
+    updateHiddenButtonText();
     closeHiddenPasswordModal();
     render();
-    showToast('🔓 Hidden links revealed!');
+    showToast('🔓 ' + (translations[currentLang].hiddenLinks || 'Hidden links') + ' revealed!');
   } else {
     document.getElementById('hiddenPasswordError').classList.remove('hidden');
     document.getElementById('hiddenPasswordInput').value = '';
@@ -595,10 +838,9 @@ function toggleVaultLinks() {
   if (vaultLinksVisible) {
     vaultLinksVisible = false;
     document.getElementById('vaultToggleBtn').classList.remove('active');
-    document.getElementById('vaultBtnText').textContent = 'Vault';
-    document.getElementById('vaultToggleBtn').innerHTML = '<i class="fas fa-vault"></i> <span id="vaultBtnText">Vault</span>';
+    updateVaultButtonText();
     render();
-    showToast('🔒 Vault hidden');
+    showToast('🔒 ' + (translations[currentLang].vault || 'Vault') + ' ' + (translations[currentLang].hide || 'hide') + 'n');
   } else {
     document.getElementById('vaultPasswordModal').classList.remove('hidden');
     document.getElementById('vaultPasswordInput').value = '';
@@ -614,10 +856,10 @@ function verifyVaultPassword() {
   if (input === VAULT_PASSWORD) {
     vaultLinksVisible = true;
     document.getElementById('vaultToggleBtn').classList.add('active');
-    document.getElementById('vaultToggleBtn').innerHTML = '<i class="fas fa-vault"></i> <span id="vaultBtnText">Hide Vault</span>';
+    updateVaultButtonText();
     closeVaultPasswordModal();
     render();
-    showToast('🔓 Vault revealed!');
+    showToast('🔓 ' + (translations[currentLang].secretVault || 'Vault') + ' revealed!');
   } else {
     document.getElementById('vaultPasswordError').classList.remove('hidden');
     document.getElementById('vaultPasswordInput').value = '';
@@ -636,9 +878,9 @@ function resetToDefault() {
     hiddenLinksVisible = false;
     vaultLinksVisible = false;
     document.getElementById('hiddenToggleBtn').classList.remove('active');
-    document.getElementById('hiddenToggleBtn').innerHTML = '<i class="fas fa-eye"></i> <span id="hiddenBtnText">Hidden</span>';
     document.getElementById('vaultToggleBtn').classList.remove('active');
-    document.getElementById('vaultToggleBtn').innerHTML = '<i class="fas fa-vault"></i> <span id="vaultBtnText">Vault</span>';
+    updateHiddenButtonText();
+    updateVaultButtonText();
     render();
     showToast('✅ Reset to default');
   }
@@ -746,26 +988,353 @@ function saveLinks() {
 }
 
 // ============================================================
-//  DEFAULT LINKS (added 4 new websites including hellosayarwon.com)
+//  DEFAULT LINKS
 // ============================================================
 function getDefaultLinks() {
   return [
+    // ===== Personal =====
     { id: '7', title: '🌐 My Personal Website', url: 'https://htetwailin.lovable.app', description: 'My personal portfolio and workspace', category: 'Personal', tags: ['portfolio', 'personal', 'workspace'], favorite: true, icon: 'fas fa-heart', linkPassword: '', createdAt: Date.now() - 3000 },
+    
+    // ===== Education =====
     { id: '12', title: '📚 W3Schools', url: 'https://www.w3schools.com/', description: 'Learn web development with tutorials', category: 'Education', tags: ['coding', 'web', 'html', 'css', 'javascript'], favorite: true, icon: 'fas fa-code', linkPassword: '', createdAt: Date.now() - 150 },
-    { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform', category: 'Social Media', tags: ['video', 'social', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
-    { id: '1', title: '🎬 YouTube', url: 'https://youtube.com', description: 'Video platform for entertainment & learning', category: 'Videos', tags: ['video', 'media', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 200000 },
-    { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI assistant for conversations & coding', category: 'AI Tools', tags: ['ai', 'chat', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
-    { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress', category: 'Documents', tags: ['pdf', 'tools', 'office'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
-    { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming & highlights', category: 'Sports', tags: ['sports', 'live', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
-    { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
-    { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant', category: 'AI Tools', tags: ['ai', 'google', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
     { id: '11', title: '🇨🇳 Chinese For All', url: 'https://www.youtube.com/@chineseforall-saihsaikham7440', description: 'Learn Chinese with Sai Hsaikham', category: 'Education', tags: ['chinese', 'learning', 'language'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 100 },
-    // NEW: 4 websites added (including hellosayarwon.com)
-    { id: '13', title: '🧪 Google Flow Labs', url: 'https://labs.google/fx/tools/flow/unsupported-country', description: 'Google Flow Labs experimental tools', category: 'AI Tools', tags: ['google', 'labs', 'experimental', 'flow'], favorite: true, icon: 'fas fa-flask', linkPassword: '', createdAt: Date.now() - 50 },
     { id: '14', title: '🎓 Alison Online Courses', url: 'https://alison.com/?source=aw&sv1=affiliate&sv_campaign_id=2407591&awc=120101_1783678173_cdda1d41adf8fb7000f7ff9d231c37e1&utm_source=google&utm_medium=cpc&utm_campaign=Performance-Max_Tier-4_Resume-Builder&gad_source=1&gad_campaignid=20499391424&gbraid=0AAAAADt7cD0RXHKx06pLBbhaJsKgN_NqW&gclid=Cj0KCQjw94bTBhDQARIsAN3vv0yO8yaPSor2t7ogmtUj4kOy55x5jvfxCUZDwfHLyQPRS59pJtwJb9waAnOAEALw_wcB', description: 'Free online courses with certificates', category: 'Education', tags: ['courses', 'certificates', 'learning', 'free'], favorite: true, icon: 'fas fa-graduation-cap', linkPassword: '', createdAt: Date.now() - 30 },
     { id: '15', title: '📖 HSK University', url: 'https://hskuniversity.com/en', description: 'HSK preparation and Chinese language resources', category: 'Education', tags: ['hsk', 'chinese', 'language', 'university'], favorite: true, icon: 'fas fa-language', linkPassword: '', createdAt: Date.now() - 10 },
-    { id: '16', title: '🩺 Hello ဆရာဝန်', url: 'https://hellosayarwon.com', description: 'ဆေးပညာပိုင်းအရ စိစစ်ထားသည့် ကျန်းမာရေးအချက်အလက်များ', category: 'Health', tags: ['health', 'wellness', 'medical', 'information'], favorite: true, icon: 'fas fa-heartbeat', linkPassword: '', createdAt: Date.now() - 5 }
+    
+    // ===== Social Media =====
+    { id: '9', title: '🎵 TikTok', url: 'https://www.tiktok.com', description: 'Short-form video platform', category: 'Social Media', tags: ['video', 'social', 'creative'], favorite: true, icon: 'fab fa-tiktok', linkPassword: '', createdAt: Date.now() - 500 },
+    { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
+    
+    // ===== Videos =====
+    { id: '1', title: '🎬 YouTube', url: 'https://youtube.com', description: 'Video platform for entertainment & learning', category: 'Videos', tags: ['video', 'media', 'entertainment'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 200000 },
+    
+    // ===== Documents =====
+    { id: '3', title: '📄 iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Online PDF tools: merge, split, compress', category: 'Documents', tags: ['pdf', 'tools', 'office'], favorite: false, icon: 'fas fa-file-pdf', linkPassword: '', createdAt: Date.now() - 120000 },
+    
+    // ===== Sports =====
+    { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming & highlights', category: 'Sports', tags: ['sports', 'live', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
+    
+    // ===== AI Tools =====
+    { id: '2', title: '🤖 ChatGPT', url: 'https://chatgpt.com/', description: 'AI assistant for conversations & coding', category: 'AI Tools', tags: ['ai', 'chat', 'productivity'], favorite: true, icon: 'fas fa-robot', linkPassword: '', createdAt: Date.now() - 150000 },
+    { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant', category: 'AI Tools', tags: ['ai', 'google', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
+    { id: '13', title: '🧪 Google Flow Labs', url: 'https://labs.google/fx/tools/flow/unsupported-country', description: 'Google Flow Labs experimental tools', category: 'AI Tools', tags: ['google', 'labs', 'experimental', 'flow'], favorite: true, icon: 'fas fa-flask', linkPassword: '', createdAt: Date.now() - 50 },
+    
+    // ===== Health =====
+    { id: '16', title: '🏥 Hello ဆရာဝန်', url: 'https://hellosayarwon.com/', description: 'ဆေးပညာပိုင်းအရ စိစစ်ထားသော ကျန်းမာရေးအချက်အလက်များ', category: 'Health', tags: ['health', 'medical', 'myanmar', 'wellness', 'doctor'], favorite: true, icon: 'fas fa-heartbeat', linkPassword: '', createdAt: Date.now() - 5 }
   ];
+}
+
+// ============================================================
+//  GET LOCALIZED CATEGORY NAME
+// ============================================================
+function getLocalizedCategory(category, lang) {
+  const map = {
+    'Personal': translations[lang].catPersonal || 'Personal',
+    'Education': translations[lang].catEducation || 'Education',
+    'Social Media': translations[lang].catSocialMedia || 'Social Media',
+    'Videos': translations[lang].catVideos || 'Videos',
+    'Documents': translations[lang].catDocuments || 'Documents',
+    'Sports': translations[lang].catSports || 'Sports',
+    'AI Tools': translations[lang].catAITools || 'AI Tools',
+    'Health': translations[lang].catHealth || 'Health',
+    'Hidden': translations[lang].catHidden || 'Hidden',
+    'Vault': translations[lang].catVault || 'Vault'
+  };
+  return map[category] || category;
+}
+
+// ============================================================
+//  DYNAMIC CONTENT BASED ON LANGUAGE
+// ============================================================
+function getLocalizedContent(link, lang) {
+  const content = { ...link };
+  
+  // Translate category
+  content.category = getLocalizedCategory(link.category, lang);
+  
+  // ===== Personal (id: '7') =====
+  if (link.id === '7') {
+    if (lang === 'my') {
+      content.title = '🌐 ကျွန်ုပ်၏ ကိုယ်ပိုင် ဝက်ဘ်ဆိုက်';
+      content.description = 'ကိုယ်ပိုင် ပို့တ်ဖိုလီယိုနှင့် အလုပ်ခန်း';
+      content.tags = ['ပို့တ်ဖိုလီယို', 'ကိုယ်ပိုင်', 'အလုပ်ခန်း'];
+    } else if (lang === 'zh') {
+      content.title = '🌐 我的个人网站';
+      content.description = '我的个人作品集和工作空间';
+      content.tags = ['作品集', '个人', '工作空间'];
+    } else {
+      content.tags = ['portfolio', 'personal', 'workspace'];
+    }
+  }
+  
+  // ===== Education (id: '12', '11', '14', '15') =====
+  if (link.id === '12') {
+    if (lang === 'my') {
+      content.title = '📚 W3Schools';
+      content.description = 'ကျူတိုရီရယ်များဖြင့် ဝဘ်ဖွံ့ဖြိုးတိုးတက်ရေး သင်ယူပါ';
+      content.tags = ['ကုဒ်ရေး', 'ဝဘ်', 'html', 'css', 'javascript'];
+    } else if (lang === 'zh') {
+      content.title = '📚 W3Schools';
+      content.description = '通过教程学习网页开发';
+      content.tags = ['编程', '网页', 'html', 'css', 'javascript'];
+    } else {
+      content.tags = ['coding', 'web', 'html', 'css', 'javascript'];
+    }
+  }
+  if (link.id === '11') {
+    if (lang === 'my') {
+      content.title = '🇨🇳 Chinese For All';
+      content.description = 'Sai Hsaikham နှင့် တရုတ်စာသင်ယူပါ';
+      content.tags = ['တရုတ်', 'သင်ယူ', 'ဘာသာစကား'];
+    } else if (lang === 'zh') {
+      content.title = '🇨🇳 全民学中文';
+      content.description = '与Sai Hsaikham一起学中文';
+      content.tags = ['中文', '学习', '语言'];
+    } else {
+      content.tags = ['chinese', 'learning', 'language'];
+    }
+  }
+  if (link.id === '14') {
+    if (lang === 'my') {
+      content.title = '🎓 Alison အွန်လိုင်း သင်တန်းများ';
+      content.description = 'လက်မှတ်များပါသော အခမဲ့အွန်လိုင်းသင်တန်းများ';
+      content.tags = ['သင်တန်း', 'လက်မှတ်', 'သင်ယူ', 'အခမဲ့'];
+    } else if (lang === 'zh') {
+      content.title = '🎓 Alison 在线课程';
+      content.description = '带证书的免费在线课程';
+      content.tags = ['课程', '证书', '学习', '免费'];
+    } else {
+      content.tags = ['courses', 'certificates', 'learning', 'free'];
+    }
+  }
+  if (link.id === '15') {
+    if (lang === 'my') {
+      content.title = '📖 HSK University';
+      content.description = 'HSK ပြင်ဆင်မှုနှင့် တရုတ်ဘာသာစကား အရင်းအမြစ်များ';
+      content.tags = ['hsk', 'တရုတ်', 'ဘာသာစကား', 'တက္ကသိုလ်'];
+    } else if (lang === 'zh') {
+      content.title = '📖 HSK 大学';
+      content.description = 'HSK备考和中文学习资源';
+      content.tags = ['hsk', '中文', '语言', '大学'];
+    } else {
+      content.tags = ['hsk', 'chinese', 'language', 'university'];
+    }
+  }
+  
+  // ===== Social Media (id: '9', '6') =====
+  if (link.id === '9') {
+    if (lang === 'my') {
+      content.title = '🎵 TikTok';
+      content.description = 'တိုတောင်းသော ဗီဒီယိုပလက်ဖောင်း';
+      content.tags = ['ဗီဒီယို', 'လူမှုကွန်ရက်', 'ဖန်တီးမှု'];
+    } else if (lang === 'zh') {
+      content.title = '🎵 TikTok';
+      content.description = '短视频平台';
+      content.tags = ['视频', '社交', '创意'];
+    } else {
+      content.tags = ['video', 'social', 'creative'];
+    }
+  }
+  if (link.id === '6') {
+    if (lang === 'my') {
+      content.title = '💼 အခမဲ့';
+      content.description = 'အခမဲ့ ဗီဒီယိုများနှင့် အရင်းအမြစ်များ';
+      content.tags = ['လူမှုကွန်ရက်', 'အသက်မွေးဝမ်းကျောင်း', 'အခမဲ့'];
+    } else if (lang === 'zh') {
+      content.title = '💼 免费';
+      content.description = '免费视频和资源';
+      content.tags = ['社交', '职业', '免费'];
+    } else {
+      content.tags = ['social', 'career', 'free'];
+    }
+  }
+  
+  // ===== Videos (id: '1') =====
+  if (link.id === '1') {
+    if (lang === 'my') {
+      content.title = '🎬 YouTube';
+      content.description = 'ဖျော်ဖြေရေးနှင့် ပညာရေးအတွက် ဗီဒီယိုပလက်ဖောင်း';
+      content.tags = ['ဗီဒီယို', 'မီဒီယာ', 'ဖျော်ဖြေရေး'];
+    } else if (lang === 'zh') {
+      content.title = '🎬 YouTube';
+      content.description = '娱乐和学习的视频平台';
+      content.tags = ['视频', '媒体', '娱乐'];
+    } else {
+      content.tags = ['video', 'media', 'entertainment'];
+    }
+  }
+  
+  // ===== Documents (id: '3') =====
+  if (link.id === '3') {
+    if (lang === 'my') {
+      content.title = '📄 iLovePDF';
+      content.description = 'အွန်လိုင်း PDF ကိရိယာများ: ပေါင်းစပ်၊ ခွဲထုတ်၊ ချုံ့';
+      content.tags = ['pdf', 'ကိရိယာ', 'ရုံးသုံး'];
+    } else if (lang === 'zh') {
+      content.title = '📄 iLovePDF';
+      content.description = '在线PDF工具：合并、拆分、压缩';
+      content.tags = ['pdf', '工具', '办公'];
+    } else {
+      content.tags = ['pdf', 'tools', 'office'];
+    }
+  }
+  
+  // ===== Sports (id: '4') =====
+  if (link.id === '4') {
+    if (lang === 'my') {
+      content.title = '⚽ LiveSports808';
+      content.description = 'တိုက်ရိုက်အားကစားထုတ်လွှင့်မှုနှင့် ပွဲကြည့်မှတ်တမ်းများ';
+      content.tags = ['အားကစား', 'တိုက်ရိုက်', 'ဘောလုံး'];
+    } else if (lang === 'zh') {
+      content.title = '⚽ LiveSports808';
+      content.description = '体育直播和精彩片段';
+      content.tags = ['体育', '直播', '足球'];
+    } else {
+      content.tags = ['sports', 'live', 'football'];
+    }
+  }
+  
+  // ===== AI Tools (id: '2', '8', '13') =====
+  if (link.id === '2') {
+    if (lang === 'my') {
+      content.title = '🤖 ChatGPT';
+      content.description = 'စကားပြောဆိုခြင်းနှင့် ကုဒ်ရေးသားခြင်းအတွက် AI အကူ';
+      content.tags = ['ai', 'စကားပြော', 'ကုန်ထုတ်စွမ်းအား'];
+    } else if (lang === 'zh') {
+      content.title = '🤖 ChatGPT';
+      content.description = '用于对话和编程的人工智能助手';
+      content.tags = ['ai', '聊天', '生产力'];
+    } else {
+      content.tags = ['ai', 'chat', 'productivity'];
+    }
+  }
+  if (link.id === '8') {
+    if (lang === 'my') {
+      content.title = '✨ Gemini';
+      content.description = 'Google ၏ အဆင့်မြင့် AI အကူ';
+      content.tags = ['ai', 'google', 'ဖန်တီးမှု'];
+    } else if (lang === 'zh') {
+      content.title = '✨ Gemini';
+      content.description = 'Google 的先进人工智能助手';
+      content.tags = ['ai', '谷歌', '创意'];
+    } else {
+      content.tags = ['ai', 'google', 'creative'];
+    }
+  }
+  if (link.id === '13') {
+    if (lang === 'my') {
+      content.title = '🧪 Google Flow Labs';
+      content.description = 'Google Flow Labs စမ်းသပ်ကိရိယာများ';
+      content.tags = ['google', 'labs', 'စမ်းသပ်', 'flow'];
+    } else if (lang === 'zh') {
+      content.title = '🧪 Google Flow 实验室';
+      content.description = 'Google Flow 实验室实验工具';
+      content.tags = ['谷歌', '实验室', '实验', 'flow'];
+    } else {
+      content.tags = ['google', 'labs', 'experimental', 'flow'];
+    }
+  }
+  
+  // ===== Health (id: '16') =====
+  if (link.id === '16') {
+    if (lang === 'my') {
+      content.description = 'ဆေးပညာပိုင်းအရ စိစစ်ထားသော ကျန်းမာရေးအချက်အလက်များ';
+      content.tags = ['ကျန်းမာရေး', 'ဆေးပညာ', 'မြန်မာ', 'ကျန်းမာရေး', 'ဆရာဝန်'];
+    } else if (lang === 'zh') {
+      content.description = '经过医学审查的健康信息';
+      content.tags = ['健康', '医学', '缅甸', '保健', '医生'];
+    } else {
+      content.tags = ['health', 'medical', 'myanmar', 'wellness', 'doctor'];
+    }
+  }
+  
+  // ============================================================
+  //  HIDDEN LINKS (h1, h2, h3)
+  // ============================================================
+  if (link.id === 'h1') {
+    if (lang === 'my') {
+      content.title = '🔥 တယ်လီဂရမ် ဗီဒီယို';
+      content.description = 'လျှို့ဝှက်အတွင်းပိုင်း ပရောဂျက်';
+      content.tags = ['လျှို့ဝှက်', 'အတွင်းပိုင်း', 'ပရောဂျက်'];
+    } else if (lang === 'zh') {
+      content.title = '🔥 电报视频';
+      content.description = '机密内部项目';
+      content.tags = ['机密', '内部', '项目'];
+    } else {
+      content.tags = ['secret', 'internal', 'project'];
+    }
+  }
+  if (link.id === 'h2') {
+    if (lang === 'my') {
+      content.title = '📁 မြန်မာ ဗီဒီယို';
+      content.description = 'ကုမ္ပဏီအတွင်းပိုင်း ကိရိယာ ဒက်ရှ်ဘုတ်';
+      content.tags = ['အတွင်းပိုင်း', 'ကိရိယာ', 'အလုပ်'];
+    } else if (lang === 'zh') {
+      content.title = '📁 缅甸视频';
+      content.description = '公司内部工具仪表板';
+      content.tags = ['内部', '工具', '工作'];
+    } else {
+      content.tags = ['internal', 'tools', 'work'];
+    }
+  }
+  if (link.id === 'h3') {
+    if (lang === 'my') {
+      content.title = '🚀 ပရီမီယံ';
+      content.description = 'သီးသန့်ပရီမီယံ အကြောင်းအရာ';
+      content.tags = ['ပရီမီယံ', 'သီးသန့်', 'အရင်းအမြစ်'];
+    } else if (lang === 'zh') {
+      content.title = '🚀 高级';
+      content.description = '独家高级内容';
+      content.tags = ['高级', '独家', '资源'];
+    } else {
+      content.tags = ['premium', 'exclusive', 'resources'];
+    }
+  }
+  
+  // ============================================================
+  //  VAULT LINKS (v1, v2, v3)
+  // ============================================================
+  if (link.id === 'v1') {
+    if (lang === 'my') {
+      content.title = '🏛️ ProH လင့်ခ် ၁';
+      content.description = 'ရှားပါးစာမူများ၏ ဒစ်ဂျစ်တယ် မော်ကွန်းတိုက်';
+      content.tags = ['မော်ကွန်း', 'ရှားပါး', 'သမိုင်း'];
+    } else if (lang === 'zh') {
+      content.title = '🏛️ ProH 链接 1';
+      content.description = '稀有手稿的数字档案';
+      content.tags = ['档案', '稀有', '历史'];
+    } else {
+      content.tags = ['archive', 'rare', 'history'];
+    }
+  }
+  if (link.id === 'v2') {
+    if (lang === 'my') {
+      content.title = '🔬 ProH လင့်ခ် ၂';
+      content.description = 'ခေတ်မီ ကွမ်တမ် ကွန်ပျူတာ သုတေသန';
+      content.tags = ['ကွမ်တမ်', 'သိပ္ပံ', 'ဓာတ်ခွဲခန်း'];
+    } else if (lang === 'zh') {
+      content.title = '🔬 ProH 链接 2';
+      content.description = '前沿量子计算研究';
+      content.tags = ['量子', '科学', '实验室'];
+    } else {
+      content.tags = ['quantum', 'science', 'lab'];
+    }
+  }
+  if (link.id === 'v3') {
+    if (lang === 'my') {
+      content.title = '🌌 ProH လင့်ခ် ၃';
+      content.description = 'လူသိကမ္ဘာ၏ အပြန်အလှန် 3D မြေပုံ';
+      content.tags = ['အာကာသ', 'နက္ခတ္တဗေဒ', '3d'];
+    } else if (lang === 'zh') {
+      content.title = '🌌 ProH 链接 3';
+      content.description = '已知宇宙的交互式3D地图';
+      content.tags = ['太空', '天文学', '3d'];
+    } else {
+      content.tags = ['space', 'astronomy', '3d'];
+    }
+  }
+  
+  return content;
 }
 
 // ============================================================
@@ -804,8 +1373,8 @@ function getPlatformIcon(url, iconOverride) {
   if (u.includes('lovable')) return 'fas fa-heart';
   if (u.includes('alison')) return 'fas fa-graduation-cap';
   if (u.includes('hskuniversity')) return 'fas fa-language';
-  if (u.includes('hellosayarwon')) return 'fas fa-heartbeat';
   if (u.includes('labs.google')) return 'fas fa-flask';
+  if (u.includes('hellosayarwon')) return 'fas fa-heartbeat';
   if (u.includes('example.com')) return 'fas fa-globe';
   return 'fas fa-link';
 }
@@ -818,25 +1387,34 @@ function render() {
   const categoryFilter = document.getElementById('categoryFilter').value;
   const sortVal = document.getElementById('sortFilter').value;
 
-  // Get all links
+  // Get all links with localized content
   let allLinks = [...links];
   if (hiddenLinksVisible) allLinks = [...allLinks, ...hiddenLinks];
   if (vaultLinksVisible) allLinks = [...allLinks, ...vaultLinks];
 
-  // Update category dropdown
+  // Apply localization to each link
+  allLinks = allLinks.map(link => getLocalizedContent(link, currentLang));
+
+  // Update category dropdown - show localized category names
   const catSet = new Set();
   allLinks.forEach(l => { if (l.category) catSet.add(l.category); });
   const catSelect = document.getElementById('categoryFilter');
-  const currentCat = catSelect.value;
-  catSelect.innerHTML = '<option value="all">All cats</option>';
+  const currentCat = categoryFilter;
+  catSelect.innerHTML = '<option value="all">' + (translations[currentLang].allCats || 'All cats') + '</option>';
   [...catSet].sort().forEach(c => {
     const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
+    opt.value = c; // Keep original English value for filtering
+    opt.textContent = c; // Show localized name
     catSelect.appendChild(opt);
   });
+  // Try to keep selection
   if ([...catSet].includes(currentCat)) catSelect.value = currentCat;
-  else catSelect.value = 'all';
+  else if ([...catSet].includes(getLocalizedCategory(currentCat, currentLang))) {
+    // If currentCat is in English but we need to match localized
+    const localizedCurrent = getLocalizedCategory(currentCat, currentLang);
+    if ([...catSet].includes(localizedCurrent)) catSelect.value = localizedCurrent;
+    else catSelect.value = 'all';
+  } else catSelect.value = 'all';
 
   // Filter
   let filtered = allLinks.filter(link => {
@@ -848,7 +1426,7 @@ function render() {
   });
 
   // Sort
-  const order = ['7', '12', '9', '11', '13', '14', '15', '16'];
+  const order = ['7', '12', '11', '14', '15', '9', '6', '1', '3', '4', '2', '8', '13', '16', 'h1', 'h2', 'h3', 'v1', 'v2', 'v3'];
   const sortFn = (a, b) => {
     const ia = order.indexOf(a.id), ib = order.indexOf(b.id);
     if (ia !== -1 && ib !== -1) return ia - ib;
@@ -989,7 +1567,8 @@ document.getElementById('vaultPasswordInput').addEventListener('keydown', e => {
 //  START
 // ============================================================
 loadLinks();
-console.log('✅ Pro H · Optimized for UI/UX & Performance');
+setLanguage('en');
+console.log('✅ Pro H · All categories, main links, hidden & vault fully translated · Multi-language support');
 </script>
 </body>
 </html>
