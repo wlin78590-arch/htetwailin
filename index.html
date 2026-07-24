@@ -540,7 +540,7 @@ let vaultLinksVisible = false;
 // Hidden links (password: admin123)
 const hiddenLinks = [
   { id: 'h1', title: '🔥 telegram video', url: 'https://t.me/myanmarvideohd', description: 'Confidential internal project', category: 'Hidden', tags: ['secret', 'internal', 'project'], favorite: true, icon: 'fas fa-fire', linkPassword: '', createdAt: Date.now() - 1000 },
-  { id: 'h2', title: '📁 internet Tools', url: 'https://www.buumal.com/', description: 'Company internal tools dashboard', category: 'Hidden', tags: ['internal', 'tools', 'work'], favorite: true, icon: 'fas fa-folder-open', linkPassword: '', createdAt: Date.now() - 800 },
+  { id: 'h2', title: '📁 Myanmar video', url: 'https://www.buumal.com/', description: 'Company internal tools dashboard', category: 'Hidden', tags: ['internal', 'tools', 'work'], favorite: true, icon: 'fas fa-folder-open', linkPassword: '', createdAt: Date.now() - 800 },
   { id: 'h3', title: '🚀 Premium Resources', url: 'https://premium-resources.example.com', description: 'Exclusive premium content', category: 'Hidden', tags: ['premium', 'exclusive', 'resources'], favorite: true, icon: 'fas fa-gem', linkPassword: '', createdAt: Date.now() - 500 }
 ];
 
@@ -746,7 +746,7 @@ function saveLinks() {
 }
 
 // ============================================================
-//  DEFAULT LINKS (added 3 new websites)
+//  DEFAULT LINKS (added 4 new websites including hellosayarwon.com)
 // ============================================================
 function getDefaultLinks() {
   return [
@@ -760,10 +760,11 @@ function getDefaultLinks() {
     { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
     { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant', category: 'AI Tools', tags: ['ai', 'google', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
     { id: '11', title: '🇨🇳 Chinese For All', url: 'https://www.youtube.com/@chineseforall-saihsaikham7440', description: 'Learn Chinese with Sai Hsaikham', category: 'Education', tags: ['chinese', 'learning', 'language'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 100 },
-    // NEW: 3 websites added
-    { id: '13', title: '🧪 Google Flow Labs', url: 'https://labs.google/fx/tools/flow', description: 'Google Flow Labs experimental tools', category: 'AI Tools', tags: ['google', 'labs', 'experimental', 'flow'], favorite: true, icon: 'fas fa-flask', linkPassword: '', createdAt: Date.now() - 50 },
+    // NEW: 4 websites added (including hellosayarwon.com)
+    { id: '13', title: '🧪 Google Flow Labs', url: 'https://labs.google/fx/tools/flow/unsupported-country', description: 'Google Flow Labs experimental tools', category: 'AI Tools', tags: ['google', 'labs', 'experimental', 'flow'], favorite: true, icon: 'fas fa-flask', linkPassword: '', createdAt: Date.now() - 50 },
     { id: '14', title: '🎓 Alison Online Courses', url: 'https://alison.com/?source=aw&sv1=affiliate&sv_campaign_id=2407591&awc=120101_1783678173_cdda1d41adf8fb7000f7ff9d231c37e1&utm_source=google&utm_medium=cpc&utm_campaign=Performance-Max_Tier-4_Resume-Builder&gad_source=1&gad_campaignid=20499391424&gbraid=0AAAAADt7cD0RXHKx06pLBbhaJsKgN_NqW&gclid=Cj0KCQjw94bTBhDQARIsAN3vv0yO8yaPSor2t7ogmtUj4kOy55x5jvfxCUZDwfHLyQPRS59pJtwJb9waAnOAEALw_wcB', description: 'Free online courses with certificates', category: 'Education', tags: ['courses', 'certificates', 'learning', 'free'], favorite: true, icon: 'fas fa-graduation-cap', linkPassword: '', createdAt: Date.now() - 30 },
-    { id: '15', title: '📖 HSK University', url: 'https://hskuniversity.com/en', description: 'HSK preparation and Chinese language resources', category: 'Education', tags: ['hsk', 'chinese', 'language', 'university'], favorite: true, icon: 'fas fa-language', linkPassword: '', createdAt: Date.now() - 10 }
+    { id: '15', title: '📖 HSK University', url: 'https://hskuniversity.com/en', description: 'HSK preparation and Chinese language resources', category: 'Education', tags: ['hsk', 'chinese', 'language', 'university'], favorite: true, icon: 'fas fa-language', linkPassword: '', createdAt: Date.now() - 10 },
+    { id: '16', title: '🩺 Hello ဆရာဝန်', url: 'https://hellosayarwon.com', description: 'ဆေးပညာပိုင်းအရ စိစစ်ထားသည့် ကျန်းမာရေးအချက်အလက်များ', category: 'Health', tags: ['health', 'wellness', 'medical', 'information'], favorite: true, icon: 'fas fa-heartbeat', linkPassword: '', createdAt: Date.now() - 5 }
   ];
 }
 
@@ -803,6 +804,7 @@ function getPlatformIcon(url, iconOverride) {
   if (u.includes('lovable')) return 'fas fa-heart';
   if (u.includes('alison')) return 'fas fa-graduation-cap';
   if (u.includes('hskuniversity')) return 'fas fa-language';
+  if (u.includes('hellosayarwon')) return 'fas fa-heartbeat';
   if (u.includes('labs.google')) return 'fas fa-flask';
   if (u.includes('example.com')) return 'fas fa-globe';
   return 'fas fa-link';
@@ -846,7 +848,7 @@ function render() {
   });
 
   // Sort
-  const order = ['7', '12', '9', '11', '13', '14', '15'];
+  const order = ['7', '12', '9', '11', '13', '14', '15', '16'];
   const sortFn = (a, b) => {
     const ia = order.indexOf(a.id), ib = order.indexOf(b.id);
     if (ia !== -1 && ib !== -1) return ia - ib;
