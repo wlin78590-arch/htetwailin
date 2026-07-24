@@ -746,7 +746,7 @@ function saveLinks() {
 }
 
 // ============================================================
-//  DEFAULT LINKS (removed 'My New Website')
+//  DEFAULT LINKS (added 3 new websites)
 // ============================================================
 function getDefaultLinks() {
   return [
@@ -759,7 +759,11 @@ function getDefaultLinks() {
     { id: '4', title: '⚽ LiveSports808', url: 'https://www.livesports808.site', description: 'Live sports streaming & highlights', category: 'Sports', tags: ['sports', 'live', 'football'], favorite: true, icon: 'fas fa-futbol', linkPassword: '', createdAt: Date.now() - 90000 },
     { id: '6', title: '💼 Free', url: 'https://www.pornhub.com', description: 'Free videos and resources', category: 'Social Media', tags: ['social', 'career', 'free'], favorite: true, icon: 'fas fa-play-circle', linkPassword: 'free123', createdAt: Date.now() - 8000 },
     { id: '8', title: '✨ Gemini', url: 'https://gemini.google.com/', description: 'Google\'s advanced AI assistant', category: 'AI Tools', tags: ['ai', 'google', 'creative'], favorite: true, icon: 'fas fa-star', linkPassword: '', createdAt: Date.now() - 4000 },
-    { id: '11', title: '🇨🇳 Chinese For All', url: 'https://www.youtube.com/@chineseforall-saihsaikham7440', description: 'Learn Chinese with Sai Hsaikham', category: 'Education', tags: ['chinese', 'learning', 'language'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 100 }
+    { id: '11', title: '🇨🇳 Chinese For All', url: 'https://www.youtube.com/@chineseforall-saihsaikham7440', description: 'Learn Chinese with Sai Hsaikham', category: 'Education', tags: ['chinese', 'learning', 'language'], favorite: true, icon: 'fab fa-youtube', linkPassword: '', createdAt: Date.now() - 100 },
+    // NEW: 3 websites added
+    { id: '13', title: '🧪 Google Flow Labs', url: 'https://labs.google/fx/tools/flow/unsupported-country', description: 'Google Flow Labs experimental tools', category: 'AI Tools', tags: ['google', 'labs', 'experimental', 'flow'], favorite: true, icon: 'fas fa-flask', linkPassword: '', createdAt: Date.now() - 50 },
+    { id: '14', title: '🎓 Alison Online Courses', url: 'https://alison.com/?source=aw&sv1=affiliate&sv_campaign_id=2407591&awc=120101_1783678173_cdda1d41adf8fb7000f7ff9d231c37e1&utm_source=google&utm_medium=cpc&utm_campaign=Performance-Max_Tier-4_Resume-Builder&gad_source=1&gad_campaignid=20499391424&gbraid=0AAAAADt7cD0RXHKx06pLBbhaJsKgN_NqW&gclid=Cj0KCQjw94bTBhDQARIsAN3vv0yO8yaPSor2t7ogmtUj4kOy55x5jvfxCUZDwfHLyQPRS59pJtwJb9waAnOAEALw_wcB', description: 'Free online courses with certificates', category: 'Education', tags: ['courses', 'certificates', 'learning', 'free'], favorite: true, icon: 'fas fa-graduation-cap', linkPassword: '', createdAt: Date.now() - 30 },
+    { id: '15', title: '📖 HSK University', url: 'https://hskuniversity.com/en', description: 'HSK preparation and Chinese language resources', category: 'Education', tags: ['hsk', 'chinese', 'language', 'university'], favorite: true, icon: 'fas fa-language', linkPassword: '', createdAt: Date.now() - 10 }
   ];
 }
 
@@ -797,6 +801,9 @@ function getPlatformIcon(url, iconOverride) {
   if (u.includes('ilovepdf')) return 'fas fa-file-pdf';
   if (u.includes('livesports808')) return 'fas fa-futbol';
   if (u.includes('lovable')) return 'fas fa-heart';
+  if (u.includes('alison')) return 'fas fa-graduation-cap';
+  if (u.includes('hskuniversity')) return 'fas fa-language';
+  if (u.includes('labs.google')) return 'fas fa-flask';
   if (u.includes('example.com')) return 'fas fa-globe';
   return 'fas fa-link';
 }
@@ -839,7 +846,7 @@ function render() {
   });
 
   // Sort
-  const order = ['7', '12', '9', '11'];
+  const order = ['7', '12', '9', '11', '13', '14', '15'];
   const sortFn = (a, b) => {
     const ia = order.indexOf(a.id), ib = order.indexOf(b.id);
     if (ia !== -1 && ib !== -1) return ia - ib;
